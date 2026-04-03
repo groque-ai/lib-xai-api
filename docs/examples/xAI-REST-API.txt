@@ -1,0 +1,21 @@
+xAI's REST API
+
+ 1.0.0 
+
+OAS 3.1
+
+/api-docs/openapi.json
+
+REST API for xAI compatible with other providers.xAI's REST API
+
+ 1.0.0 
+
+OAS 3.1
+
+/api-docs/openapi.json
+
+REST API for xAI compatible with other providers.
+
+
+
+https://api.x.ai/docs/#/v1/handle_get_stored_completion_request

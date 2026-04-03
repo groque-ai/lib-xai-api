@@ -1,0 +1,83 @@
+- com.xai.api  
+  - ClientException (custom exception for API errors, e.g., wrapping HTTP status codes like 400/401/422/429/500)  
+  - XAIClient (main client class: handles auth, base URL, HttpClient instance, Jackson ObjectMapper; methods like chat().create(...), models().listLanguageModels(...))  
+  - XAIClientConfig (builder for client: apiKey, baseUrl, timeouts, retries)  
+- com.xai.api.http  
+  - HttpRequestBuilder (fluent builder for HttpRequest: adds auth, JSON body, headers)  
+  - HttpResponseHandler (parses responses: deserializes JSON, handles errors, streaming)  
+  - StreamingResponseParser (SSE parser for stream=true responses)  
+- com.xai.api.model  
+  - ApiKey (from schema: redacted_api_key, user_id, name, etc.; use List<String> for acls)  
+  - Usage (from schema: prompt_tokens, completion_tokens, total_tokens, cost_in_usd_ticks, num_sources_used; embeds PromptTokensDetails and CompletionTokensDetails)  
+  - PromptTokensDetails (from schema: text_tokens, audio_tokens=0 (text focus), image_tokens=0, cached_tokens)  
+  - CompletionTokensDetails (from schema: reasoning_tokens, audio_tokens=0, accepted_prediction_tokens=0, rejected_prediction_tokens=0)  
+  - FinishReason (enum: stop, max_tokens, tool_calls, length, content_filter)  
+  - Role (enum: system, user, assistant, tool)  
+- com.xai.api.model.chat  
+  - ChatCompletionRequest (from ChatRequest schema: messages (List<ChatMessage>), model, temperature, max_tokens, top_p, frequency_penalty, presence_penalty, logit_bias (Map<Integer, Float>), n=1, seed, stop (String or List<String>), stream, stream_options, tools (List<Tool>), tool_choice, response_format, user, parallel_tool_calls=true, deferred=false)  
+  - ChatCompletionResponse (from ChatResponse schema: id, object="chat.completion", created, model, choices (List<Choice>), usage, system_fingerprint)  
+  - ChatMessage (consolidated from Message schema: role, content (String or List<MessageContentPart> – use generics or polymorphism), name (optional), tool_calls (List<ToolCall>), tool_call_id (for tool role))  
+  - MessageContentPart (from schema: type="text" or "image_url" (but text focus: prioritize text; use oneOf polymorphism via Jackson @JsonTypeInfo))  
+    - TextContentPart (subtype: text)  
+    - ImageContentPart (subtype: image_url with detail=auto/low/high; defer impl since images removed)  
+  - Choice (from schema: index, message (ChatMessage), finish_reason, logprobs (optional Logprobs), delta (for streaming: partial ChatMessage))  
+  - Logprobs (from schema: content (List<Logprob> or null))  
+  - Logprob (from schema: token, logprob, bytes (List<Integer>), top_logprobs (List<TopLogprob>))  
+  - TopLogprob (from schema: token, logprob, bytes)  
+  - StreamOptions (from schema: include_usage=true)  
+  - ResponseFormat (from schema: type="text" or "json_object" or "json_schema" (oneOf); json_schema (JsonSchema))  
+  - JsonSchema (from schema: name, description, schema (Map<String, Object> or JsonNode), strict=true)  
+- com.xai.api.model.tool  
+  - Tool (oneOf from schema: FunctionTool or LiveSearchTool; use polymorphism)  
+    - FunctionTool (subtype: type="function", function (FunctionDefinition))  
+    - LiveSearchTool (subtype: type="live_search", sources (List<SearchSource>))  
+  - FunctionDefinition (from schema: name, description, parameters (Map<String, Object> or JsonNode))  
+  - ToolChoice (oneOf from schema: string ("auto"/"none"/"required") or object (type="function", function (FunctionChoice)); use polymorphism or union type)  
+  - FunctionChoice (from schema: name)  
+  - ToolCall (from schema: id, type="function", function (FunctionCall), index)  
+  - FunctionCall (from schema: name, arguments (String – JSON))  
+- com.xai.api.model.deferred  
+  - DeferredChatCompletionResponse (reuses ChatCompletionResponse; polled via GET)  
+  - StartDeferredChatResponse (from schema: request_id)  
+- com.xai.api.model.complete (legacy)  
+  - CompleteRequest (from schema: model, prompt, max_tokens_to_sample, temperature, etc.; Anthropic compat)  
+  - CompleteResponse (from schema: type="completion", id, completion, stop_reason, model)  
+  - SampleRequest (from schema: prompt, model, max_tokens; OpenAI legacy compat)  
+  - SampleResponse (from schema: id, object="text_completion", created, model, choices (List<SampleChoice>), usage)  
+  - SampleChoice (from schema: index, text, finish_reason)  
+- com.xai.api.model.model (for discovery)  
+  - LanguageModel (from schema: id, fingerprint, created, object="model", owned_by="xai", version, input_modalities (List<String>), output_modalities (List<String>), pricing fields like prompt_text_token_price)  
+  - ListLanguageModelsResponse (from schema: models (List<LanguageModel>))  
+  - EmbeddingModel (similar to LanguageModel: id, fingerprint, etc., input_modalities, prompt_text_token_price, aliases (List<String>))  
+  - ListEmbeddingModelsResponse (from schema: models (List<EmbeddingModel>))  
+- com.xai.api.model.search (document/RAG; include since text-related)  
+  - DocumentsSource (from schema: collection_ids (List<String>))  
+  - SearchRequest (from schema: query, max_results=10, filter (String), retrieval_mode (RetrievalMode), reranker (RerankerModel), metric (RankingMetric), source (DocumentsSource))  
+  - SearchResponse (from schema: matches (List<SearchMatch>))  
+  - SearchMatch (from schema: file_id, chunk_id, chunk_content, score, collection_ids (List<String>))  
+  - RetrievalMode (enum: keyword, semantic, hybrid)  
+  - RerankerModel (enum: v1)  
+  - RankingMetric (enum: cosine)  
+  - SearchSource (oneOf: XSearchSource, WebSearchSource, NewsSearchSource, RssSearchSource; polymorphism)  
+    - XSearchSource (subtype: type="x", included_x_handles (List<String>), excluded_x_handles, post_favorite_count, post_view_count)  
+    - WebSearchSource (subtype: type="web", allowed_websites (List<String>), excluded_websites, country, safe_search=true)  
+    - NewsSearchSource (subtype: type="news", excluded_websites, country, safe_search)  
+    - RssSearchSource (subtype: type="rss", links (List<String>))  
+- com.xai.api.model.error  
+  - ErrorResponse (generic: type, message, param, code; from common 400/422 responses)  
+
+
+
+**Consolidation Notes** (applied above):  
+- Reduced ~146 raw schemas to ~50 Java classes by:  
+  - Using generics (e.g., List<T> for arrays like choices, tools, matches).  
+  - Polymorphism for oneOf (e.g., Tool, ToolChoice, SearchSource, MessageContentPart via Jackson @JsonTypeInfo/@JsonSubTypes).  
+  - Reusing classes (e.g., ChatMessage for both request/response; embed details in Usage).  
+  - Ignoring/deferring non-text (e.g., image/video schemas like GeneratedImageResponse, VideoResponse, ImageUrl; embedding-specific like EmbeddingRequest/Response).  
+  - Enums for simple strings (e.g., Role, FinishReason, RetrievalMode).  
+  - Map/JsonNode for flexible JSON (e.g., logit_bias as Map<Integer, Float>, function parameters as Map<String, Object>).  
+- Packages logically grouped: core model, sub for chat/tool/deferred/complete/model/search/error. This keeps things modular (e.g., import only chat models for basic use).  
+- Excluded images/video/voice fully as per override.  
+- Total classes: Focused on text/chat (pri1), responses (pri2), models (pri3); language (pri4) handled via UTF-8 in strings (no special classes yet).  
+
+If this looks good, confirm and we'll start coding the first POJOs (e.g., from com.xai.api.model and .chat). If adjustments needed (e.g., rename packages, add/remove), let me know.

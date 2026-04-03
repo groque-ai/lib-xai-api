@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>keybridge.pom</groupId>
+    <artifactId>keybridge-lib</artifactId>
+    <version>1.3.0</version>
+  </parent>
+
+  <groupId>ai.groque.lib</groupId>
+  <artifactId>xai-api</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>lib-xai-api</name>
+  <description>xAI REST API
+
+    Client REST API for xAI and compatible with other providers.
+
+    Conforms with OpenAPI 3.1 spec for xAI's REST API v1.
+    - Documentation: https://docs.x.ai/overview
+    - Schema: https://api.x.ai/api-docs/openapi.json
+    - Swagger: https://api.x.ai/docs/#
+
+  </description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.release>11</maven.compiler.release>
+  </properties>
+
+
+  <dependencies>
+
+    <!--jackson is frozen at 2.15.3 to guarantee downstream compatibilty with OSGI frameworks-->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.15.3</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.15.3</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--for test message generation-->
+    <dependency>
+      <groupId>com.thedeanda</groupId>
+      <artifactId>lorem</artifactId>
+      <version>2.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!--used to read the JSON schema and auto-apply javadoc to generated classes-->
+    <!--this is used in the PojoDocDecorator (test) class-->
+    <dependency>
+      <groupId>com.github.javaparser</groupId>
+      <artifactId>javaparser-symbol-solver-core</artifactId>
+      <version>3.26.2</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+
+
+
+
+</project>

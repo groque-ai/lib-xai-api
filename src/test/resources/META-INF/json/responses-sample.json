@@ -1,0 +1,57 @@
+{
+  "created_at": 1754475266,
+  "id": "ad5663da-63e6-86c6-e0be-ff15effa8357",
+  "max_output_tokens": null,
+  "model": "grok-4-0709",
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "type": "output_text",
+          "text": "101 multiplied by 3 is 303.",
+          "logprobs": null,
+          "annotations": []
+        }
+      ],
+      "id": "msg_ad5663da-63e6-86c6-e0be-ff15effa8357",
+      "role": "assistant",
+      "type": "message",
+      "status": "completed"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "previous_response_id": null,
+  "reasoning": null,
+  "temperature": null,
+  "text": {
+    "format": {
+      "type": "text"
+    }
+  },
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": null,
+  "usage": {
+    "prompt_tokens": 32,
+    "completion_tokens": 9,
+    "total_tokens": 151,
+    "prompt_tokens_details": {
+      "text_tokens": 32,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "cached_tokens": 8
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 110,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "num_sources_used": 0
+  },
+  "user": null,
+  "incomplete_details": null,
+  "status": "completed",
+  "store": true
+}

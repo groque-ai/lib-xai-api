@@ -1,0 +1,292 @@
+.
+├── grok-api.tree.txt
+├── main
+│   └── java
+│       └── ai
+│           └── x
+│               └── grok
+│                   └── api
+│                       ├── client
+│                       │   ├── AbstractRestClient.java
+│                       │   ├── GrokApiClient.java
+│                       │   ├── GrokApiConfig.java
+│                       │   └── MultipartBodyPublisher.java
+│                       ├── exception
+│                       │   ├── AuthenticationException.java
+│                       │   ├── GrokApiException.java
+│                       │   ├── InvalidRequestException.java
+│                       │   └── RateLimitException.java
+│                       ├── model
+│                       │   ├── assistant
+│                       │   │   ├── AssistantCreateParams.java
+│                       │   │   ├── AssistantDeleteResponse.java
+│                       │   │   ├── Assistant.java
+│                       │   │   ├── AssistantListParams.java
+│                       │   │   ├── AssistantListResponse.java
+│                       │   │   ├── AssistantUpdateParams.java
+│                       │   │   ├── CodeInterpreterResources.java
+│                       │   │   ├── FileSearchResources.java
+│                       │   │   ├── FunctionTool.java
+│                       │   │   ├── JsonSchema.java
+│                       │   │   ├── message
+│                       │   │   │   ├── FileCitation.java
+│                       │   │   │   ├── FilePath.java
+│                       │   │   │   ├── ImageFileContent.java
+│                       │   │   │   ├── IncompleteDetails.java
+│                       │   │   │   ├── MessageAttachment.java
+│                       │   │   │   ├── MessageContentPart.java
+│                       │   │   │   ├── MessageCreateParams.java
+│                       │   │   │   ├── Message.java
+│                       │   │   │   ├── MessageListParams.java
+│                       │   │   │   ├── MessageListResponse.java
+│                       │   │   │   ├── MessageUpdateParams.java
+│                       │   │   │   ├── RefusalContent.java
+│                       │   │   │   ├── TextAnnotation.java
+│                       │   │   │   └── TextContent.java
+│                       │   │   ├── ResponseFormat.java
+│                       │   │   ├── run
+│                       │   │   │   ├── CodeInterpreterOutput.java
+│                       │   │   │   ├── CodeInterpreterToolCall.java
+│                       │   │   │   ├── FileSearchResult.java
+│                       │   │   │   ├── FileSearchToolCall.java
+│                       │   │   │   ├── FunctionToolCall.java
+│                       │   │   │   ├── FunctionToolChoice.java
+│                       │   │   │   ├── IncompleteDetails.java
+│                       │   │   │   ├── LastError.java
+│                       │   │   │   ├── OutputImage.java
+│                       │   │   │   ├── RequiredAction.java
+│                       │   │   │   ├── ResultContent.java
+│                       │   │   │   ├── RunCreateParams.java
+│                       │   │   │   ├── Run.java
+│                       │   │   │   ├── RunListParams.java
+│                       │   │   │   ├── RunListResponse.java
+│                       │   │   │   ├── RunUpdateParams.java
+│                       │   │   │   ├── SubmitToolOutputs.java
+│                       │   │   │   ├── SubmitToolOutputsParams.java
+│                       │   │   │   ├── ToolCall.java
+│                       │   │   │   ├── ToolChoiceOption.java
+│                       │   │   │   ├── ToolChoiceTool.java
+│                       │   │   │   ├── ToolOutput.java
+│                       │   │   │   └── TruncationStrategy.java
+│                       │   │   ├── runStep
+│                       │   │   │   ├── CodeInterpreterDelta.java
+│                       │   │   │   ├── CodeInterpreterDetail.java
+│                       │   │   │   ├── CodeInterpreterOutputDelta.java
+│                       │   │   │   ├── CodeInterpreterOutput.java
+│                       │   │   │   ├── FileSearchDelta.java
+│                       │   │   │   ├── FileSearchDetail.java
+│                       │   │   │   ├── FileSearchRankingOptions.java
+│                       │   │   │   ├── FileSearchResultDelta.java
+│                       │   │   │   ├── FileSearchResult.java
+│                       │   │   │   ├── FunctionDelta.java
+│                       │   │   │   ├── FunctionDetail.java
+│                       │   │   │   ├── LastError.java
+│                       │   │   │   ├── MessageCreationDelta.java
+│                       │   │   │   ├── MessageCreation.java
+│                       │   │   │   ├── OutputImageDelta.java
+│                       │   │   │   ├── OutputImage.java
+│                       │   │   │   ├── ResultContentDelta.java
+│                       │   │   │   ├── ResultContent.java
+│                       │   │   │   ├── RunStepDelta.java
+│                       │   │   │   ├── RunStep.java
+│                       │   │   │   ├── RunStepListParams.java
+│                       │   │   │   ├── RunStepListResponse.java
+│                       │   │   │   ├── StepDetailsDelta.java
+│                       │   │   │   ├── StepDetails.java
+│                       │   │   │   ├── ToolCallDelta.java
+│                       │   │   │   ├── ToolCallDetail.java
+│                       │   │   │   ├── ToolCallsDelta.java
+│                       │   │   │   └── ToolCalls.java
+│                       │   │   ├── thread
+│                       │   │   │   ├── ThreadCreateParams.java
+│                       │   │   │   ├── ThreadDeleteResponse.java
+│                       │   │   │   ├── Thread.java
+│                       │   │   │   ├── ThreadListParams.java
+│                       │   │   │   ├── ThreadListResponse.java
+│                       │   │   │   ├── ThreadToolResources.java
+│                       │   │   │   ├── ThreadUpdateParams.java
+│                       │   │   │   └── ThreadVectorStoreResources.java
+│                       │   │   ├── Tool.java
+│                       │   │   ├── ToolResources.java
+│                       │   │   └── VectorStoreConfig.java
+│                       │   ├── audio
+│                       │   │   ├── common
+│                       │   │   ├── speech
+│                       │   │   ├── transcription
+│                       │   │   └── translation
+│                       │   ├── batch
+│                       │   │   ├── BatchCancelResponse.java
+│                       │   │   ├── BatchCreateParams.java
+│                       │   │   ├── BatchError.java
+│                       │   │   ├── Batch.java
+│                       │   │   ├── BatchListParams.java
+│                       │   │   ├── BatchListResponse.java
+│                       │   │   ├── BatchRetrieveParams.java
+│                       │   │   └── RequestCounts.java
+│                       │   ├── beta
+│                       │   │   ├── chatkit
+│                       │   │   └── realtime
+│                       │   ├── chat
+│                       │   │   ├── common
+│                       │   │   └── completion
+│                       │   │       ├── Choice.java
+│                       │   │       ├── ChunkChoice.java
+│                       │   │       ├── CompletionChunk.java
+│                       │   │       ├── CompletionRequest.java
+│                       │   │       ├── CompletionResponse.java
+│                       │   │       ├── CompletionTokensDetails.java
+│                       │   │       ├── ContentPartDelta.java
+│                       │   │       ├── ContentPart.java
+│                       │   │       ├── FunctionCallDelta.java
+│                       │   │       ├── FunctionCall.java
+│                       │   │       ├── FunctionTool.java
+│                       │   │       ├── ImageUrlDelta.java
+│                       │   │       ├── ImageUrl.java
+│                       │   │       ├── JsonSchema.java
+│                       │   │       ├── Logprobs.java
+│                       │   │       ├── MessageDelta.java
+│                       │   │       ├── Message.java
+│                       │   │       ├── PromptTokensDetails.java
+│                       │   │       ├── ResponseFormat.java
+│                       │   │       ├── TokenLogprob.java
+│                       │   │       ├── ToolCallDelta.java
+│                       │   │       ├── ToolCall.java
+│                       │   │       ├── Tool.java
+│                       │   │       ├── TopLogprob.java
+│                       │   │       └── Usage.java
+│                       │   ├── common
+│                       │   │   ├── ApiErrorResponse.java
+│                       │   │   ├── CompletionTokensDetails.java
+│                       │   │   ├── DeletedResponse.java
+│                       │   │   ├── error
+│                       │   │   │   ├── ApiError.java
+│                       │   │   │   ├── ApiErrorResponse.java
+│                       │   │   │   ├── AuthenticationError.java
+│                       │   │   │   ├── FieldError.java
+│                       │   │   │   ├── InsufficientQuotaError.java
+│                       │   │   │   ├── RateLimitError.java
+│                       │   │   │   ├── ToolError.java
+│                       │   │   │   └── ValidationError.java
+│                       │   │   ├── Error.java
+│                       │   │   ├── GenericResponse.java
+│                       │   │   ├── ListResponse.java
+│                       │   │   ├── Metadata.java
+│                       │   │   ├── PaginationParams.java
+│                       │   │   ├── PromptTokensDetails.java
+│                       │   │   ├── RateLimitHeaders.java
+│                       │   │   ├── ServerErrorDetails.java
+│                       │   │   ├── SystemFingerprint.java
+│                       │   │   ├── TokenLogprob.java
+│                       │   │   ├── tool
+│                       │   │   │   ├── CodeInterpreterCall.java
+│                       │   │   │   ├── FileSearchCall.java
+│                       │   │   │   ├── FileSearchResult.java
+│                       │   │   │   ├── FunctionCall.java
+│                       │   │   │   ├── FunctionTool.java
+│                       │   │   │   ├── OutputImage.java
+│                       │   │   │   ├── ResultContent.java
+│                       │   │   │   ├── ToolCall.java
+│                       │   │   │   ├── ToolChoiceFunction.java
+│                       │   │   │   ├── ToolChoice.java
+│                       │   │   │   ├── Tool.java
+│                       │   │   │   └── ToolOutput.java
+│                       │   │   ├── TopLogprob.java
+│                       │   │   ├── Usage.java
+│                       │   │   └── Warning.java
+│                       │   ├── embedding
+│                       │   ├── file
+│                       │   │   ├── common
+│                       │   │   ├── FileContent.java
+│                       │   │   ├── FileCreateParams.java
+│                       │   │   ├── FileDeleteResponse.java
+│                       │   │   ├── File.java
+│                       │   │   ├── FileListParams.java
+│                       │   │   ├── FileListResponse.java
+│                       │   │   ├── FilePurpose.java
+│                       │   │   └── FileStatusDetails.java
+│                       │   ├── fineTuning
+│                       │   │   ├── checkpoint
+│                       │   │   └── job
+│                       │   ├── image
+│                       │   ├── model
+│                       │   │   ├── ModelDeleteResponse.java
+│                       │   │   ├── Model.java
+│                       │   │   ├── ModelListResponse.java
+│                       │   │   ├── ModelPermission.java
+│                       │   │   └── ModelRetrieveResponse.java
+│                       │   ├── moderation
+│                       │   ├── upload
+│                       │   │   ├── UploadCancelResponse.java
+│                       │   │   ├── UploadCompleteParams.java
+│                       │   │   ├── UploadCompleteResponse.java
+│                       │   │   ├── UploadCreateParams.java
+│                       │   │   ├── Upload.java
+│                       │   │   ├── UploadPartCreateParams.java
+│                       │   │   └── UploadPart.java
+│                       │   └── vectorStore
+│                       │       ├── file
+│                       │       ├── fileBatch
+│                       │       ├── FileCounts.java
+│                       │       ├── LastError.java
+│                       │       ├── StaticChunkingStrategy.java
+│                       │       ├── VectorStoreCreateParams.java
+│                       │       ├── VectorStoreFileBatchCreateParams.java
+│                       │       ├── VectorStoreFileBatch.java
+│                       │       ├── VectorStoreFileBatchListParams.java
+│                       │       ├── VectorStoreFileBatchListResponse.java
+│                       │       ├── VectorStoreFileChunkingStrategy.java
+│                       │       ├── VectorStoreFileCreateParams.java
+│                       │       ├── VectorStoreFile.java
+│                       │       ├── VectorStoreFileListParams.java
+│                       │       ├── VectorStoreFileListResponse.java
+│                       │       ├── VectorStore.java
+│                       │       ├── VectorStoreListParams.java
+│                       │       ├── VectorStoreListResponse.java
+│                       │       └── VectorStoreUpdateParams.java
+│                       ├── service
+│                       │   ├── AssistantService.java
+│                       │   ├── BatchService.java
+│                       │   ├── ChatService.java
+│                       │   ├── FileService.java
+│                       │   ├── impl
+│                       │   │   ├── AssistantServiceImpl.java
+│                       │   │   ├── BaseService.java
+│                       │   │   ├── BatchServiceImpl.java
+│                       │   │   ├── ChatServiceImpl.java
+│                       │   │   ├── FileServiceImpl.java
+│                       │   │   ├── ModelServiceImpl.java
+│                       │   │   ├── RunServiceImpl.java
+│                       │   │   ├── ThreadServiceImpl.java
+│                       │   │   ├── UploadServiceImpl.java
+│                       │   │   └── VectorStoreServiceImpl.java
+│                       │   ├── ModelService.java
+│                       │   ├── RunService.java
+│                       │   ├── ThreadService.java
+│                       │   ├── UploadService.java
+│                       │   └── VectorStoreService.java
+│                       └── type
+│                           ├── ChunkingStrategyType.java
+│                           ├── CodeInterpreterOutputType.java
+│                           ├── ContentPartType.java
+│                           ├── FilePurpose.java
+│                           ├── FinishReason.java
+│                           ├── MessageRole.java
+│                           ├── Modality.java
+│                           ├── ResourceStatus.java
+│                           ├── RunStatus.java
+│                           ├── RunStepStatus.java
+│                           ├── SortOrder.java
+│                           ├── StepDetailType.java
+│                           ├── ToolCallType.java
+│                           ├── ToolChoiceType.java
+│                           └── ToolType.java
+└── test
+    └── java
+        └── ai
+            └── x
+                └── grok
+                    └── api
+                        └── client
+                            └── GrokApiClientTest.java
+
+53 directories, 237 files

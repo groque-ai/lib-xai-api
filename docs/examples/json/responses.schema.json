@@ -1,0 +1,58 @@
+
+POST /v1/responses
+{
+"model": "gpt-5.2",
+        "input": "Extract order data: Order #1234 for 2 red shirts size M to John Smith.",
+        "text": {
+        "format": {
+        "type": "json_schema",
+                "name": "order",
+                "schema": {
+                "type": "object",
+                        "properties": {
+                        "order_id": { "type": "string" },
+                                "customer_name": { "type": "string" },
+                                "items": {
+                                "type": "array",
+                                        "items": {
+                                        "type": "object",
+                                                "properties": {
+                                                "product": { "type": "string" },
+                                                        "color": { "type": "string" },
+                                                        "size": { "type": "string" },
+                                                        "quantity": { "type": "integer" }
+                                                },
+                                                "required": ["product", "quantity"]
+                                        }
+                                }
+                        },
+                        "required": ["order_id", "customer_name", "items"]
+                }
+        }
+        }
+}
+
+
+
+{
+"model": "grok-code-fast-1",
+        "input": [...your messages...],
+        "response_format": {
+        "type": "json_schema",
+                "json_schema": {
+                "name": "java_source_file",
+                        "strict": true,
+                        "schema": {
+                        "type": "object",
+                                "properties": {
+                                "code": {
+                                "type": "string",
+                                        "description": "The complete, standalone Java source code with added Javadoc. No markdown, no fences, no extra text."
+                                }
+                                },
+                                "required": ["code"],
+                                "additionalProperties": false
+                        }
+                }
+        }
+}

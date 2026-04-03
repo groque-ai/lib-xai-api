@@ -1,0 +1,83 @@
+
+ModelRequest >>>
+{
+  "model" : "grok-4-0709",
+  "input" : [ {
+    "type" : "message",
+    "role" : "user",
+    "content" : "Use the hello tool to greet Bob McBobFace"
+  } ],
+  "tools" : [ {
+    "type" : "function",
+    "name" : "say_hello",
+    "description" : "Generates a greeting for a given name",
+    "parameters" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "Name of the person to greet"
+        }
+      },
+      "required" : [ "name" ]
+    }
+  } ]
+}
+ModelResponse <<<
+{
+  "id" : "7fbc7886-7f82-100f-322c-f0ad79f27561",
+  "object" : "response",
+  "model" : "grok-4-0709",
+  "status" : "completed",
+  "output" : [ {
+    "type" : "function_call",
+    "id" : "fc_7fbc7886-7f82-100f-322c-f0ad79f27561_0",
+    "status" : "completed",
+    "name" : "say_hello",
+    "arguments" : "{\"name\":\"Bob McBobFace\"}",
+    "call_id" : "call_09377339"
+  } ],
+  "usage" : {
+    "cost_in_usd_ticks" : 38857500,
+    "input_tokens" : 895,
+    "input_tokens_details" : {
+      "cached_tokens" : 833
+    },
+    "num_server_side_tools_used" : 0,
+    "num_sources_used" : 0,
+    "output_tokens" : 205,
+    "output_tokens_details" : {
+      "reasoning_tokens" : 176
+    },
+    "total_tokens" : 1100
+  },
+  "reasoning" : {
+    "effort" : "medium",
+    "summary" : "detailed"
+  },
+  "tools" : [ {
+    "type" : "function",
+    "name" : "say_hello",
+    "description" : "Generates a greeting for a given name",
+    "parameters" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "Name of the person to greet"
+        }
+      },
+      "required" : [ "name" ]
+    },
+    "strict" : false
+  } ],
+  "temperature" : 0.7,
+  "store" : true,
+  "created_at" : 1771864939,
+  "completed_at" : 1771864944,
+  "tool_choice" : "auto",
+  "parallel_tool_calls" : true,
+  "top_p" : 0.95,
+  "service_tier" : "default",
+  "top_logprobs" : 0
+}
