@@ -15,7 +15,7 @@
   <name>lib-xai-api</name>
   <description>xAI REST API
 
-    Client REST API for xAI and compatible with other providers.
+    Client REST API for xAI, compatible with other providers.
 
     Conforms with OpenAPI 3.1 spec for xAI's REST API v1.
     - Documentation: https://docs.x.ai/overview

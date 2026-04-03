@@ -1,4 +1,3 @@
-Here is a comprehensive review of what we've built so far in the **lib-grok-api** project (Java, Maven, blocking, Java 11+ HttpClient, Jackson, no external HTTP libs).
 
 ### 1. Model Layer Coverage (ai.x.grok.api.model)
 
@@ -58,18 +57,8 @@ All services follow the same pattern:
 | **Retries / resilience**        | ★☆☆☆☆ (none yet) | Not added (can be layered later) |
 
 **Verdict**:  
-We have **excellent coverage** for the most common real-world use cases in 2026 (conversational AI with tools, assistants + retrieval, batch processing of requests, large file handling).  
-The library is already usable for building production-grade integrations around chat + assistants + retrieval workflows — roughly 80–85% of what most developers actually need from the OpenAI-style API.
+We have **excellent coverage** for most common real-world use cases (conversational AI with tools, assistants + retrieval, batch processing of requests, large file handling).  
+The library is usable for building production-grade integrations around chat + assistants + retrieval workflows — roughly 80–85% of what most developers actually need from the OpenAI-style API.
 
-The remaining gaps (fine-tuning, realtime, embeddings, images, etc.) can be added incrementally when needed without breaking the existing structure.
+Remaining gaps (fine-tuning, realtime, embeddings, images, etc.) will be added incrementally when needed without breaking the existing structure.
 
-### Next suggested steps (your call)
-
-1. Wire all services into GrokApiClient constructor (one-liner updates)  
-2. Show a complete usage example (e.g. create thread → add message → create run → poll → submit tool outputs)  
-3. Add basic retry logic or rate-limit backoff in BaseService  
-4. Sketch pom.xml (dependencies: Jackson, java-http-client)  
-5. Print full package tree (model + client + service + exception)  
-6. Start on unit/integration test structure
-
-Which one would you like to tackle next?
