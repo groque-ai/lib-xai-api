@@ -1,64 +1,95 @@
-Simple analogy
 
-Chat Completions
+# 🧠 Mental Models for the xAI Responses API
 
-A notepad you rewrite every time.
+## 📝 Simple Analogy
 
-Responses API
+### **Chat Completions**
+A **notepad you rewrite every time**.  
+You hand the entire conversation back to the model on every request.
 
-A stack of linked sticky notes.
+### **Responses API**
+A **stack of linked sticky notes**.  
+Each response can point to the previous one, forming a chain — but the chain is *optional* and *not magic*.
 
-The safest mental model for implementation
+---
 
-Treat Responses API as:
+## 🧩 The Safest Implementation Model
 
-    Stateless API with optional context linking
+### **Treat the Responses API as:**
+- **A stateless API**  
+- **With optional context linking** (via `previous_response_id`)
 
+The server does not maintain a full conversation state for you.  
+It simply stores a **snapshot** of the last turn when you give it a pointer.
 
+---
 
-Think of the Responses API as:
+## 🤖 How to Think About It
 
-    “A model that tells you what it wants to do next.”
+### **“A model that tells you what it wants to do next.”**
 
-Your service is the executor & memory.
+Your service is:
 
-No magic happens on the server. The API just returns typed events.
+- The **executor** (runs tools, performs actions)
+- The **memory** (stores the real timeline)
+- The **auditor** (keeps logs, ensures determinism)
 
+The API is:
 
+- A **typed event generator**  
+- Not a stateful agent  
+- Not a conversation engine  
 
-3️⃣ When sending only previous_response_id is safe
+No hidden reasoning. No invisible context. No magic.
 
-You can rely on the pointer if:
+---
 
-    You trust the server’s snapshot contains everything needed to continue reasoning.
+## 3️⃣ When Sending Only `previous_response_id` Is Safe
 
-    You are okay with losing visibility into the full event log for logging, auditing, or debugging.
+You can rely on the pointer **only if all of these are true**:
 
-    You do not need to replay the conversation deterministically later.
+- You trust the server’s snapshot contains everything needed for the next step  
+- You’re okay losing visibility into the full event log  
+- You don’t need deterministic replay later  
+- You don’t need to audit or debug the entire chain  
 
+This is fine for:
+- Lightweight chat
+- Quick experiments
+- Non-critical interactions
 
-4️⃣ When you need the full timeline
+---
 
-You should send the full timeline if:
+## 4️⃣ When You Need the Full Timeline
 
-    You want replayable / auditable conversations
+Send the full timeline (or a curated subset) when:
 
-    You need all tool calls and outputs preserved
+- You want **replayable, auditable** conversations  
+- You need **every tool call and tool output** preserved  
+- You want **fine-grained control** over what the model sees  
+- You’re building **multi-turn agents**, planners, or branching workflows  
 
-    You want fine-grained control over context sent to the model
+Even though `previous_response_id` lets the server continue,  
+the pointer **does not guarantee** you can reconstruct the conversation later.
 
-    You are implementing multi-turn agents or branching workflows
+If determinism matters, **you must own the timeline**.
 
-Even though previous_response_id may let the server continue, the pointer alone doesn’t guarantee you can reconstruct the full conversation safely.
+---
 
+## 5️⃣ Practical Guideline
 
-5️⃣ Practical guideline
+### **Use `previous_response_id` when:**
+- Running simple chat
+- Prototyping
+- Doing quick tests
 
-    For experiments or simple chat → previous_response_id is fine.
+### **Maintain your own timeline when:**
+- Building production agents  
+- Running tool-using workflows  
+- Implementing reasoning loops  
+- Requiring auditability or replay  
+- Needing deterministic behavior  
 
-    For production agents, tools, reasoning loops → maintain your timeline client-side and feed it (or enough context) every request.
-
-    In practice, managing the timeline makes the Responses API behave as if it’s stateful, but in reality the server is just continuing from a checkpoint.
-
-
+In practice, **managing the timeline makes the Responses API *feel* stateful**,  
+but the server is only continuing from a checkpoint you provided.
 
