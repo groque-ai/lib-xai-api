@@ -163,8 +163,8 @@ Thank you for your interest in contributing to **Groque**!
 4. Ensure the project builds cleanly in your OSGi environment
 5. Open a Pull Request with a clear description of the changes
 
-By submitting a contribution, you agree to license your changes under the project's [Apache License 2.0](LICENSE) and to the terms of our [Contributor License Agreement (CLA)](https://cla-assistant.io/groque-ai/groque).
-We use [CLA Assistant](https://cla-assistant.io/) to manage this automatically on every pull request.
+By submitting a contribution, you agree to license your changes under the project's [Apache License 2.0](LICENSE) 
+and to the terms of our [Contributor License Agreement (CLA)](https://cla-assistant.io/groque-ai/lib-xai-api).   
 
 Please also note our [Code of Conduct](CODE_OF_CONDUCT.md).
 
