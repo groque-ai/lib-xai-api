@@ -151,3 +151,20 @@ src/main/java/com/xai/
 Apache License 2.0
 
 
+## Contributing
+
+Thank you for your interest in contributing to **Groque**!
+
+**How to Contribute**
+
+1. Fork the repository on GitHub
+2. Create a feature branch for your changes
+3. Make your changes following the existing code style
+4. Ensure the project builds cleanly in your OSGi environment
+5. Open a Pull Request with a clear description of the changes
+
+By submitting a contribution, you agree to license your changes under the project's [Apache License 2.0](LICENSE) and to the terms of our [Contributor License Agreement (CLA)](https://cla-assistant.io/groque-ai/groque).
+We use [CLA Assistant](https://cla-assistant.io/) to manage this automatically on every pull request.
+
+Please also note our [Code of Conduct](CODE_OF_CONDUCT.md).
+
