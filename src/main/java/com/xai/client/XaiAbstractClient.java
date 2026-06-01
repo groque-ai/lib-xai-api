@@ -174,9 +174,6 @@ public abstract class XaiAbstractClient implements AutoCloseable {
     try {
       int status = response.statusCode();
       String body = response.body();
-
-      LOG.info("debug bodyL " + body);
-
       if (status >= 200 && status < 300) {
         if (type == Void.class) {
           return null;
