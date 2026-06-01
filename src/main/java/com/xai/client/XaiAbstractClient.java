@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  * resources. If subclasses or users need to close resources, they must handle
  * it externally.
  */
-abstract class XaiAbstractClient implements AutoCloseable {
+public abstract class XaiAbstractClient implements AutoCloseable {
 
   /**
    * The base URI for the API.
@@ -63,7 +63,7 @@ abstract class XaiAbstractClient implements AutoCloseable {
   /**
    * The base URL for this service.
    */
-  protected final String baseUrl;
+  protected String baseUrl;
 
   /**
    * The JSON mapper for serialization and deserialization.
@@ -174,6 +174,9 @@ abstract class XaiAbstractClient implements AutoCloseable {
     try {
       int status = response.statusCode();
       String body = response.body();
+
+      LOG.info("debug bodyL " + body);
+
       if (status >= 200 && status < 300) {
         if (type == Void.class) {
           return null;
@@ -217,7 +220,7 @@ abstract class XaiAbstractClient implements AutoCloseable {
    * @param path the endpoint path
    * @return the request builder
    */
-  protected HttpRequest.Builder baseRequest(String path) {
+  protected HttpRequest.Builder buildRequest(String path) {
     return HttpRequest.newBuilder()
       .uri(URI.create(baseUrl + path))
       .header("Authorization", "Bearer " + config.getApiKey())
@@ -236,7 +239,7 @@ abstract class XaiAbstractClient implements AutoCloseable {
   protected HttpRequest doPostJson(String path, Object body) {
     try {
       String json = mapper.writeValueAsString(body);
-      return baseRequest(path)
+      return buildRequest(path)
         .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
         .build();
     } catch (JsonProcessingException ex) {
@@ -252,7 +255,8 @@ abstract class XaiAbstractClient implements AutoCloseable {
    * @return the HTTP request
    */
   protected HttpRequest doGet(String path) {
-    return baseRequest(path).GET().build();
+
+    return buildRequest(path).GET().build();
   }
 
   /**
@@ -262,7 +266,7 @@ abstract class XaiAbstractClient implements AutoCloseable {
    * @return the HTTP request
    */
   protected HttpRequest doDelete(String path) {
-    return baseRequest(path).DELETE().build();
+    return buildRequest(path).DELETE().build();
   }
 
   /**

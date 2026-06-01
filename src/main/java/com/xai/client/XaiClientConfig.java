@@ -32,11 +32,6 @@ import java.util.Properties;
 public class XaiClientConfig {
 
   /**
-   * The prefix for environment variables used by this configuration.
-   */
-  private static final String ENV_PREFIX = "GROK_";
-
-  /**
    * The name of the dotfile used for configuration, located in the user's home
    * directory.
    */
@@ -46,6 +41,11 @@ public class XaiClientConfig {
    * The API key used for authentication with the XAI service.
    */
   private String apiKey;
+
+  /**
+   * OPTIONAL key to access the XAI proprietary management API.
+   */
+  private String managementKey;
 
   /**
    * The base URL for the XAI API endpoints.
@@ -85,6 +85,7 @@ public class XaiClientConfig {
   @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
   private XaiClientConfig(Builder builder) {
     this.apiKey = builder.apiKey;
+    this.managementKey = builder.managementKey; // optional
     this.baseUrl = builder.baseUrl != null ? builder.baseUrl : "https://api.x.ai/v1";
     this.connectTimeout = builder.connectTimeout != null ? builder.connectTimeout : Duration.ofSeconds(10);
     this.requestTimeout = builder.requestTimeout != null ? builder.requestTimeout : Duration.ofSeconds(60);
@@ -123,6 +124,10 @@ public class XaiClientConfig {
    */
   public Duration getConnectTimeout() {
     return connectTimeout;
+  }
+
+  public String getManagementKey() {
+    return managementKey;
   }
 
   /**
@@ -188,14 +193,19 @@ public class XaiClientConfig {
     // Env vars override .grok file
     String apiKey = getEnvOrDot("API_KEY", props);
     if (apiKey == null || apiKey.trim().isEmpty()) {
-      throw new IllegalStateException("GROK_API_KEY is required (env var or .grok file)");
+      throw new IllegalStateException("API_KEY is required (env var or .grok file)");
     }
-    builder.apiKey(apiKey);
+    builder.withApiKey(apiKey);
 
-    builder.baseUrl(getEnvOrDot("BASE_URL", props));
-    builder.connectTimeout(getEnvDuration("CONNECT_TIMEOUT", props));
-    builder.requestTimeout(getEnvDuration("REQUEST_TIMEOUT", props));
-    builder.followRedirects(getEnvBoolean("FOLLOW_REDIRECTS", props, true));
+    String managementKey = getEnvOrDot("MANAGEMENT_KEY", props);
+    if (managementKey != null || !apiKey.trim().isEmpty()) {
+      builder.withManagementKey(managementKey);
+    }
+
+    builder.withBaseUrl(getEnvOrDot("BASE_URL", props));
+    builder.withConnectTimeout(getEnvDuration("CONNECT_TIMEOUT", props));
+    builder.withRequestTimeout(getEnvDuration("REQUEST_TIMEOUT", props));
+    builder.withFollowRedirects(getEnvBoolean("FOLLOW_REDIRECTS", props, true));
 
     return builder.build();
   }
@@ -221,7 +231,6 @@ public class XaiClientConfig {
     if (!dotFile.isFile() || !dotFile.canRead()) {
       return props;
     }
-
     try (FileInputStream fis = new FileInputStream(dotFile)) {
       props.load(fis);
     } catch (IOException e) {
@@ -239,12 +248,11 @@ public class XaiClientConfig {
    * is set and non-empty, its trimmed value is returned. Otherwise, the value
    * from the properties is returned, or null if not present.
    *
-   * @param keySuffix the suffix for the key (e.g., "API_KEY")
-   * @param props     the properties loaded from the dotfile
+   * @param envKey the suffix for the key (e.g., "API_KEY")
+   * @param props  the properties loaded from the dotfile
    * @return the value from env or props, or null if not found
    */
-  private static String getEnvOrDot(String keySuffix, Properties props) {
-    String envKey = ENV_PREFIX + keySuffix;
+  private static String getEnvOrDot(String envKey, Properties props) {
     String envVal = System.getenv(envKey);
     if (envVal != null && !envVal.trim().isEmpty()) {
       return envVal.trim();
@@ -259,12 +267,11 @@ public class XaiClientConfig {
    * The value is expected to be a long integer representing seconds. If parsing
    * fails, a warning is printed to stderr and null is returned.
    *
-   * @param keySuffix the suffix for the key
-   * @param props     the properties
+   * @param keySuffix the suffix for the key envKey props the properties
    * @return the parsed {@link Duration}, or null if invalid or missing
    */
-  private static Duration getEnvDuration(String keySuffix, Properties props) {
-    String value = getEnvOrDot(keySuffix, props);
+  private static Duration getEnvDuration(String envKey, Properties props) {
+    String value = getEnvOrDot(envKey, props);
     if (value == null) {
       return null;
     }
@@ -272,7 +279,7 @@ public class XaiClientConfig {
       long seconds = Long.parseLong(value.trim());
       return Duration.ofSeconds(seconds);
     } catch (NumberFormatException e) {
-      System.err.println("Invalid duration for " + ENV_PREFIX + keySuffix + ": " + value);
+      System.err.println("Invalid duration for " + envKey + ": " + value);
       return null;
     }
   }
@@ -311,6 +318,11 @@ public class XaiClientConfig {
     private String apiKey;
 
     /**
+     * OPTIONAL key to access the XAI proprietary management API.
+     */
+    private String managementKey;
+
+    /**
      * The base URL for the API.
      */
     private String baseUrl;
@@ -341,8 +353,13 @@ public class XaiClientConfig {
      * @param apiKey the API key string
      * @return this builder for chaining
      */
-    public Builder apiKey(String apiKey) {
+    public Builder withApiKey(String apiKey) {
       this.apiKey = apiKey;
+      return this;
+    }
+
+    public Builder withManagementKey(String managementKey) {
+      this.managementKey = managementKey;
       return this;
     }
 
@@ -352,7 +369,7 @@ public class XaiClientConfig {
      * @param baseUrl the base URL string
      * @return this builder for chaining
      */
-    public Builder baseUrl(String baseUrl) {
+    public Builder withBaseUrl(String baseUrl) {
       this.baseUrl = baseUrl;
       return this;
     }
@@ -363,7 +380,7 @@ public class XaiClientConfig {
      * @param timeout the timeout duration
      * @return this builder for chaining
      */
-    public Builder connectTimeout(Duration timeout) {
+    public Builder withConnectTimeout(Duration timeout) {
       this.connectTimeout = timeout;
       return this;
     }
@@ -374,7 +391,7 @@ public class XaiClientConfig {
      * @param timeout the timeout duration
      * @return this builder for chaining
      */
-    public Builder requestTimeout(Duration timeout) {
+    public Builder withRequestTimeout(Duration timeout) {
       this.requestTimeout = timeout;
       return this;
     }
@@ -385,7 +402,7 @@ public class XaiClientConfig {
      * @param retries the number of retries
      * @return this builder for chaining
      */
-    public Builder maxRetries(int retries) {
+    public Builder withMaxRetries(int retries) {
       this.maxRetries = retries;
       return this;
     }
@@ -396,7 +413,7 @@ public class XaiClientConfig {
      * @param follow true to follow redirects, false otherwise
      * @return this builder for chaining
      */
-    public Builder followRedirects(boolean follow) {
+    public Builder withFollowRedirects(boolean follow) {
       this.followRedirects = follow;
       return this;
     }
@@ -407,7 +424,7 @@ public class XaiClientConfig {
      * Validates that the API key is provided and non-blank.
      *
      * @return a new {@link XaiClientConfig} with the configured parameters
-     * @throws IllegalArgumentException if apiKey is null or blank
+     * @throws IllegalArgumentException if withApiKey is null or blank
      */
     public XaiClientConfig build() {
       if (apiKey == null || apiKey.isBlank()) {
