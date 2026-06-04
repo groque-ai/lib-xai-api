@@ -80,7 +80,7 @@ public class ModelRequestBuilder {
 
   public static ModelInputItem buildFunctionToolCallOutput(String toolCallId, String content) {
     FunctionToolCallOutput t = new FunctionToolCallOutput();
-    t.setCall_id(toolCallId);
+    t.setCallId(toolCallId);
     t.setOutput(content);
 
     ModelInputItem item = new ModelInputItem();
