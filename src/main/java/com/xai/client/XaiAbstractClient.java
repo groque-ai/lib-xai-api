@@ -1,8 +1,10 @@
 package com.xai.client;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.xai.client.exception.ApiHttpException;
@@ -94,11 +96,12 @@ public abstract class XaiAbstractClient implements AutoCloseable {
       .build();
 
     this.mapper = new ObjectMapper()
+      .setSerializationInclusion(JsonInclude.Include.NON_NULL)
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true)
-      //      .enable(SerializationFeature.INDENT_OUTPUT)
-      .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
-//      .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+      .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+      .enable(MapperFeature.PROPAGATE_TRANSIENT_MARKER);
+    //      .enable(SerializationFeature.INDENT_OUTPUT)
   }
 
   /**
