@@ -114,7 +114,9 @@ public class ModelRequestBuilder {
   }
 
   public ModelRequestBuilder addSystemMessage(String content) {
-    appendMessage(buildModelInputPart(Role.system, content));
+    if (content != null && !content.isBlank()) {
+      appendMessage(buildModelInputPart(Role.system, content));
+    }
     return this;
   }
 
