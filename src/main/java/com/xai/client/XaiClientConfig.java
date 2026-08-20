@@ -35,7 +35,7 @@ public class XaiClientConfig {
    * The name of the dotfile used for configuration, located in the user's home
    * directory.
    */
-  private static final String DOT_FILE = ".grok";
+  private static final String DOT_FILE = ".xai";
 
   /**
    * The API key used for authentication with the XAI service.

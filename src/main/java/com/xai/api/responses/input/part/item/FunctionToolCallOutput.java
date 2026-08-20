@@ -1,10 +1,11 @@
 package com.xai.api.responses.input.part.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("function_call_output")
-public class FunctionToolCallOutput implements ModelInputItemPayload {
+public class FunctionToolCallOutput implements ModelInputItemPayload, Comparable<FunctionToolCallOutput> {
 
   /**
    * The type of the function tool call, which is always `function_call_output`.
@@ -25,11 +26,18 @@ public class FunctionToolCallOutput implements ModelInputItemPayload {
   @JsonProperty("output")
   private String output;
 
+  /**
+   * Key Bridge extension. The tool call order. -1 if parallel is allowed.
+   */
+  @JsonIgnore
+  private int callOrder;
+
   public FunctionToolCallOutput() {
   }
 
-  public FunctionToolCallOutput(String callId, String output) {
+  public FunctionToolCallOutput(String callId, int callOrder, String output) {
     this.callId = callId;
+    this.callOrder = callOrder;
     this.output = output;
   }
 
@@ -87,6 +95,23 @@ public class FunctionToolCallOutput implements ModelInputItemPayload {
    */
   public void setType(String type) {
     this.type = type;
+  }
+
+  public int getCallOrder() {
+    return callOrder;
+  }
+
+  public void setCallOrder(int callOrder) {
+    this.callOrder = callOrder;
+  }
+
+  @Override
+  public int compareTo(FunctionToolCallOutput o) {
+    if (callOrder == o.getCallOrder()) {
+      return -1; // always sort never equal
+    } else {
+      return Integer.compare(callOrder, o.getCallOrder());
+    }
   }
 
 }
