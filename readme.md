@@ -10,9 +10,10 @@ Modern endpoints – focused on `/v1/responses`
 - Strongly typed **DTOs** matching the current xAI REST API (especially the `/v1/responses` family)
 - Basic synchronous HTTP clients using `java.net.http` (Java 11+)
 - Support for tool calls, structured outputs, reasoning traces, usage details, multimodal inputs
+- Optional **SSE streaming** (`generateStreaming`) as typed `StreamEvent`s
 - **No legacy endpoints** (`/v1/chat/completions`, `/v1/completions`, Anthropic-style `/complete`, etc.)
 
-The library follows the current xAI OpenAPI specification and aims to give Java developers a 
+The library follows the current xAI OpenAPI specification and aims to give Java developers a
 clean, dependency-minimal way to call Grok models (Grok 4 family and successors).
 
 ## Object Model
@@ -22,7 +23,7 @@ clean, dependency-minimal way to call Grok models (Grok 4 family and successors)
 
 | ModelRequest | ModelResponse |
 |---|---|
-| ![ModelRequest](docs/ModelRequest-class.png) | ![ModelResponse](docs/ModelResponse-class.png) | 
+| ![ModelRequest](docs/ModelRequest-class.png) | ![ModelResponse](docs/ModelResponse-class.png) |
 
 
 ## Responses REST End Point Sequence
@@ -33,138 +34,84 @@ The responses end point enables iterative LLM chat sessions with the LLM.
 ![Responses-Timeline-Example](docs/Responses-Timeline-Example.png)
 
 
-Chat sessions continuity is established through the use of a _previousResponseId_ value. 
-The _previousResponseId_ functions like a cookie that you can use to mimic a stateful 
+Chat sessions continuity is established through the use of a _previousResponseId_ value.
+The _previousResponseId_ functions like a cookie that you can use to mimic a stateful
 session with the LLM. (Yes - they reinvented the wheel ... again.)
-
-
-## Features
-
-- Complete POJO/DTO coverage for:
-  - `ModelRequest` / `ModelResponse`
-  - Multimodal & text input messages
-  - Function/tool calling (built-in + custom)
-  - Structured JSON Schema outputs
-  - Reasoning traces & detailed token usage (including reasoning_tokens)
-  - Image/video generation request/response DTOs (partial client support)
-- Jackson 2.x serialization/deserialization with custom deserializers
-- Builder helpers (`ModelRequestBuilder`, `ModelResponseReader`, etc.)
-- Retry-capable HTTP client base class
-- Test utilities (`EntityBuilder`, JSON round-trip tests)
-
-## Requirements
-
-- **Java 11** or later
-- **Maven** (only)
-- Runtime dependencies:
-  - `com.fasterxml.jackson.core:jackson-databind` 2.12+
-  - `com.fasterxml.jackson.core:jackson-annotations`
-  - `com.fasterxml.jackson.core:jackson-core`
-  - (optional) SLF4J API for logging
 
 ## Installation (Maven)
 
 ```xml
 <dependency>
-    <groupId>com.xai</groupId>
-    <artifactId>lib-xai-api</artifactId>
-    <version>1.0.0</version>  <!-- replace with latest version -->
+    <groupId>ai.groque.lib</groupId>
+    <artifactId>xai-api</artifactId>
+    <version>1.1.0</version>
 </dependency>
 ```
 
-> Note: This library is not yet published to Maven Central.  
+> Note: This library is not yet published to Maven Central.
 > Use a local install, Git dependency, or private repository until official publication.
 
 ## Quick Example
 
 ```java
-import com.xai.client.XAIClientConfig;
-import com.xai.client.impl.ResponsesClientImpl;
 import com.xai.api.responses.ModelRequest;
 import com.xai.api.responses.ModelResponse;
+import com.xai.api.responses.usage.ModelUsage;
 import com.xai.api.util.ModelRequestBuilder;
+import com.xai.api.util.ModelResponseReader;
+import com.xai.client.XaiResponsesClient;
 
 public class SimpleGrokCall {
 
-    public static void main(String[] args) throws Exception {
-        // Reads XAI_API_KEY from environment or .env / properties
-        var config = XAIClientConfig.fromEnv();
-        var client  = new ResponsesClientImpl(config);
+  public static void main(String[] args) {
+    // API_KEY from the environment or ~/.xai
+    XaiResponsesClient client = new XaiResponsesClient();
 
-        ModelRequest request = ModelRequestBuilder.create()
-                .withModel("grok-4-0709")
-                .addUserMessage("Explain in one sentence why honey never spoils.")
-                .build();
+    ModelRequest request = new ModelRequestBuilder()
+        .withModel("grok-4.6")
+        .addUserMessage("Explain in one sentence why honey never spoils.")
+        .build();
 
-        ModelResponse response = client.generate(request);
+    ModelResponse response = client.generate(request);
+    System.out.println("Grok: " + ModelResponseReader.getText(response));
 
-        // Simple text access
-        String answer = response.getText();
-        System.out.println("Grok: " + answer);
-
-        // Detailed usage info
-        var usage = response.getUsage();
-        System.out.printf("Tokens → prompt: %d | completion: %d | reasoning: %d | total: %d%n",
-                usage.getPromptTokens(),
-                usage.getCompletionTokens(),
-                usage.getCompletionTokensDetails().getReasoningTokens(),
-                usage.getTotalTokens());
+    ModelUsage usage = response.getUsage();
+    if (usage != null) {
+      System.out.printf(
+          "Tokens → input: %d | output: %d | reasoning: %d | total: %d%n",
+          usage.getInputTokens(),
+          usage.getOutputTokens(),
+          usage.getOutputTokensDetails().getReasoningTokens(),
+          usage.getTotalTokens());
     }
+  }
 }
 ```
 
 See [Authentication](readme-authentication.md) for more details about storing your grok API key.
 
-## Project Structure (Key Parts)
+## Documentation
 
-```
-src/main/java/com/xai/
-├── api/
-│   ├── responses/             # Core /v1/responses models + deserializers
-│   ├── util/                  # ModelRequestBuilder, ModelResponseReader, etc.
-│   ├── images/                # Image generation & edit DTOs
-│   └── video/                 # Video generation DTOs
-└── client/
-    ├── XAIClientConfig.java
-    └── impl/
-        ├── AbstractClientImpl.java     # base HTTP logic + retry
-        └── ResponsesClientImpl.java    # /v1/responses operations
-```
+New to Responses? Start with the **tutorials**, then the **guides**.
 
-## Current Scope & Limitations
+### Tutorials (from zero)
 
-- Primary focus: `/v1/responses` (POST, GET, DELETE)
-- Partial client support for image/video endpoints (DTOs are present)
-- No built-in streaming support yet
-- No batch API client yet
-- Legacy endpoints intentionally **excluded**
+1. [First response](docs/tutorials/01-first-response.md) — `generate`, print text
+2. [Read the output list](docs/tutorials/02-read-the-output.md) — reasoning, not just the sentence
+3. [Continue a conversation](docs/tutorials/03-continue-a-conversation.md) — `previous_response_id`
+4. [Call a function](docs/tutorials/04-call-a-function.md) — you run it, you send the result back
+5. [Stream tokens](docs/tutorials/05-stream-tokens.md) — `generateStreaming` and `StreamEvent`
 
-## Related Documentation
+Index: [docs/tutorials/README.md](docs/tutorials/README.md)
 
-- xAI API Reference: https://docs.x.ai
-- Generate Text (Responses API): https://docs.x.ai/developers/model-capabilities/text/generate-text
-- Tool Use: https://docs.x.ai/developers/tools/overview
-- Structured Outputs: https://docs.x.ai/developers/model-capabilities/text/structured-outputs
+### Developer guides
 
-## License
+1. [What is the Responses API?](docs/guides/01-what-is-responses.md)
+2. [The object model](docs/guides/02-the-object-model.md)
+3. [Conversation, roles, and tools](docs/guides/03-conversation-and-tools.md)
+4. [Streaming on the wire](docs/guides/04-streaming-on-the-wire.md)
+5. [This library](docs/guides/05-this-library.md) — opinionated Java model
 
-Apache License 2.0
+Client how-tos: [blocking](docs/guides/responses-api.md) · [streaming](docs/guides/responses-streaming.md)
 
-
-## Contributing
-
-Thank you for your interest in contributing to **Groque**!
-
-**How to Contribute**
-
-1. Fork the repository on GitHub
-2. Create a feature branch for your changes
-3. Make your changes following the existing code style
-4. Ensure the project builds cleanly in your OSGi environment
-5. Open a Pull Request with a clear description of the changes
-
-By submitting a contribution, you agree to license your changes under the project's [Apache License 2.0](LICENSE) 
-and to the terms of our [Contributor License Agreement (CLA)](https://cla-assistant.io/groque-ai/lib-xai-api).   
-
-Please also note our [Code of Conduct](CODE_OF_CONDUCT.md).
-
+Index: [docs/guides/README.md](docs/guides/README.md)
