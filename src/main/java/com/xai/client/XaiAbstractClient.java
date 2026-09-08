@@ -12,6 +12,7 @@ import com.xai.client.exception.ApiHttpException;
 import com.xai.client.exception.ApiParseException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,6 +55,16 @@ public abstract class XaiAbstractClient implements AutoCloseable {
    */
   private static final String BASE_URI = "https://api.x.ai/v1";
   private static final Logger LOG = Logger.getLogger(XaiAbstractClient.class.getName());
+
+  /**
+   * Test hook: exact POST JSON. Not a public API.
+   */
+  static volatile Consumer<String> RAW_REQUEST_SINK;
+
+  /**
+   * Test hook: exact response body bytes. Not a public API.
+   */
+  static volatile OutputStream RAW_BODY_SINK;
 
   /**
    * The client configuration, loaded from external sources.
@@ -270,6 +282,10 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   protected HttpRequest doPostJsonStream(String path, Object body) {
     try {
       String json = mapper.writeValueAsString(body);
+      Consumer<String> requestSink = RAW_REQUEST_SINK;
+      if (requestSink != null) {
+        requestSink.accept(json);
+      }
       return buildRequest(path)
         .setHeader("Accept", "text/event-stream")
         .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
@@ -301,12 +317,13 @@ public abstract class XaiAbstractClient implements AutoCloseable {
         return;
       }
       int status = response.statusCode();
+      InputStream body = teeBody(response.body());
       if (status < 200 || status >= 300) {
-        String bodyText = readQuietly(response.body());
+        String bodyText = readQuietly(body);
         handle.fail(new ApiHttpException("API error {status=" + status + ", body=" + bodyText + "}"));
         return;
       }
-      handle.attachBody(response.body());
+      handle.attachBody(body);
       handle.readLoop(new ResponseSseParser(mapper));
       long time = System.currentTimeMillis() - start;
       if (handle.completedSuccessfully()) {
@@ -314,6 +331,14 @@ public abstract class XaiAbstractClient implements AutoCloseable {
       }
     });
     return handle;
+  }
+
+  private static InputStream teeBody(InputStream body) {
+    OutputStream tap = RAW_BODY_SINK;
+    if (body == null || tap == null) {
+      return body;
+    }
+    return new TeeInputStream(body, tap);
   }
 
   private static String readQuietly(InputStream body) {

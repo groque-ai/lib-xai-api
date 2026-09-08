@@ -53,7 +53,8 @@ public class ResponsesStreamingLiveTest {
 
   @After
   public void tearDown() {
-    ResponseStreamHandleImpl.RAW_LINE_SINK = null;
+    XaiAbstractClient.RAW_REQUEST_SINK = null;
+    XaiAbstractClient.RAW_BODY_SINK = null;
   }
 
   @Test
@@ -166,24 +167,22 @@ public class ResponsesStreamingLiveTest {
 
   private StreamCapture run(String name, ModelRequest request) throws Exception {
     StreamCapture capture = new StreamCapture(name);
-    capture.writeRequest(request);
-    capture.attachRawSink();
+    capture.attach();
     try (ResponseStreamHandle handle = client.generateStreaming(request, capture)) {
       boolean finished = capture.await(WAIT_SECONDS, TimeUnit.SECONDS);
       if (!finished) {
         handle.cancel();
       }
-      capture.writeTraffic();
       if (!finished) {
         fail("timed out after " + WAIT_SECONDS + "s; traffic=" + capture.getDir());
       }
     } finally {
-      capture.detachRawSink();
       try {
-        capture.writeTraffic();
+        capture.detach();
       } catch (IOException ignored) {
-        // already written
+        // closed
       }
+      capture.writeSidecar();
     }
     return capture;
   }

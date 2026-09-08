@@ -1,12 +1,9 @@
 package com.xai.client;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.xai.api.responses.stream.ResponseEvent;
 import com.xai.api.responses.stream.ResponseStreamEvent;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,21 +16,20 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Records live streaming request/SSE traffic to disk.
+ * Records the exact HTTP request JSON and response SSE bytes.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-07
+ * @since v1.1.0 update 2026-09-08 raw body tee, not re-serialized events
  */
 public class StreamCapture implements ResponseStreamListener {
 
-  private static final ObjectMapper MAPPER = new ObjectMapper()
-    .enable(SerializationFeature.INDENT_OUTPUT)
-    .setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
   private final Path dir;
-  private final List<String> rawLines = new CopyOnWriteArrayList<>();
+  private final OutputStream bodyFile;
+  private final AtomicReference<String> requestJson = new AtomicReference<>();
   private final List<ResponseStreamEvent> events = new CopyOnWriteArrayList<>();
   private final CountDownLatch done = new CountDownLatch(1);
   private volatile String terminal = "pending";
@@ -44,6 +40,7 @@ public class StreamCapture implements ResponseStreamListener {
     String stamp = Instant.now().toString().replace(':', '-');
     this.dir = Paths.get("docs", "superpowers", "streaming-captures", stamp + "-" + testName);
     Files.createDirectories(dir);
+    this.bodyFile = Files.newOutputStream(dir.resolve("response.sse"));
   }
 
   public Path getDir() {
@@ -62,38 +59,27 @@ public class StreamCapture implements ResponseStreamListener {
     return error;
   }
 
-  public void attachRawSink() {
-    ResponseStreamHandleImpl.RAW_LINE_SINK = rawLines::add;
+  public void attach() {
+    XaiAbstractClient.RAW_REQUEST_SINK = requestJson::set;
+    XaiAbstractClient.RAW_BODY_SINK = bodyFile;
   }
 
-  public void detachRawSink() {
-    ResponseStreamHandleImpl.RAW_LINE_SINK = null;
-  }
-
-  public void writeRequest(Object request) throws IOException {
-    Files.write(dir.resolve("request.json"), MAPPER.writeValueAsBytes(request));
+  public void detach() throws IOException {
+    XaiAbstractClient.RAW_REQUEST_SINK = null;
+    XaiAbstractClient.RAW_BODY_SINK = null;
+    bodyFile.flush();
+    bodyFile.close();
   }
 
   public boolean await(long timeout, TimeUnit unit) throws InterruptedException {
     return done.await(timeout, unit);
   }
 
-  public void writeTraffic() throws IOException {
-    Files.write(dir.resolve("sse-raw.txt"), String.join("\n", rawLines).getBytes(StandardCharsets.UTF_8));
-
-    StringBuilder ndjson = new StringBuilder();
-    int seq = 0;
-    for (ResponseStreamEvent event : events) {
-      ObjectNode row = MAPPER.createObjectNode();
-      row.put("seq", seq++);
-      row.put("enum", event.getEvent() == null ? null : event.getEvent().name());
-      row.put("type", event.getType());
-      row.set("data", event.getData());
-      ndjson.append(MAPPER.writeValueAsString(row).replace("\n", "").replace("\r", ""));
-      ndjson.append('\n');
+  public void writeSidecar() throws IOException {
+    String json = requestJson.get();
+    if (json != null) {
+      Files.write(dir.resolve("request.json"), json.getBytes(StandardCharsets.UTF_8));
     }
-    Files.write(dir.resolve("events.ndjson"), ndjson.toString().getBytes(StandardCharsets.UTF_8));
-
     Map<String, Integer> counts = new LinkedHashMap<>();
     List<String> unknown = new ArrayList<>();
     for (ResponseStreamEvent event : events) {
@@ -109,7 +95,6 @@ public class StreamCapture implements ResponseStreamListener {
     summary.append("terminal=").append(terminal).append('\n');
     summary.append("timeMs=").append(time).append('\n');
     summary.append("eventCount=").append(events.size()).append('\n');
-    summary.append("rawLineCount=").append(rawLines.size()).append('\n');
     if (error != null) {
       summary.append("error=").append(error.getClass().getName()).append(": ").append(error.getMessage()).append('\n');
     }
@@ -126,15 +111,6 @@ public class StreamCapture implements ResponseStreamListener {
   public boolean saw(ResponseEvent event) {
     for (ResponseStreamEvent item : events) {
       if (item.getEvent() == event) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public boolean sawTypePrefix(String prefix) {
-    for (ResponseStreamEvent item : events) {
-      if (item.getType() != null && item.getType().startsWith(prefix)) {
         return true;
       }
     }

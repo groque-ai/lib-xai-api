@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xai.api.responses.output.message.OutputMessage;
 import com.xai.api.responses.output.reasoning.Reasoning;
@@ -104,49 +103,47 @@ public class ResponseStreamEventUnmarshalTest {
     }
     List<String> failures = new ArrayList<>();
     int events = 0;
+    int files = 0;
     try (DirectoryStream<Path> dirs = Files.newDirectoryStream(captures)) {
       for (Path dir : dirs) {
-        Path ndjson = dir.resolve("events.ndjson");
-        if (!Files.isRegularFile(ndjson)) {
+        Path sse = dir.resolve("response.sse");
+        if (!Files.isRegularFile(sse)) {
           continue;
         }
-        for (String line : Files.readAllLines(ndjson)) {
-          if (line.isBlank()) {
-            continue;
-          }
-          JsonNode row = mapper.readTree(line);
-          JsonNode data = row.get("data");
-          if (data == null || data.isNull()) {
-            continue;
-          }
-          events++;
-          ResponseStreamEvent event;
-          try {
-            event = mapper.convertValue(data, ResponseStreamEvent.class);
-          } catch (IllegalArgumentException ex) {
-            failures.add(dir.getFileName() + " seq=" + row.path("seq") + " " + ex.getMessage());
-            continue;
-          }
-          String type = data.path("type").asText();
-          event.setEvent(ResponseEvent.fromName(type));
-          event.setType(type);
-          event.setData(data);
-          if (event.getEvent() == ResponseEvent.UNKNOWN) {
-            failures.add(dir.getFileName() + " unknown type=" + type);
-          }
-          if ("response.output_text.delta".equals(type) && event.getDelta() == null) {
-            failures.add("missing delta");
-          }
-          if ("response.created".equals(type) && (event.getResponse() == null || event.getResponse().getId() == null)) {
-            failures.add("missing created response.id");
-          }
+        files++;
+        ResponseSseParser local = new ResponseSseParser(mapper);
+        for (String line : Files.readAllLines(sse)) {
+          ResponseSseParser.Result result = local.consumeLine(line);
+          events += countParsed(dir, result, failures);
         }
+        events += countParsed(dir, local.finish(), failures);
       }
+    }
+    if (files == 0) {
+      return;
     }
     if (!failures.isEmpty()) {
       fail(events + " events, failures: " + failures);
     }
-    assertTrue("expected live capture events", events > 0);
+    assertTrue("expected events from raw response.sse", events > 0);
+  }
+
+  private static int countParsed(Path dir, ResponseSseParser.Result result, List<String> failures) {
+    if (result.getKind() != ResponseSseParser.Kind.EVENT) {
+      return 0;
+    }
+    ResponseStreamEvent event = result.getEvent();
+    if (event.getEvent() == ResponseEvent.UNKNOWN) {
+      failures.add(dir.getFileName() + " unknown type=" + event.getType());
+    }
+    if (ResponseEvent.RESPONSE_OUTPUT_TEXT_DELTA.equals(event.getEvent()) && event.getDelta() == null) {
+      failures.add(dir.getFileName() + " missing delta");
+    }
+    if (ResponseEvent.RESPONSE_CREATED.equals(event.getEvent())
+        && (event.getResponse() == null || event.getResponse().getId() == null)) {
+      failures.add(dir.getFileName() + " missing created response.id");
+    }
+    return 1;
   }
 
   private ResponseStreamEvent parseOne(String sse) {
