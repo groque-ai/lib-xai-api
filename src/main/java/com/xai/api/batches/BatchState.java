@@ -2,22 +2,40 @@ package com.xai.api.batches;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Holds aggregate information about the current state of a batch process.
+ */
 public class BatchState {
 
-  @JsonProperty("num_cancelled")
-  private int numCancelled;
-
-  @JsonProperty("num_error")
-  private int numError;
-
-  @JsonProperty("num_pending")
-  private int numPending;
-
+  /**
+   * Total number of requests in the batch.
+   */
   @JsonProperty("num_requests")
-  private int numRequests;
+  public int numRequests;
 
+  /**
+   * Total number of pending requests.
+   */
+  @JsonProperty("num_pending")
+  public int numPending;
+
+  /**
+   * Total number of successful requests.
+   */
   @JsonProperty("num_success")
-  private int numSuccess;
+  public int numSuccess;
+
+  /**
+   * Total number of requests that finished with an error.
+   */
+  @JsonProperty("num_error")
+  public int numError;
+
+  /**
+   * Total number of cancelled requests.
+   */
+  @JsonProperty("num_cancelled")
+  public int numCancelled;
 
   public int getNumCancelled() {
     return numCancelled;

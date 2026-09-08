@@ -1,54 +1,62 @@
 package com.xai.api.batches;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * <pre>
- * {
- * "batch_id": "batch_1934e8b5-f3dc-45f1-8329-9841b0aee9d8",
- * "name": "My New Batch",
- * "create_time": "2025-11-11",
- * "expire_time": "2025-11-12",
- * "create_api_key_id": "********-****-****-****-************",
- * "cancel_time": null,
- * "cancel_by_xai_message": null,
- * "state": {
- * "num_requests": 0,
- * "num_pending": 0,
- * "num_success": 0,
- * "num_error": 0,
- * "num_cancelled": 0
- * }
- * }
- * </pre>
- *
- * @author Key Bridge
+ * Represents a batch entity in the xAI Inference API. Returned by endpoints
+ * such as POST /v1/batches, GET /v1/batches/{batch_id}, and cancel operations.
  */
-public class BatchResponse {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Batch {
 
+  /**
+   * Unique identifier of the batch.
+   */
   @JsonProperty("batch_id")
-  private String batchId;
+  public String batchId;
 
-  @JsonProperty("create_api_key_id")
-  private String createApiKeyId;
-
-  @JsonProperty("create_time")
-  private String createTime;
-
+  /**
+   * Human-readable name of the batch.
+   */
   @JsonProperty("name")
-  private String name;
+  public String name;
 
-  @JsonProperty("state")
-  private BatchState state;
+  /**
+   * Time when the batch was created (ISO-8601).
+   */
+  @JsonProperty("create_time")
+  public String createTime;
 
-  @JsonProperty("cancel_by_xai_message")
-  private String cancelByXaiMessage;
-
-  @JsonProperty("cancel_time")
-  private String cancelTime;
-
+  /**
+   * Time when the batch expires (ISO-8601).
+   */
   @JsonProperty("expire_time")
-  private String expireTime;
+  public String expireTime;
+
+  /**
+   * ID of the API key used to create the batch.
+   */
+  @JsonProperty("create_api_key_id")
+  public String createApiKeyId;
+
+  /**
+   * Time when the batch was cancelled (ISO-8601).
+   */
+  @JsonProperty("cancel_time")
+  public String cancelTime;
+
+  /**
+   * Error message if the batch was cancelled by xAI.
+   */
+  @JsonProperty("cancel_by_xai_message")
+  public String cancelByXaiMessage;
+
+  /**
+   * Aggregate state information for the batch.
+   */
+  @JsonProperty("state")
+  public BatchState state;
 
   public String getBatchId() {
     return batchId;

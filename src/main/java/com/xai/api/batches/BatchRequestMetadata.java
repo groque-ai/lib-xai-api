@@ -2,22 +2,47 @@ package com.xai.api.batches;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Metadata for a single request within a batch (GET
+ * /v1/batches/{batch_id}/requests).
+ */
 public class BatchRequestMetadata {
 
+  /**
+   * Unique identifier of the request within the batch.
+   */
   @JsonProperty("batch_request_id")
-  private String batchRequestId;
+  public String batchRequestId;
+
+  /**
+   * API endpoint queried.
+   */
   @JsonProperty("endpoint")
-  private String endpoint;
+  public String endpoint;
+
+  /**
+   * Model name used for the request.
+   */
   @JsonProperty("model")
-  private String model;
+  public String model;
 
-  @JsonProperty("state")
-  private String state;
-
+  /**
+   * Time when the request was created.
+   */
   @JsonProperty("create_time")
-  private String createTime;
+  public String createTime;
+
+  /**
+   * Time when the request finished.
+   */
   @JsonProperty("finish_time")
-  private String finishTime;
+  public String finishTime;
+
+  /**
+   * Current state of the request (e.g., succeeded, failed).
+   */
+  @JsonProperty("state")
+  public String state;
 
   public String getBatchRequestId() {
     return batchRequestId;
@@ -66,5 +91,4 @@ public class BatchRequestMetadata {
   public void setState(String state) {
     this.state = state;
   }
-
 }
