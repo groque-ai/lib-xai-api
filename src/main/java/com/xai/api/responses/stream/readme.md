@@ -1,5 +1,8 @@
 # responses/stream
 
+New here? `docs/guides/README.md` and `docs/tutorials/README.md`. This
+file is the event-family map for people already in the package.
+
 Jackson types for `POST /v1/responses` with `"stream": true`.
 
 Each SSE `data:` JSON object becomes one `StreamEvent`. The HTTP pump
