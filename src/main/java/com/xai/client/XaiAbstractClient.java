@@ -7,9 +7,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.xai.api.responses.stream.ResponseSseParser;
 import com.xai.client.exception.ApiHttpException;
 import com.xai.client.exception.ApiParseException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -21,8 +23,10 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -84,8 +88,19 @@ public abstract class XaiAbstractClient implements AutoCloseable {
    * @throws IllegalStateException if configuration loading fails
    */
   protected XaiAbstractClient(String path) {
-    config = XaiClientConfig.readConfig();
-    this.baseUrl = BASE_URI + path;
+    this(path, XaiClientConfig.readConfig());
+  }
+
+  protected XaiAbstractClient(String path, XaiClientConfig config) {
+    this.config = Objects.requireNonNull(config, "config");
+    String root = config.getBaseUrl();
+    if (root == null || root.isBlank()) {
+      root = BASE_URI;
+    }
+    if (root.endsWith("/")) {
+      root = root.substring(0, root.length() - 1);
+    }
+    this.baseUrl = root + path;
 
     this.httpClient = HttpClient.newBuilder()
       .version(HttpClient.Version.HTTP_2)
@@ -223,6 +238,7 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   protected HttpRequest.Builder buildRequest(String path) {
     return HttpRequest.newBuilder()
       .uri(URI.create(baseUrl + path))
+      .timeout(config.getRequestTimeout())
       .header("Authorization", "Bearer " + config.getApiKey())
       .header("Content-Type", "application/json")
       .header("Accept", "application/json");
@@ -245,6 +261,69 @@ public abstract class XaiAbstractClient implements AutoCloseable {
     } catch (JsonProcessingException ex) {
       String type = (body == null) ? "null" : body.getClass().getSimpleName();
       throw new ApiParseException("Request serialization error for " + type, ex);
+    }
+  }
+
+  /**
+   * POST JSON asking for an SSE body.
+   */
+  protected HttpRequest doPostJsonStream(String path, Object body) {
+    try {
+      String json = mapper.writeValueAsString(body);
+      return buildRequest(path)
+        .setHeader("Accept", "text/event-stream")
+        .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
+        .build();
+    } catch (JsonProcessingException ex) {
+      String type = (body == null) ? "null" : body.getClass().getSimpleName();
+      throw new ApiParseException("Request serialization error for " + type, ex);
+    }
+  }
+
+  /**
+   * Starts an SSE stream. Returns immediately; events are pushed to
+   * {@code listener}.
+   */
+  protected ResponseStreamHandle sendStreaming(HttpRequest request, ResponseStreamListener listener) {
+    Objects.requireNonNull(request, "request");
+    Objects.requireNonNull(listener, "listener");
+    ResponseStreamHandleImpl handle = new ResponseStreamHandleImpl(listener);
+    long start = System.currentTimeMillis();
+    CompletableFuture<HttpResponse<InputStream>> future
+      = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream());
+    handle.attachFuture(future);
+    future.whenComplete((response, error) -> {
+      if (handle.isStopped()) {
+        return;
+      }
+      if (error != null) {
+        handle.fail(error);
+        return;
+      }
+      int status = response.statusCode();
+      if (status < 200 || status >= 300) {
+        String bodyText = readQuietly(response.body());
+        handle.fail(new ApiHttpException("API error {status=" + status + ", body=" + bodyText + "}"));
+        return;
+      }
+      handle.attachBody(response.body());
+      handle.readLoop(new ResponseSseParser(mapper));
+      long time = System.currentTimeMillis() - start;
+      if (handle.completedSuccessfully()) {
+        LOG.log(Level.INFO, "STREAM ok '{'time={0} ms'}'", time);
+      }
+    });
+    return handle;
+  }
+
+  private static String readQuietly(InputStream body) {
+    if (body == null) {
+      return "";
+    }
+    try (InputStream in = body) {
+      return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+    } catch (IOException ex) {
+      return "";
     }
   }
 
