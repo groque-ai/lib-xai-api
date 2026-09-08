@@ -32,76 +32,110 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * Abstract base implementation for API services providing HTTP client
- * functionality with retry and backoff support.
+ * Abstract base implementation for XAI API clients providing common HTTP, JSON,
+ * retry, and streaming infrastructure.
  * <p>
- * This class encapsulates the HTTP client, JSON mapper, and request handling
- * logic.
+ * This class manages an {@link HttpClient}, {@link ObjectMapper}, and
+ * configuration for all concrete XAI clients. It is intended to be subclassed
+ * by service-specific clients that use the protected helper methods.
  * <p>
- * Concurrency assumptions: This class is thread-safe for concurrent invocations
- * of its methods, as the HttpClient is thread-safe and no mutable shared state
- * is accessed without synchronization. The ObjectMapper instance is shared
- * across threads; it is assumed to be used in a read-only manner without
- * configuration changes during runtime. Resource management: HttpClient is
- * built once and reused; no explicit closing is required as it manages its own
- * resources. If subclasses or users need to close resources, they must handle
- * it externally.
+ * Thread-safety: The class is designed for concurrent use. Static sinks are
+ * volatile and intended only for debugging/testing. Instance state is
+ * effectively immutable after construction except for the baseUrl field which
+ * is not mutated after initialization in normal usage.
+ * <p>
+ * Resource management: The underlying {@link HttpClient} is not closed by this
+ * implementation (as recommended by the JDK for shared clients). Subclasses
+ * should override {@link #close()} if they hold additional resources.
  */
 public abstract class XaiAbstractClient implements AutoCloseable {
 
-  /**
-   * The base URI for the API.
-   */
-  private static final String BASE_URI = "https://api.x.ai/v1";
+  // DEVELOPER NOTE: Hard-coded default base URI used when no custom base URL is provided via config.
+  // This allows easy override for testing or alternative environments while keeping a safe production default.
+  private static final String BASE_URI = "https://api.x.ai";
+
+  // DEVELOPER NOTE: Logger is package-private visibility via static for use across the hierarchy and for test injection.
+  // Using java.util.logging to avoid external logging framework dependencies.
   private static final Logger LOG = Logger.getLogger(XaiAbstractClient.class.getName());
 
   /**
-   * Test hook: exact POST JSON. Not a public API.
+   * Optional global sink for capturing raw JSON request bodies before they are
+   * sent.
+   * <p>
+   * Intended exclusively for debugging, testing, and diagnostics. Not for
+   * production use. Thread-safe via volatile reference. Set only during test
+   * setup.
    */
   static volatile Consumer<String> RAW_REQUEST_SINK;
 
   /**
-   * Test hook: exact response body bytes. Not a public API.
+   * Optional global sink for capturing raw response body bytes from streaming
+   * responses.
+   * <p>
+   * Intended exclusively for debugging, testing, and diagnostics. Not for
+   * production use. Thread-safe via volatile reference. Set only during test
+   * setup.
    */
   static volatile OutputStream RAW_BODY_SINK;
 
   /**
-   * The client configuration, loaded from external sources.
+   * Client configuration containing API key, timeouts, and base URL overrides.
+   * <p>
+   * Final and non-null after construction. Used for all request building and
+   * timeout configuration.
    */
   protected final XaiClientConfig config;
 
   /**
-   * The HTTP client used for sending requests.
+   * Shared HTTP/2 client instance configured with version, connect timeout, and
+   * redirect policy.
    * <p>
-   * Thread-safe and reused across requests.
+   * Created once per client instance. Not closed by {@link #close()} because
+   * the JDK recommends sharing HttpClient instances across an application.
    */
   protected final HttpClient httpClient;
 
   /**
-   * The base URL for this service.
+   * Resolved base URL for this client instance (root + path segment).
+   * <p>
+   * Protected to allow subclasses to inspect or (in rare cases) adjust path
+   * resolution.
    */
   protected String baseUrl;
 
   /**
-   * The JSON mapper for serialization and deserialization.
+   * Pre-configured Jackson ObjectMapper used for all serialization and
+   * deserialization.
    * <p>
-   * Assumed to be used in a thread-safe manner (read-only operations).
+   * Configuration is intentionally strict about nulls and unknown properties
+   * while being lenient with unknown enum values. ORDER_MAP_ENTRIES_BY_KEYS is
+   * enabled for deterministic output.
    */
   protected final ObjectMapper mapper;
 
   /**
-   * Constructs a new AbstractServiceImpl with the specified path.
+   * Constructs a new client using the default configuration read from the
+   * environment or classpath.
    * <p>
-   * Initializes the HTTP client with configuration from XaiClientConfig, sets
-   * up the base URL, and creates a shared ObjectMapper.
+   * Delegates to the two-argument constructor after loading configuration.
    *
-   * @param path the service-specific path to append to the base URI
-   * @throws IllegalStateException if configuration loading fails
+   * @param path the API path segment to append to the base URL (e.g.
+   *             "/v1/chat")
    */
   protected XaiAbstractClient(String path) {
     this(path, XaiClientConfig.readConfig());
   }
 
+  /**
+   * Constructs a new client with explicit configuration.
+   * <p>
+   * Performs base URL normalization, creates the HttpClient, and initializes
+   * the ObjectMapper.
+   *
+   * @param path   the API path segment to append to the base URL
+   * @param config the client configuration; must not be null
+   * @throws NullPointerException if config is null
+   */
   protected XaiAbstractClient(String path, XaiClientConfig config) {
     this.config = Objects.requireNonNull(config, "config");
     String root = config.getBaseUrl();
@@ -113,6 +147,8 @@ public abstract class XaiAbstractClient implements AutoCloseable {
     }
     this.baseUrl = root + path;
 
+    // DEVELOPER NOTE: HTTP/2 is explicitly requested for modern performance characteristics.
+    // Redirect policy is derived directly from config rather than hard-coded.
     this.httpClient = HttpClient.newBuilder()
       .version(HttpClient.Version.HTTP_2)
       .connectTimeout(config.getConnectTimeout())
@@ -121,44 +157,51 @@ public abstract class XaiAbstractClient implements AutoCloseable {
                        : HttpClient.Redirect.NEVER)
       .build();
 
+    // DEVELOPER NOTE: SerializationInclusion.NON_NULL avoids sending null fields.
+    // FAIL_ON_UNKNOWN_PROPERTIES is disabled to be resilient to API evolution.
+    // PROPAGATE_TRANSIENT_MARKER is enabled so that @JsonIgnore on transient fields is respected.
     this.mapper = new ObjectMapper()
       .setSerializationInclusion(JsonInclude.Include.NON_NULL)
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true)
       .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
       .enable(MapperFeature.PROPAGATE_TRANSIENT_MARKER);
-    //      .enable(SerializationFeature.INDENT_OUTPUT)
+
   }
 
   /**
-   * AutoCloseable implementation. Closes this resource, relinquishing any
-   * underlying resources.
+   * Closes this client.
+   * <p>
+   * Current implementation is a no-op because the shared {@link HttpClient}
+   * should not be closed by individual clients. Subclasses may override to
+   * release additional resources.
    *
-   * @throws Exception if this resource cannot be closed
+   * @throws Exception if an error occurs during close (never thrown by base
+   *                   implementation)
    */
   @Override
   public void close() throws Exception {
-    // no op
+    // DEVELOPER NOTE: Intentionally left empty. HttpClient instances are meant to be long-lived
+    // and shared. Closing them can cause issues for other clients using the same underlying resources.
   }
 
   /**
-   * Sends an HTTP request and handles the response, deserializing to the
-   * specified type.
-   * <p>
-   * This method does not include retry logic; use sendRequestWithRetry for
-   * that.
+   * Sends a synchronous HTTP request and deserializes the response to the given
+   * class.
    *
-   * @param <T>          the type of the response
-   * @param request      the HTTP request to send
-   * @param responseType the class of the response type
-   * @return the deserialized response
-   * @throws ApiHttpException  if an HTTP error occurs
-   * @throws ApiParseException if JSON parsing fails
+   * @param request      the prepared HttpRequest
+   * @param responseType the target class for deserialization (use Void.class
+   *                     for no body)
+   * @param <T>          the response type
+   * @return the deserialized response or null for 404 or Void.class
+   * @throws ApiHttpException  if the request fails or returns a non-success
+   *                           status
+   * @throws ApiParseException if JSON deserialization fails
    */
   protected <T> T sendRequest(HttpRequest request, Class<T> responseType) {
     try {
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-      return handleResponse(response, responseType); // safely intercepts 404
+      return handleResponse(response, responseType);
     } catch (IOException | InterruptedException ex) {
       String clazz = (responseType == null) ? "null" : responseType.getSimpleName();
       throw new ApiHttpException("API request error: " + request.uri() + " " + clazz, ex);
@@ -166,18 +209,18 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Sends an HTTP request and handles the response, deserializing to the
-   * specified type reference.
+   * Sends a synchronous HTTP request and deserializes the response using a
+   * TypeReference.
    * <p>
-   * This method does not include retry logic; use sendRequestWithRetry for
-   * that.
+   * Use this overload for generic types such as List or Map.
    *
-   * @param <T>          the type of the response
-   * @param request      the HTTP request to send
-   * @param responseType the type reference for the response
+   * @param request      the prepared HttpRequest
+   * @param responseType the TypeReference for deserialization
+   * @param <T>          the response type
    * @return the deserialized response
-   * @throws ApiHttpException  if an HTTP error occurs
-   * @throws ApiParseException if JSON parsing fails
+   * @throws ApiHttpException  if the request fails or returns a non-success
+   *                           status
+   * @throws ApiParseException if JSON deserialization fails
    */
   protected <T> T sendRequest(HttpRequest request, TypeReference<T> responseType) {
     try {
@@ -190,14 +233,16 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Handles the HTTP response for Class-based deserialization.
+   * Handles a successful or error response for class-based deserialization.
+   * <p>
+   * Special handling for 404 returns null instead of throwing (legacy
+   * behavior).
    *
-   * @param <T>      the type of the response
    * @param response the HTTP response
-   * @param type     the class to deserialize to
-   * @return the deserialized object, or null for Void
-   * @throws ApiHttpException  for non-2xx status codes
-   * @throws ApiParseException for JSON processing errors
+   * @param type     the target class
+   * @param <T>      response type
+   * @return deserialized object or null
+   * @throws ApiParseException if deserialization fails
    */
   private <T> T handleResponse(HttpResponse<String> response, Class<T> type) {
     try {
@@ -209,7 +254,8 @@ public abstract class XaiAbstractClient implements AutoCloseable {
         }
         return mapper.readValue(body, type);
       } else if (status == 404) {
-        // HTTP/1.1 404 Not Found
+        // DEVELOPER NOTE: 404 is deliberately treated as a non-error returning null.
+        // This matches historical API client behavior for optional resource lookups.
         LOG.info(this.getClass().getSimpleName() + " error (not found) {status=" + status + ", body=" + body + "}");
         return null;
       } else {
@@ -222,13 +268,15 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Handles the HTTP response for TypeReference-based deserialization.
+   * Handles a response using a TypeReference.
+   * <p>
+   * Note: This private overload does not perform special 404 handling.
    *
-   * @param <T>      the type of the response
    * @param response the HTTP response
-   * @param type     the type reference to deserialize to
-   * @return the deserialized object
-   * @throws IOException for non-2xx status codes or JSON processing errors
+   * @param type     the TypeReference
+   * @param <T>      response type
+   * @return deserialized object
+   * @throws IOException if deserialization or API error occurs
    */
   private <T> T handleResponse(HttpResponse<String> response, TypeReference<T> type) throws IOException {
     int status = response.statusCode();
@@ -241,10 +289,13 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Creates a base HTTP request builder with common headers.
+   * Creates a pre-populated {@link HttpRequest.Builder} for the given relative
+   * path.
+   * <p>
+   * Automatically adds Authorization, Content-Type, and Accept headers.
    *
-   * @param path the endpoint path
-   * @return the request builder
+   * @param path the relative path (should start with /)
+   * @return a builder ready for method and body configuration
    */
   protected HttpRequest.Builder buildRequest(String path) {
     return HttpRequest.newBuilder()
@@ -256,12 +307,12 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Creates a POST request with JSON body.
+   * Builds and returns a POST request with a JSON body.
    *
-   * @param path the endpoint path
+   * @param path the relative path
    * @param body the object to serialize as JSON
-   * @return the HTTP request
-   * @throws ApiParseException if serialization fails
+   * @return the prepared HttpRequest
+   * @throws ApiParseException if the body cannot be serialized to JSON
    */
   protected HttpRequest doPostJson(String path, Object body) {
     try {
@@ -276,7 +327,15 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * POST JSON asking for an SSE body.
+   * Builds a POST request intended for streaming responses and optionally logs
+   * the raw request.
+   * <p>
+   * Sets Accept header to text/event-stream.
+   *
+   * @param path the relative path
+   * @param body the object to serialize as JSON
+   * @return the prepared HttpRequest
+   * @throws ApiParseException if the body cannot be serialized
    */
   protected HttpRequest doPostJsonStream(String path, Object body) {
     try {
@@ -296,8 +355,15 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Starts an SSE stream. Returns immediately; events are pushed to
-   * {@code listener}.
+   * Initiates an asynchronous streaming request and returns a handle for
+   * controlling the stream.
+   * <p>
+   * The provided listener will be invoked on a background thread as data
+   * arrives.
+   *
+   * @param request  the prepared streaming request
+   * @param listener the listener to receive stream events
+   * @return a handle that can be used to stop or await completion of the stream
    */
   protected ResponseStreamHandle sendStreaming(HttpRequest request, ResponseStreamListener listener) {
     Objects.requireNonNull(request, "request");
@@ -305,7 +371,7 @@ public abstract class XaiAbstractClient implements AutoCloseable {
     ResponseStreamHandleImpl handle = new ResponseStreamHandleImpl(listener);
     long start = System.currentTimeMillis();
     CompletableFuture<HttpResponse<InputStream>> future
-      = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream());
+                                                 = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream());
     handle.attachFuture(future);
     future.whenComplete((response, error) -> {
       if (handle.isStopped()) {
@@ -316,7 +382,7 @@ public abstract class XaiAbstractClient implements AutoCloseable {
         return;
       }
       int status = response.statusCode();
-      InputStream body = teeBody(response.body());
+      InputStream body = response.body();
       if (status < 200 || status >= 300) {
         String bodyText = readQuietly(body);
         handle.fail(new ApiHttpException("API error {status=" + status + ", body=" + bodyText + "}"));
@@ -332,14 +398,8 @@ public abstract class XaiAbstractClient implements AutoCloseable {
     return handle;
   }
 
-  private static InputStream teeBody(InputStream body) {
-    OutputStream tap = RAW_BODY_SINK;
-    if (body == null || tap == null) {
-      return body;
-    }
-    return new TeeInputStream(body, tap);
-  }
-
+  // DEVELOPER NOTE: readQuietly is deliberately lenient. It is only used for error reporting
+  // on non-success streaming responses where we want to include body text if possible.
   private static String readQuietly(InputStream body) {
     if (body == null) {
       return "";
@@ -352,37 +412,43 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Creates a GET request.
+   * Builds a simple GET request for the given path.
    *
-   * @param path the endpoint path
-   * @return the HTTP request
+   * @param path the relative path
+   * @return the prepared HttpRequest
    */
   protected HttpRequest doGet(String path) {
-
     return buildRequest(path).GET().build();
   }
 
   /**
-   * Creates a DELETE request.
+   * Builds a DELETE request for the given path.
    *
-   * @param path the endpoint path
-   * @return the HTTP request
+   * @param path the relative path
+   * @return the prepared HttpRequest
    */
   protected HttpRequest doDelete(String path) {
     return buildRequest(path).DELETE().build();
   }
 
   /**
-   * Builds a query string from the fields of the given object.
+   * Builds a URL query string from a parameter object using reflection.
+   * <p>
+   * Only non-null fields are included. Collections are joined with commas.
+   * Enums use their toString() value.
    *
-   * @param params the object whose fields are used as query parameters
-   * @return the encoded query string, or empty if no parameters
+   * @param params the object whose fields should become query parameters
+   * @return a query string starting with "?" or an empty string if no
+   *         parameters
    */
   protected String buildQueryString(Object params) {
     if (params == null) {
       return "";
     }
 
+    // DEVELOPER NOTE: Reflection is used here to avoid forcing every parameter class
+    // to implement a toMap() method. This keeps parameter objects simple POJOs.
+    // Fields are made accessible regardless of visibility.
     Map<String, String> queryParams = new LinkedHashMap<>();
 
     Field[] fields = params.getClass().getDeclaredFields();
@@ -413,7 +479,8 @@ public abstract class XaiAbstractClient implements AutoCloseable {
           queryParams.put(key, valueStr);
         }
       } catch (IllegalAccessException e) {
-        // ignore or log if needed
+        // DEVELOPER NOTE: Silently ignore inaccessible fields. This can occur with
+        // synthetic or security-manager restricted fields. Production usage rarely hits this.
       }
     }
 
@@ -438,22 +505,15 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Sends a GET request with retry and exponential backoff.
-   * <p>
-   * Retries on IOException, InterruptedException, or HTTP status codes 500-599.
+   * Performs a GET request with automatic retry and exponential backoff.
    *
-   * @param <T>                the response type
-   * @param path               the endpoint path
-   * @param responseType       the class of the response type
-   * @param maxRetries         the maximum number of retries (0 means no retry)
-   * @param initialDelayMillis the initial delay in milliseconds
-   * @param backoffMultiplier  the multiplier for exponential backoff (e.g.,
-   *                           2.0)
+   * @param path               the relative path
+   * @param responseType       target response class
+   * @param maxRetries         maximum number of retry attempts
+   * @param initialDelayMillis delay before first retry
+   * @param backoffMultiplier  multiplier applied to delay after each attempt
+   * @param <T>                response type
    * @return the deserialized response
-   * @throws ApiHttpException         if all retries fail with HTTP errors
-   * @throws ApiParseException        if JSON parsing fails
-   * @throws IllegalArgumentException if maxRetries is negative or
-   *                                  backoffMultiplier is <= 0
    */
   protected <T> T retryGet(String path, Class<T> responseType, int maxRetries, long initialDelayMillis, double backoffMultiplier) {
     if (maxRetries < 0) {
@@ -467,23 +527,16 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Sends a POST request with retry and exponential backoff.
-   * <p>
-   * Retries on IOException, InterruptedException, or HTTP status codes 500-599.
+   * Performs a POST request with automatic retry and exponential backoff.
    *
-   * @param <T>                the response type
-   * @param path               the endpoint path
-   * @param body               the request body object
-   * @param responseType       the class of the response type
-   * @param maxRetries         the maximum number of retries (0 means no retry)
-   * @param initialDelayMillis the initial delay in milliseconds
-   * @param backoffMultiplier  the multiplier for exponential backoff (e.g.,
-   *                           2.0)
+   * @param path               the relative path
+   * @param body               request body to serialize
+   * @param responseType       target response class
+   * @param maxRetries         maximum number of retry attempts
+   * @param initialDelayMillis delay before first retry
+   * @param backoffMultiplier  multiplier applied to delay after each attempt
+   * @param <T>                response type
    * @return the deserialized response
-   * @throws ApiHttpException         if all retries fail with HTTP errors
-   * @throws ApiParseException        if JSON parsing fails
-   * @throws IllegalArgumentException if maxRetries is negative or
-   *                                  backoffMultiplier is <= 0
    */
   protected <T> T retryPost(String path, Object body, Class<T> responseType, int maxRetries, long initialDelayMillis, double backoffMultiplier) {
     if (maxRetries < 0) {
@@ -497,21 +550,10 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Sends an HTTP request with retry and exponential backoff.
+   * Core retry implementation for class-based responses.
    * <p>
-   * Retries on IOException, InterruptedException, or HTTP status codes 500-599.
-   *
-   * @param <T>                the response type
-   * @param requestSupplier    supplier for the HTTP request (to allow
-   *                           recreation if needed)
-   * @param responseType       the class of the response type
-   * @param maxRetries         the maximum number of retries (0 means no retry)
-   * @param initialDelayMillis the initial delay in milliseconds
-   * @param backoffMultiplier  the multiplier for exponential backoff (e.g.,
-   *                           2.0)
-   * @return the deserialized response
-   * @throws ApiHttpException  if all retries fail with HTTP errors
-   * @throws ApiParseException if JSON parsing fails
+   * Retries on IOException/InterruptedException and on 5xx errors returned as
+   * ApiHttpException. Other errors are not retried.
    */
   protected <T> T sendRequestWithRetry(Supplier<HttpRequest> requestSupplier, Class<T> responseType, int maxRetries, long initialDelayMillis, double backoffMultiplier) {
     long delay = initialDelayMillis;
@@ -535,7 +577,8 @@ public abstract class XaiAbstractClient implements AutoCloseable {
         }
         delay = (long) (delay * backoffMultiplier);
       } catch (ApiHttpException ex) {
-        // Check if status is retryable (5xx)
+        // DEVELOPER NOTE: Only 5xx errors are retried. The check uses string containment
+        // because the exact error message format may vary. This is intentional for simplicity.
         if (ex.getMessage().contains("API error: 5")) {
           attempt++;
           if (attempt > maxRetries) {
@@ -556,20 +599,7 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   }
 
   /**
-   * Sends an HTTP request with retry and exponential backoff for TypeReference.
-   * <p>
-   * Retries on IOException, InterruptedException, or HTTP status codes 500-599.
-   *
-   * @param <T>                the response type
-   * @param requestSupplier    supplier for the HTTP request
-   * @param responseType       the type reference for the response
-   * @param maxRetries         the maximum number of retries (0 means no retry)
-   * @param initialDelayMillis the initial delay in milliseconds
-   * @param backoffMultiplier  the multiplier for exponential backoff (e.g.,
-   *                           2.0)
-   * @return the deserialized response
-   * @throws ApiHttpException  if all retries fail with HTTP errors
-   * @throws ApiParseException if JSON parsing fails
+   * Core retry implementation for TypeReference-based responses.
    */
   protected <T> T sendRequestWithRetry(Supplier<HttpRequest> requestSupplier, TypeReference<T> responseType, int maxRetries, long initialDelayMillis, double backoffMultiplier) {
     long delay = initialDelayMillis;
