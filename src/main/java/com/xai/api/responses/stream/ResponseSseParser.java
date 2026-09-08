@@ -142,7 +142,20 @@ public class ResponseSseParser {
         type = sseEvent;
       }
       ResponseEvent event = ResponseEvent.fromName(type);
-      return Result.event(new ResponseStreamEvent(event, type, node));
+      ResponseStreamEvent envelope;
+      try {
+        envelope = mapper.convertValue(node, ResponseStreamEvent.class);
+      } catch (IllegalArgumentException ex) {
+        // typed fields optional; raw JSON always kept
+        envelope = new ResponseStreamEvent();
+      }
+      if (envelope == null) {
+        envelope = new ResponseStreamEvent();
+      }
+      envelope.setEvent(event);
+      envelope.setType(type);
+      envelope.setData(node);
+      return Result.event(envelope);
     } catch (JsonProcessingException ex) {
       throw new ApiParseException("SSE data JSON error", ex);
     }

@@ -63,8 +63,10 @@ public class ResponseSseParserTest {
     assertSame(ResponseEvent.RESPONSE_CREATED, events.get(0).getEvent());
     assertEquals("response.created", events.get(0).getType());
     assertEquals("resp_1", events.get(0).getData().get("response").get("id").asText());
+    assertEquals("resp_1", events.get(0).getResponse().getId());
     assertSame(ResponseEvent.RESPONSE_OUTPUT_TEXT_DELTA, events.get(1).getEvent());
     assertEquals("Hi", events.get(1).getData().get("delta").asText());
+    assertEquals("Hi", events.get(1).getDelta());
   }
 
   @Test

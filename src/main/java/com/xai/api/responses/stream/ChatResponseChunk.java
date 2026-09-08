@@ -21,6 +21,8 @@ package com.xai.api.responses.stream;
 import java.util.List;
 
 /**
+ * Chat Completions {@code chat.completion.chunk} body. Not used by
+ * {@code POST /v1/responses} SSE (see {@link ResponseStreamEvent}).
  *
  * @author Key Bridge
  */
