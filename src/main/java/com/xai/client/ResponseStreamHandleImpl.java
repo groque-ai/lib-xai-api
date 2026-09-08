@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +25,12 @@ public class ResponseStreamHandleImpl implements ResponseStreamHandle {
 
   private static final Logger LOG = Logger.getLogger(ResponseStreamHandleImpl.class.getName());
   private static final Cleaner CLEANER = Cleaner.create();
+
+  /**
+   * Test hook for raw SSE lines. Static, not ThreadLocal — the reader
+   * runs on the HTTP completion thread.
+   */
+  static volatile Consumer<String> RAW_LINE_SINK;
 
   /**
    * Cleaner must not capture the handle.
@@ -137,6 +144,10 @@ public class ResponseStreamHandleImpl implements ResponseStreamHandle {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
       String line;
       while ((line = reader.readLine()) != null) {
+        Consumer<String> rawSink = RAW_LINE_SINK;
+        if (rawSink != null) {
+          rawSink.accept(line);
+        }
         if (state.stopped) {
           return;
         }

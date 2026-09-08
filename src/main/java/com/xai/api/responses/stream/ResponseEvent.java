@@ -44,6 +44,7 @@ public enum ResponseEvent {
   RESPONSE_OUTPUT_TEXT_DELTA("response.output_text.delta"),
   RESPONSE_OUTPUT_TEXT_DONE("response.output_text.done"),
   RESPONSE_OUTPUT_TEXT_ANNOTATION_ADDED("response.output_text.annotation_added"),
+  RESPONSE_OUTPUT_TEXT_ANNOTATION_DOT_ADDED("response.output_text.annotation.added"),
   RESPONSE_TEXT_DELTA("response.text.delta"),
   RESPONSE_TEXT_DONE("response.text.done"),
 

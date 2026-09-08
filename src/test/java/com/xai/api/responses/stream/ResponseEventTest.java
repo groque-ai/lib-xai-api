@@ -57,6 +57,8 @@ public class ResponseEventTest {
                ResponseEvent.fromName("response.queued"));
     assertSame(ResponseEvent.RESPONSE_INCOMPLETE,
                ResponseEvent.fromName("response.incomplete"));
+    assertSame(ResponseEvent.RESPONSE_OUTPUT_TEXT_ANNOTATION_DOT_ADDED,
+               ResponseEvent.fromName("response.output_text.annotation.added"));
   }
 
   @Test
