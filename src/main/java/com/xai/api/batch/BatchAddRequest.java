@@ -110,13 +110,13 @@ public class BatchAddRequest {
    * Response payload, varies by request type (chat, image, video).
    */
   @JsonProperty("batch_request")
-  public Object batchRequest;
+  public BatchRequest batchRequest;
 
-  public Object getBatchRequest() {
+  public BatchRequest getBatchRequest() {
     return batchRequest;
   }
 
-  public void setBatchRequest(Object batchRequest) {
+  public void setBatchRequest(BatchRequest batchRequest) {
     this.batchRequest = batchRequest;
   }
 
