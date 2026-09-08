@@ -21,4 +21,20 @@ public class BatchResultsResponse {
    */
   @JsonProperty("pagination_token")
   public String paginationToken;
+
+  public String getPaginationToken() {
+    return paginationToken;
+  }
+
+  public void setPaginationToken(String paginationToken) {
+    this.paginationToken = paginationToken;
+  }
+
+  public List<BatchResult> getResults() {
+    return results;
+  }
+
+  public void setResults(List<BatchResult> results) {
+    this.results = results;
+  }
 }

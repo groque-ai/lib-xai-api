@@ -26,8 +26,12 @@ public class BatchRequest {
   @JsonProperty("image_edit")
   private EditImageRequest imageEdit;
 
+  /**
+   * Generate or edit. Wire key is shared; runtime type is
+   * {@link GenerateVideoRequest} or {@link EditVideoRequest}.
+   */
   @JsonProperty("video_generation")
-  private GenerateVideoRequest videoGeneration;
+  private Object videoGeneration;
 
   @JsonProperty("video_extension")
   private EditVideoRequest videoExtension;
@@ -69,13 +73,13 @@ public class BatchRequest {
     } else if (request instanceof EditImageRequest) {
       batchRequest.imageEdit = (EditImageRequest) request;
     } else if (request instanceof GenerateVideoRequest) {
-      batchRequest.videoGeneration = (GenerateVideoRequest) request;
+      batchRequest.videoGeneration = request;
     } else if (request instanceof EditVideoRequest) {
-      batchRequest.videoExtension = (EditVideoRequest) request;
+      // edit uses the same REST key as generate
+      batchRequest.videoGeneration = request;
+    } else {
+      throw new IllegalArgumentException("Unsupported batch payload: " + request.getClass().getName());
     }
-    // Developer note: Unknown types are intentionally ignored.
-    // This keeps the method lenient and prevents failure on unexpected
-    // input while still supporting the defined request types.
 
     return batchRequest;
   }
@@ -112,11 +116,11 @@ public class BatchRequest {
     this.videoExtension = videoExtension;
   }
 
-  public GenerateVideoRequest getVideoGeneration() {
+  public Object getVideoGeneration() {
     return videoGeneration;
   }
 
-  public void setVideoGeneration(GenerateVideoRequest videoGeneration) {
+  public void setVideoGeneration(Object videoGeneration) {
     this.videoGeneration = videoGeneration;
   }
 
