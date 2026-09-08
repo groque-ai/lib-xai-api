@@ -1,4 +1,4 @@
-package com.xai.api.batches;
+package com.xai.api.batch;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

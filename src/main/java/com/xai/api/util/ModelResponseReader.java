@@ -1,5 +1,6 @@
 package com.xai.api.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,8 +20,10 @@ import java.util.stream.Collectors;
 public class ModelResponseReader {
 
   private static final ObjectMapper MAPPER = new ObjectMapper()
+    .setSerializationInclusion(JsonInclude.Include.NON_NULL)
     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-    .configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true).enable(SerializationFeature.INDENT_OUTPUT);
+    .configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true)
+    .enable(SerializationFeature.INDENT_OUTPUT);
 
   /**
    * Extracts the primary assistant response text from the first assistant
