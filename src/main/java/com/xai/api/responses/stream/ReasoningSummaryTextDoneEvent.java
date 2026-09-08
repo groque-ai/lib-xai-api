@@ -16,20 +16,17 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xai.api.responses.output.tokens.TokenLogProb;
-import java.util.List;
 
 /**
- * Assistant text snapshot: {@code response.output_text.done} (alias
- * {@code response.text.done}).
+ * Reasoning summary snapshot: {@code response.reasoning_summary_text.done}.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class OutputTextDoneEvent extends StreamEvent {
+public class ReasoningSummaryTextDoneEvent extends StreamEvent {
 
   @JsonProperty("item_id")
   private String itemId;
@@ -37,22 +34,12 @@ public class OutputTextDoneEvent extends StreamEvent {
   @JsonProperty("output_index")
   private Integer outputIndex;
 
-  @JsonProperty("content_index")
-  private Integer contentIndex;
+  @JsonProperty("summary_index")
+  private Integer summaryIndex;
 
   private String text;
 
-  private List<TokenLogProb> logprobs;
-
   //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public Integer getContentIndex() {
-    return contentIndex;
-  }
-
-  public void setContentIndex(Integer contentIndex) {
-    this.contentIndex = contentIndex;
-  }
-
   public String getItemId() {
     return itemId;
   }
@@ -61,20 +48,20 @@ public class OutputTextDoneEvent extends StreamEvent {
     this.itemId = itemId;
   }
 
-  public List<TokenLogProb> getLogprobs() {
-    return logprobs;
-  }
-
-  public void setLogprobs(List<TokenLogProb> logprobs) {
-    this.logprobs = logprobs;
-  }
-
   public Integer getOutputIndex() {
     return outputIndex;
   }
 
   public void setOutputIndex(Integer outputIndex) {
     this.outputIndex = outputIndex;
+  }
+
+  public Integer getSummaryIndex() {
+    return summaryIndex;
+  }
+
+  public void setSummaryIndex(Integer summaryIndex) {
+    this.summaryIndex = summaryIndex;
   }
 
   public String getText() {

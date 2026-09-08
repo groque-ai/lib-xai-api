@@ -16,38 +16,31 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xai.api.responses.output.reasoning.ReasoningText;
+import com.xai.api.responses.output.ModelOutput;
 
 /**
- * Reasoning-summary part family: {@code reasoning_summary_part.added} /
- * {@code done}. {@code part.type} on the wire is {@code summary_text}.
+ * Item family: {@code response.output_item.added} / {@code done}.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class ReasoningSummaryPartEvent extends StreamEvent {
-
-  @JsonProperty("item_id")
-  private String itemId;
+public class OutputItemEvent extends StreamEvent {
 
   @JsonProperty("output_index")
   private Integer outputIndex;
 
-  @JsonProperty("summary_index")
-  private Integer summaryIndex;
-
-  private ReasoningText part;
+  private ModelOutput item;
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public String getItemId() {
-    return itemId;
+  public ModelOutput getItem() {
+    return item;
   }
 
-  public void setItemId(String itemId) {
-    this.itemId = itemId;
+  public void setItem(ModelOutput item) {
+    this.item = item;
   }
 
   public Integer getOutputIndex() {
@@ -56,22 +49,6 @@ public class ReasoningSummaryPartEvent extends StreamEvent {
 
   public void setOutputIndex(Integer outputIndex) {
     this.outputIndex = outputIndex;
-  }
-
-  public ReasoningText getPart() {
-    return part;
-  }
-
-  public void setPart(ReasoningText part) {
-    this.part = part;
-  }
-
-  public Integer getSummaryIndex() {
-    return summaryIndex;
-  }
-
-  public void setSummaryIndex(Integer summaryIndex) {
-    this.summaryIndex = summaryIndex;
   }
   //</editor-fold>
 }

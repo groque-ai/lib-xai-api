@@ -16,14 +16,10 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.xai.api.responses.stream.ResponseEventType;
+import com.fasterxml.jackson.annotation.*;
+import com.xai.api.type.StreamEventType;
 
 /**
  * One Responses SSE {@code data:} object. {@code type} is the Jackson
@@ -81,11 +77,11 @@ public abstract class StreamEvent {
 
   /**
    * Enumerated form of {@link #type}. Unknown names map to
-   * {@link ResponseEventType#UNKNOWN}.
+   * {@link StreamEventType#UNKNOWN}.
    */
   @JsonIgnore
-  public ResponseEventType getEvent() {
-    return ResponseEventType.fromName(type);
+  public StreamEventType getEvent() {
+    return StreamEventType.fromName(type);
   }
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">

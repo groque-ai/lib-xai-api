@@ -16,7 +16,7 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

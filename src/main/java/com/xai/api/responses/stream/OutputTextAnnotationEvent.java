@@ -16,18 +16,19 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xai.api.responses.output.tokens.Annotation;
 
 /**
- * Completed client tool arguments: {@code response.function_call_arguments.done}.
- * {@code arguments} is a JSON string, matching {@code FunctionToolCall}.
+ * Citation: {@code response.output_text.annotation.added} and the
+ * underscore alias {@code annotation_added}.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class FunctionCallArgumentsDoneEvent extends StreamEvent {
+public class OutputTextAnnotationEvent extends StreamEvent {
 
   @JsonProperty("item_id")
   private String itemId;
@@ -35,17 +36,37 @@ public class FunctionCallArgumentsDoneEvent extends StreamEvent {
   @JsonProperty("output_index")
   private Integer outputIndex;
 
-  private String name;
+  @JsonProperty("content_index")
+  private Integer contentIndex;
 
-  private String arguments;
+  @JsonProperty("annotation_index")
+  private Integer annotationIndex;
+
+  private Annotation annotation;
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public String getArguments() {
-    return arguments;
+  public Annotation getAnnotation() {
+    return annotation;
   }
 
-  public void setArguments(String arguments) {
-    this.arguments = arguments;
+  public void setAnnotation(Annotation annotation) {
+    this.annotation = annotation;
+  }
+
+  public Integer getAnnotationIndex() {
+    return annotationIndex;
+  }
+
+  public void setAnnotationIndex(Integer annotationIndex) {
+    this.annotationIndex = annotationIndex;
+  }
+
+  public Integer getContentIndex() {
+    return contentIndex;
+  }
+
+  public void setContentIndex(Integer contentIndex) {
+    this.contentIndex = contentIndex;
   }
 
   public String getItemId() {
@@ -54,14 +75,6 @@ public class FunctionCallArgumentsDoneEvent extends StreamEvent {
 
   public void setItemId(String itemId) {
     this.itemId = itemId;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public Integer getOutputIndex() {

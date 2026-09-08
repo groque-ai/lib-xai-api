@@ -16,17 +16,20 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xai.api.responses.output.tokens.TokenLogProb;
+import java.util.List;
 
 /**
- * Completed interpreter source: {@code response.code_interpreter_call_code.done}.
+ * Assistant text snapshot: {@code response.output_text.done} (alias
+ * {@code response.text.done}).
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class CodeInterpreterCodeDoneEvent extends StreamEvent {
+public class OutputTextDoneEvent extends StreamEvent {
 
   @JsonProperty("item_id")
   private String itemId;
@@ -34,15 +37,20 @@ public class CodeInterpreterCodeDoneEvent extends StreamEvent {
   @JsonProperty("output_index")
   private Integer outputIndex;
 
-  private String code;
+  @JsonProperty("content_index")
+  private Integer contentIndex;
+
+  private String text;
+
+  private List<TokenLogProb> logprobs;
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public String getCode() {
-    return code;
+  public Integer getContentIndex() {
+    return contentIndex;
   }
 
-  public void setCode(String code) {
-    this.code = code;
+  public void setContentIndex(Integer contentIndex) {
+    this.contentIndex = contentIndex;
   }
 
   public String getItemId() {
@@ -53,12 +61,28 @@ public class CodeInterpreterCodeDoneEvent extends StreamEvent {
     this.itemId = itemId;
   }
 
+  public List<TokenLogProb> getLogprobs() {
+    return logprobs;
+  }
+
+  public void setLogprobs(List<TokenLogProb> logprobs) {
+    this.logprobs = logprobs;
+  }
+
   public Integer getOutputIndex() {
     return outputIndex;
   }
 
   public void setOutputIndex(Integer outputIndex) {
     this.outputIndex = outputIndex;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
   }
   //</editor-fold>
 }

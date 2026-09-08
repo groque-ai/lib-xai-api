@@ -16,31 +16,42 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xai.api.responses.output.ModelOutput;
 
 /**
- * Item family: {@code response.output_item.added} / {@code done}.
+ * String-delta family with only {@code item_id} / {@code output_index}:
+ * function-call arguments and code-interpreter source.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class OutputItemEvent extends StreamEvent {
+public class IndexedDeltaEvent extends StreamEvent {
+
+  @JsonProperty("item_id")
+  private String itemId;
 
   @JsonProperty("output_index")
   private Integer outputIndex;
 
-  private ModelOutput item;
+  private String delta;
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public ModelOutput getItem() {
-    return item;
+  public String getDelta() {
+    return delta;
   }
 
-  public void setItem(ModelOutput item) {
-    this.item = item;
+  public void setDelta(String delta) {
+    this.delta = delta;
+  }
+
+  public String getItemId() {
+    return itemId;
+  }
+
+  public void setItemId(String itemId) {
+    this.itemId = itemId;
   }
 
   public Integer getOutputIndex() {

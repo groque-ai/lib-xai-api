@@ -1,9 +1,25 @@
 package com.xai.api.responses.stream.dto;
 
+import com.xai.api.responses.stream.OutputTextDeltaEvent;
+import com.xai.api.responses.stream.ReasoningSummaryPartEvent;
+import com.xai.api.responses.stream.UnknownStreamEvent;
+import com.xai.api.responses.stream.IndexedDeltaEvent;
+import com.xai.api.responses.stream.ErrorEvent;
+import com.xai.api.responses.stream.OutputTextDoneEvent;
+import com.xai.api.responses.stream.StreamEvent;
+import com.xai.api.responses.stream.ContentPartEvent;
+import com.xai.api.responses.stream.SnapshotEvent;
+import com.xai.api.responses.stream.FunctionCallArgumentsDoneEvent;
+import com.xai.api.responses.stream.CodeInterpreterCodeDoneEvent;
+import com.xai.api.responses.stream.OutputTextAnnotationEvent;
+import com.xai.api.responses.stream.OutputItemEvent;
+import com.xai.api.responses.stream.ToolPhaseEvent;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xai.api.responses.config.ReasoningConfiguration;
@@ -16,7 +32,7 @@ import com.xai.api.responses.output.tokens.TokenLogProb;
 import com.xai.api.responses.output.tool.CodeInterpreterCall;
 import com.xai.api.responses.output.tool.FunctionToolCall;
 import com.xai.api.responses.output.web.WebSearchCall;
-import com.xai.api.responses.stream.ResponseEventType;
+import com.xai.api.type.StreamEventType;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,7 +66,7 @@ public class StreamEventUnmarshalTest {
     assertTrue(event instanceof SnapshotEvent);
     SnapshotEvent snapshot = (SnapshotEvent) event;
     assertEquals(Integer.valueOf(0), snapshot.getSequenceNumber());
-    assertEquals(ResponseEventType.RESPONSE_CREATED, snapshot.getEvent());
+    assertEquals(StreamEventType.RESPONSE_CREATED, snapshot.getEvent());
     assertNotNull(snapshot.getResponse());
     assertEquals("resp_1", snapshot.getResponse().getId());
     assertTrue(snapshot.getResponse().getReasoning() instanceof ReasoningConfiguration);
@@ -137,7 +153,7 @@ public class StreamEventUnmarshalTest {
     assertTrue(event instanceof OutputTextAnnotationEvent);
     Annotation annotation = ((OutputTextAnnotationEvent) event).getAnnotation();
     assertEquals("https://example.com", annotation.getUrl());
-    assertEquals(ResponseEventType.RESPONSE_OUTPUT_TEXT_ANNOTATION_DOT_ADDED, event.getEvent());
+    assertEquals(StreamEventType.RESPONSE_OUTPUT_TEXT_ANNOTATION_DOT_ADDED, event.getEvent());
   }
 
   @Test
@@ -179,7 +195,7 @@ public class StreamEventUnmarshalTest {
       "{\"type\":\"response.web_search_call.searching\",\"sequence_number\":35,"
       + "\"output_index\":1,\"item_id\":\"ws_1\"}");
     assertTrue(searching instanceof ToolPhaseEvent);
-    assertEquals(ResponseEventType.RESPONSE_WEB_SEARCH_CALL_SEARCHING, searching.getEvent());
+    assertEquals(StreamEventType.RESPONSE_WEB_SEARCH_CALL_SEARCHING, searching.getEvent());
   }
 
   @Test
@@ -197,7 +213,7 @@ public class StreamEventUnmarshalTest {
     StreamEvent event = read(
       "{\"type\":\"response.image_generation_call.generating\",\"sequence_number\":9,\"item_id\":\"ig_1\"}");
     assertTrue(event instanceof UnknownStreamEvent);
-    assertEquals(ResponseEventType.RESPONSE_IMAGE_GENERATION_CALL_GENERATING, event.getEvent());
+    assertEquals(StreamEventType.RESPONSE_IMAGE_GENERATION_CALL_GENERATING, event.getEvent());
   }
 
   @Test

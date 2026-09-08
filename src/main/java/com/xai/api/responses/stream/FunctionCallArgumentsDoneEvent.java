@@ -16,18 +16,18 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xai.api.responses.output.message.OutputMessageContent;
 
 /**
- * Content-part family: {@code response.content_part.added} / {@code done}.
+ * Completed client tool arguments: {@code response.function_call_arguments.done}.
+ * {@code arguments} is a JSON string, matching {@code FunctionToolCall}.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class ContentPartEvent extends StreamEvent {
+public class FunctionCallArgumentsDoneEvent extends StreamEvent {
 
   @JsonProperty("item_id")
   private String itemId;
@@ -35,18 +35,17 @@ public class ContentPartEvent extends StreamEvent {
   @JsonProperty("output_index")
   private Integer outputIndex;
 
-  @JsonProperty("content_index")
-  private Integer contentIndex;
+  private String name;
 
-  private OutputMessageContent part;
+  private String arguments;
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public Integer getContentIndex() {
-    return contentIndex;
+  public String getArguments() {
+    return arguments;
   }
 
-  public void setContentIndex(Integer contentIndex) {
-    this.contentIndex = contentIndex;
+  public void setArguments(String arguments) {
+    this.arguments = arguments;
   }
 
   public String getItemId() {
@@ -57,20 +56,20 @@ public class ContentPartEvent extends StreamEvent {
     this.itemId = itemId;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public Integer getOutputIndex() {
     return outputIndex;
   }
 
   public void setOutputIndex(Integer outputIndex) {
     this.outputIndex = outputIndex;
-  }
-
-  public OutputMessageContent getPart() {
-    return part;
-  }
-
-  public void setPart(OutputMessageContent part) {
-    this.part = part;
   }
   //</editor-fold>
 }

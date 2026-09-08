@@ -16,7 +16,7 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream;
+package com.xai.api.type;
 
 /**
  * Wire {@code type} strings for Responses API SSE events.
@@ -24,7 +24,7 @@ package com.xai.api.responses.stream;
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-07
  */
-public enum ResponseEventType {
+public enum StreamEventType {
 
   UNKNOWN("unknown"),
 
@@ -99,7 +99,7 @@ public enum ResponseEventType {
 
   private final String name;
 
-  ResponseEventType(String name) {
+  StreamEventType(String name) {
     this.name = name;
   }
 
@@ -114,7 +114,7 @@ public enum ResponseEventType {
    * Reverse lookup by event string. Never null: unmatched, null, or blank
    * values map to {@link #UNKNOWN}.
    */
-  public static ResponseEventType fromName(String value) {
+  public static StreamEventType fromName(String value) {
     if (value == null) {
       return UNKNOWN;
     }
@@ -122,7 +122,7 @@ public enum ResponseEventType {
     if (trimmed.isEmpty()) {
       return UNKNOWN;
     }
-    for (ResponseEventType event : values()) {
+    for (StreamEventType event : values()) {
       if (event == UNKNOWN) {
         continue;
       }

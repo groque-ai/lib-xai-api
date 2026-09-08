@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.sun.net.httpserver.HttpServer;
 import com.xai.api.responses.ModelRequest;
-import com.xai.api.responses.stream.ResponseEventType;
+import com.xai.api.type.StreamEventType;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
@@ -76,7 +76,7 @@ public class XaiResponsesClientStreamTest {
     ResponseStreamHandle handle = client.generateStreaming(request, listener);
     assertTrue(listener.completed.await(5, TimeUnit.SECONDS));
     assertEquals(1, listener.events.size());
-    assertSame(ResponseEventType.RESPONSE_OUTPUT_TEXT_DELTA, listener.events.get(0).getEvent());
+    assertSame(StreamEventType.RESPONSE_OUTPUT_TEXT_DELTA, listener.events.get(0).getEvent());
     assertTrue(Boolean.TRUE.equals(request.getStream()));
     handle.close();
   }

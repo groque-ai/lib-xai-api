@@ -16,19 +16,21 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xai.api.responses.output.tokens.Annotation;
+import com.xai.api.responses.output.tokens.TokenLogProb;
+import java.util.List;
 
 /**
- * Citation: {@code response.output_text.annotation.added} and the
- * underscore alias {@code annotation_added}.
+ * Assistant text delta: {@code response.output_text.delta} (alias
+ * {@code response.text.delta}). {@code logprobs} is a token array, not a
+ * Chat Completions wrapper.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class OutputTextAnnotationEvent extends StreamEvent {
+public class OutputTextDeltaEvent extends StreamEvent {
 
   @JsonProperty("item_id")
   private String itemId;
@@ -39,28 +41,11 @@ public class OutputTextAnnotationEvent extends StreamEvent {
   @JsonProperty("content_index")
   private Integer contentIndex;
 
-  @JsonProperty("annotation_index")
-  private Integer annotationIndex;
+  private String delta;
 
-  private Annotation annotation;
+  private List<TokenLogProb> logprobs;
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public Annotation getAnnotation() {
-    return annotation;
-  }
-
-  public void setAnnotation(Annotation annotation) {
-    this.annotation = annotation;
-  }
-
-  public Integer getAnnotationIndex() {
-    return annotationIndex;
-  }
-
-  public void setAnnotationIndex(Integer annotationIndex) {
-    this.annotationIndex = annotationIndex;
-  }
-
   public Integer getContentIndex() {
     return contentIndex;
   }
@@ -69,12 +54,28 @@ public class OutputTextAnnotationEvent extends StreamEvent {
     this.contentIndex = contentIndex;
   }
 
+  public String getDelta() {
+    return delta;
+  }
+
+  public void setDelta(String delta) {
+    this.delta = delta;
+  }
+
   public String getItemId() {
     return itemId;
   }
 
   public void setItemId(String itemId) {
     this.itemId = itemId;
+  }
+
+  public List<TokenLogProb> getLogprobs() {
+    return logprobs;
+  }
+
+  public void setLogprobs(List<TokenLogProb> logprobs) {
+    this.logprobs = logprobs;
   }
 
   public Integer getOutputIndex() {

@@ -3,13 +3,14 @@ package com.xai.client;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xai.api.responses.stream.ResponseEventType;
-import com.xai.api.responses.stream.dto.OutputTextDeltaEvent;
-import com.xai.api.responses.stream.dto.SnapshotEvent;
-import com.xai.api.responses.stream.dto.StreamEvent;
-import com.xai.api.responses.stream.dto.UnknownStreamEvent;
+import com.xai.api.type.StreamEventType;
+import com.xai.api.responses.stream.OutputTextDeltaEvent;
+import com.xai.api.responses.stream.SnapshotEvent;
+import com.xai.api.responses.stream.StreamEvent;
+import com.xai.api.responses.stream.UnknownStreamEvent;
 import com.xai.client.exception.ApiParseException;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -49,7 +50,7 @@ public class ResponseStreamSseTest {
     List<StreamEvent> events = listener.events;
     assertEquals(2, events.size());
     assertTrue(events.get(0) instanceof SnapshotEvent);
-    assertSame(ResponseEventType.RESPONSE_CREATED, events.get(0).getEvent());
+    assertSame(StreamEventType.RESPONSE_CREATED, events.get(0).getEvent());
     assertEquals("resp_1", ((SnapshotEvent) events.get(0)).getResponse().getId());
     assertTrue(events.get(1) instanceof OutputTextDeltaEvent);
     assertEquals("Hi", ((OutputTextDeltaEvent) events.get(1)).getDelta());
@@ -63,7 +64,7 @@ public class ResponseStreamSseTest {
       + "data: {\"type\":\"response.completed\"}\n"
       + "\n");
     assertEquals(1, listener.events.size());
-    assertSame(ResponseEventType.RESPONSE_COMPLETED, listener.events.get(0).getEvent());
+    assertSame(StreamEventType.RESPONSE_COMPLETED, listener.events.get(0).getEvent());
   }
 
   @Test
@@ -74,7 +75,7 @@ public class ResponseStreamSseTest {
       + "\n");
     assertEquals(1, listener.events.size());
     assertTrue(listener.events.get(0) instanceof SnapshotEvent);
-    assertSame(ResponseEventType.RESPONSE_FAILED, listener.events.get(0).getEvent());
+    assertSame(StreamEventType.RESPONSE_FAILED, listener.events.get(0).getEvent());
     assertEquals("response.failed", listener.events.get(0).getType());
   }
 
@@ -85,7 +86,7 @@ public class ResponseStreamSseTest {
       + "\n");
     assertEquals(1, listener.events.size());
     assertTrue(listener.events.get(0) instanceof UnknownStreamEvent);
-    assertSame(ResponseEventType.UNKNOWN, listener.events.get(0).getEvent());
+    assertSame(StreamEventType.UNKNOWN, listener.events.get(0).getEvent());
     assertEquals("response.custom.future", listener.events.get(0).getType());
   }
 

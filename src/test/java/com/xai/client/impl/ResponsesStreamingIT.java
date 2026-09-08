@@ -9,7 +9,7 @@ import com.xai.api.responses.config.ModelResponseFormatJsonSchema;
 import com.xai.api.responses.input.ModelInputArray;
 import com.xai.api.responses.input.ModelInputString;
 import com.xai.api.responses.input.part.ModelInputPartMessage;
-import com.xai.api.responses.stream.dto.StreamEvent;
+import com.xai.api.responses.stream.StreamEvent;
 import com.xai.api.type.Role;
 import com.xai.api.util.ModelRequestBuilder;
 import com.xai.client.ResponseStreamHandle;

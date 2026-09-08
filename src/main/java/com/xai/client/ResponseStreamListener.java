@@ -1,6 +1,6 @@
 package com.xai.client;
 
-import com.xai.api.responses.stream.dto.StreamEvent;
+import com.xai.api.responses.stream.StreamEvent;
 
 /**
  * Push callbacks for a Responses SSE stream.

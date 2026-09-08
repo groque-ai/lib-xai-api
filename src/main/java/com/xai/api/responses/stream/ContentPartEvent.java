@@ -16,17 +16,18 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xai.api.responses.output.message.OutputMessageContent;
 
 /**
- * Reasoning summary snapshot: {@code response.reasoning_summary_text.done}.
+ * Content-part family: {@code response.content_part.added} / {@code done}.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class ReasoningSummaryTextDoneEvent extends StreamEvent {
+public class ContentPartEvent extends StreamEvent {
 
   @JsonProperty("item_id")
   private String itemId;
@@ -34,12 +35,20 @@ public class ReasoningSummaryTextDoneEvent extends StreamEvent {
   @JsonProperty("output_index")
   private Integer outputIndex;
 
-  @JsonProperty("summary_index")
-  private Integer summaryIndex;
+  @JsonProperty("content_index")
+  private Integer contentIndex;
 
-  private String text;
+  private OutputMessageContent part;
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">
+  public Integer getContentIndex() {
+    return contentIndex;
+  }
+
+  public void setContentIndex(Integer contentIndex) {
+    this.contentIndex = contentIndex;
+  }
+
   public String getItemId() {
     return itemId;
   }
@@ -56,20 +65,12 @@ public class ReasoningSummaryTextDoneEvent extends StreamEvent {
     this.outputIndex = outputIndex;
   }
 
-  public Integer getSummaryIndex() {
-    return summaryIndex;
+  public OutputMessageContent getPart() {
+    return part;
   }
 
-  public void setSummaryIndex(Integer summaryIndex) {
-    this.summaryIndex = summaryIndex;
-  }
-
-  public String getText() {
-    return text;
-  }
-
-  public void setText(String text) {
-    this.text = text;
+  public void setPart(OutputMessageContent part) {
+    this.part = part;
   }
   //</editor-fold>
 }

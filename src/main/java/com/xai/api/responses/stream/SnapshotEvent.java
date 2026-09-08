@@ -16,38 +16,28 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.xai.api.responses.ModelResponse;
 
 /**
- * Stream error frame ({@code type=error}). {@code error} stays a node so we
- * do not invent a one-off error POJO.
+ * Snapshot family: {@code response.created}, {@code in_progress},
+ * {@code completed}, {@code queued}, {@code failed}, {@code incomplete}.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class ErrorEvent extends StreamEvent {
+public class SnapshotEvent extends StreamEvent {
 
-  private Integer status;
-
-  private JsonNode error;
+  private ModelResponse response;
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public JsonNode getError() {
-    return error;
+  public ModelResponse getResponse() {
+    return response;
   }
 
-  public void setError(JsonNode error) {
-    this.error = error;
-  }
-
-  public Integer getStatus() {
-    return status;
-  }
-
-  public void setStatus(Integer status) {
-    this.status = status;
+  public void setResponse(ModelResponse response) {
+    this.response = response;
   }
   //</editor-fold>
 }

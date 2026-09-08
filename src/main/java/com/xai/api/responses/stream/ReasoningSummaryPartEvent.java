@@ -16,24 +16,30 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xai.api.responses.output.reasoning.ReasoningText;
 
 /**
- * Phase-only tool events: web search in_progress/searching/completed and
- * code interpreter in_progress/interpreting/completed.
+ * Reasoning-summary part family: {@code reasoning_summary_part.added} /
+ * {@code done}. {@code part.type} on the wire is {@code summary_text}.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class ToolPhaseEvent extends StreamEvent {
+public class ReasoningSummaryPartEvent extends StreamEvent {
 
   @JsonProperty("item_id")
   private String itemId;
 
   @JsonProperty("output_index")
   private Integer outputIndex;
+
+  @JsonProperty("summary_index")
+  private Integer summaryIndex;
+
+  private ReasoningText part;
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">
   public String getItemId() {
@@ -50,6 +56,22 @@ public class ToolPhaseEvent extends StreamEvent {
 
   public void setOutputIndex(Integer outputIndex) {
     this.outputIndex = outputIndex;
+  }
+
+  public ReasoningText getPart() {
+    return part;
+  }
+
+  public void setPart(ReasoningText part) {
+    this.part = part;
+  }
+
+  public Integer getSummaryIndex() {
+    return summaryIndex;
+  }
+
+  public void setSummaryIndex(Integer summaryIndex) {
+    this.summaryIndex = summaryIndex;
   }
   //</editor-fold>
 }

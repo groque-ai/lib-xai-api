@@ -16,14 +16,38 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
- * Jackson {@code defaultImpl} for unrecognized {@code type} values. Extra
- * properties are ignored on the base class.
+ * Stream error frame ({@code type=error}). {@code error} stays a node so we
+ * do not invent a one-off error POJO.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class UnknownStreamEvent extends StreamEvent {
+public class ErrorEvent extends StreamEvent {
+
+  private Integer status;
+
+  private JsonNode error;
+
+  //<editor-fold defaultstate="collapsed" desc="Accessors">
+  public JsonNode getError() {
+    return error;
+  }
+
+  public void setError(JsonNode error) {
+    this.error = error;
+  }
+
+  public Integer getStatus() {
+    return status;
+  }
+
+  public void setStatus(Integer status) {
+    this.status = status;
+  }
+  //</editor-fold>
 }

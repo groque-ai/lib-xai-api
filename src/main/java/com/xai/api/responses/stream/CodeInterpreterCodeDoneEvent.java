@@ -16,21 +16,17 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xai.api.responses.output.tokens.TokenLogProb;
-import java.util.List;
 
 /**
- * Assistant text delta: {@code response.output_text.delta} (alias
- * {@code response.text.delta}). {@code logprobs} is a token array, not a
- * Chat Completions wrapper.
+ * Completed interpreter source: {@code response.code_interpreter_call_code.done}.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class OutputTextDeltaEvent extends StreamEvent {
+public class CodeInterpreterCodeDoneEvent extends StreamEvent {
 
   @JsonProperty("item_id")
   private String itemId;
@@ -38,28 +34,15 @@ public class OutputTextDeltaEvent extends StreamEvent {
   @JsonProperty("output_index")
   private Integer outputIndex;
 
-  @JsonProperty("content_index")
-  private Integer contentIndex;
-
-  private String delta;
-
-  private List<TokenLogProb> logprobs;
+  private String code;
 
   //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public Integer getContentIndex() {
-    return contentIndex;
+  public String getCode() {
+    return code;
   }
 
-  public void setContentIndex(Integer contentIndex) {
-    this.contentIndex = contentIndex;
-  }
-
-  public String getDelta() {
-    return delta;
-  }
-
-  public void setDelta(String delta) {
-    this.delta = delta;
+  public void setCode(String code) {
+    this.code = code;
   }
 
   public String getItemId() {
@@ -68,14 +51,6 @@ public class OutputTextDeltaEvent extends StreamEvent {
 
   public void setItemId(String itemId) {
     this.itemId = itemId;
-  }
-
-  public List<TokenLogProb> getLogprobs() {
-    return logprobs;
-  }
-
-  public void setLogprobs(List<TokenLogProb> logprobs) {
-    this.logprobs = logprobs;
   }
 
   public Integer getOutputIndex() {

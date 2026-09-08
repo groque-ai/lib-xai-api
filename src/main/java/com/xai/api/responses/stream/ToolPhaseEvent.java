@@ -16,18 +16,18 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
+package com.xai.api.responses.stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * String-delta family with only {@code item_id} / {@code output_index}:
- * function-call arguments and code-interpreter source.
+ * Phase-only tool events: web search in_progress/searching/completed and
+ * code interpreter in_progress/interpreting/completed.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class IndexedDeltaEvent extends StreamEvent {
+public class ToolPhaseEvent extends StreamEvent {
 
   @JsonProperty("item_id")
   private String itemId;
@@ -35,17 +35,7 @@ public class IndexedDeltaEvent extends StreamEvent {
   @JsonProperty("output_index")
   private Integer outputIndex;
 
-  private String delta;
-
   //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public String getDelta() {
-    return delta;
-  }
-
-  public void setDelta(String delta) {
-    this.delta = delta;
-  }
-
   public String getItemId() {
     return itemId;
   }

@@ -16,28 +16,14 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream.dto;
-
-import com.xai.api.responses.ModelResponse;
+package com.xai.api.responses.stream;
 
 /**
- * Snapshot family: {@code response.created}, {@code in_progress},
- * {@code completed}, {@code queued}, {@code failed}, {@code incomplete}.
+ * Jackson {@code defaultImpl} for unrecognized {@code type} values. Extra
+ * properties are ignored on the base class.
  *
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-08
  */
-public class SnapshotEvent extends StreamEvent {
-
-  private ModelResponse response;
-
-  //<editor-fold defaultstate="collapsed" desc="Accessors">
-  public ModelResponse getResponse() {
-    return response;
-  }
-
-  public void setResponse(ModelResponse response) {
-    this.response = response;
-  }
-  //</editor-fold>
+public class UnknownStreamEvent extends StreamEvent {
 }
