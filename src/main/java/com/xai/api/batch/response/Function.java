@@ -1,4 +1,4 @@
-package com.xai.api.batch.completion;
+package com.xai.api.batch.response;
 
 
 

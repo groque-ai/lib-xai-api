@@ -1,4 +1,4 @@
-package com.xai.api.batch.completion;
+package com.xai.api.batch.response;
 
 /*
  * Copyright (C) 2026 Key Bridge. All rights reserved. Use is subject to license
