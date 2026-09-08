@@ -1,7 +1,11 @@
 package com.xai.client;
 
-import com.xai.api.responses.stream.ResponseSseParser;
-import com.xai.api.responses.stream.ResponseStreamEvent;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.xai.api.responses.stream.dto.StreamEvent;
+import com.xai.client.exception.ApiParseException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -128,30 +132,64 @@ public class ResponseStreamHandleImpl implements ResponseStreamHandle {
     }
   }
 
-  void readLoop(ResponseSseParser parser) {
+  void readLoop(ObjectMapper mapper) {
     InputStream in = state.body;
     if (in == null) {
       complete();
       return;
     }
+    String fieldEvent = null;
+    StringBuilder data = new StringBuilder();
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
       String line;
       while ((line = reader.readLine()) != null) {
         if (state.stopped) {
           return;
         }
-        ResponseSseParser.Result result = parser.consumeLine(line);
-        if (!dispatch(result)) {
-          return;
+        if (!line.isEmpty() && line.charAt(0) == ':') {
+          continue;
+        }
+        if (line.isEmpty()) {
+          if (!dispatchFrame(mapper, fieldEvent, data)) {
+            return;
+          }
+          fieldEvent = null;
+          continue;
+        }
+        int colon = line.indexOf(':');
+        String field;
+        String value;
+        if (colon < 0) {
+          field = line;
+          value = "";
+        } else {
+          field = line.substring(0, colon);
+          value = line.substring(colon + 1);
+          if (!value.isEmpty() && value.charAt(0) == ' ') {
+            value = value.substring(1);
+          }
+        }
+        if ("event".equals(field)) {
+          fieldEvent = value;
+        } else if ("data".equals(field)) {
+          if (data.length() > 0) {
+            data.append('\n');
+          }
+          data.append(value);
         }
       }
       if (state.stopped) {
         return;
       }
-      if (!dispatch(parser.finish())) {
+      if (!dispatchFrame(mapper, fieldEvent, data)) {
         return;
       }
       complete();
+    } catch (ApiParseException ex) {
+      if (state.stopped) {
+        return;
+      }
+      fail(ex);
     } catch (IOException ex) {
       if (state.stopped) {
         return;
@@ -160,19 +198,39 @@ public class ResponseStreamHandleImpl implements ResponseStreamHandle {
     }
   }
 
-  private boolean dispatch(ResponseSseParser.Result result) {
-    if (result.getKind() == ResponseSseParser.Kind.EVENT) {
-      ResponseStreamEvent event = result.getEvent();
-      try {
-        listener.onEvent(event);
-      } catch (RuntimeException ex) {
-        fail(ex);
-        return false;
-      }
+  /**
+   * @return false when the stream should stop (DONE or listener fault)
+   */
+  private boolean dispatchFrame(ObjectMapper mapper, String sseEvent, StringBuilder data) {
+    if (data.length() == 0 && sseEvent == null) {
       return true;
     }
-    if (result.getKind() == ResponseSseParser.Kind.DONE) {
+    String payload = data.toString();
+    data.setLength(0);
+    if ("[DONE]".equals(payload.trim())) {
       complete();
+      return false;
+    }
+    if (payload.isEmpty()) {
+      return true;
+    }
+    StreamEvent event;
+    try {
+      JsonNode node = mapper.readTree(payload);
+      if (node != null && node.isObject()) {
+        ObjectNode obj = (ObjectNode) node;
+        if (!obj.hasNonNull("type") && sseEvent != null && !sseEvent.isBlank()) {
+          obj.put("type", sseEvent);
+        }
+      }
+      event = mapper.convertValue(node, StreamEvent.class);
+    } catch (JsonProcessingException | IllegalArgumentException ex) {
+      throw new ApiParseException("SSE data JSON error", ex);
+    }
+    try {
+      listener.onEvent(event);
+    } catch (RuntimeException ex) {
+      fail(ex);
       return false;
     }
     return true;

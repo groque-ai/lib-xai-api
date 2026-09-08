@@ -9,9 +9,8 @@ Jackson polymorphic DTOs for `POST /v1/responses` SSE `data:` JSON. Discriminato
 
 JDK 11, Jackson 2.15.3, no new libraries. Public POJOs (no records). Package: `com.xai.api.responses.stream.dto`.
 
-## Non-goals (this slice)
+## Non-goals
 
-- Rewiring `ResponseSseParser` / `ResponseStreamListener` to the new types (follow-up).
 - `ResponseAssembler`.
 - Chat Completions chunks.
 - Image / MCP / audio event families until a live capture exists.
@@ -123,6 +122,6 @@ Leave `incomplete_details` as `Object`. Extra usage keys (`context_details`) sta
 - `logprobs` on `output_item.done` message content and on `output_text.*` is a `List` (empty in current captures).
 - Unknown `type` → `UnknownStreamEvent`.
 
-## Follow-up (not this slice)
+## Parser / listener
 
-Parser `convertValue(node, StreamEvent.class)`; listener `onEvent(StreamEvent)`; delete `ResponseStreamEvent` / `StreamContentPart`.
+SSE framing lives on `ResponseStreamHandleImpl`. Each `data:` JSON object is `convertValue`/`readValue` to `StreamEvent`. Listener is `onEvent(StreamEvent)`. `ResponseStreamEvent`, `ResponseSseParser`, and `StreamContentPart` are removed.

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.xai.api.responses.stream.ResponseSseParser;
 import com.xai.client.exception.ApiHttpException;
 import com.xai.client.exception.ApiParseException;
 import java.io.IOException;
@@ -324,7 +323,7 @@ public abstract class XaiAbstractClient implements AutoCloseable {
         return;
       }
       handle.attachBody(body);
-      handle.readLoop(new ResponseSseParser(mapper));
+      handle.readLoop(mapper);
       long time = System.currentTimeMillis() - start;
       if (handle.completedSuccessfully()) {
         LOG.log(Level.INFO, "STREAM ok '{'time={0} ms'}'", time);

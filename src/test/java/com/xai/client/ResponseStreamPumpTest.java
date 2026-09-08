@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.sun.net.httpserver.HttpServer;
 import com.xai.api.responses.stream.ResponseEventType;
-import com.xai.api.responses.stream.ResponseStreamEvent;
+import com.xai.api.responses.stream.dto.StreamEvent;
 import com.xai.client.exception.ApiHttpException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -147,7 +147,7 @@ public class ResponseStreamPumpTest {
   }
 
   public static final class RecordingListener implements ResponseStreamListener {
-    public final List<ResponseStreamEvent> events = new ArrayList<>();
+    public final List<StreamEvent> events = new ArrayList<>();
     public final List<Throwable> errors = new ArrayList<>();
     public final CountDownLatch completed = new CountDownLatch(1);
     public final CountDownLatch cancelled = new CountDownLatch(1);
@@ -156,7 +156,7 @@ public class ResponseStreamPumpTest {
     public volatile int cancels;
 
     @Override
-    public void onEvent(ResponseStreamEvent event) {
+    public void onEvent(StreamEvent event) {
       events.add(event);
     }
 

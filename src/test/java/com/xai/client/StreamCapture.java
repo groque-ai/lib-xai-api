@@ -1,7 +1,7 @@
 package com.xai.client;
 
 import com.xai.api.responses.stream.ResponseEventType;
-import com.xai.api.responses.stream.ResponseStreamEvent;
+import com.xai.api.responses.stream.dto.StreamEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +30,7 @@ public class StreamCapture implements ResponseStreamListener {
   private final Path dir;
   private final OutputStream bodyFile;
   private final AtomicReference<String> requestJson = new AtomicReference<>();
-  private final List<ResponseStreamEvent> events = new CopyOnWriteArrayList<>();
+  private final List<StreamEvent> events = new CopyOnWriteArrayList<>();
   private final CountDownLatch done = new CountDownLatch(1);
   private volatile String terminal = "pending";
   private volatile Throwable error;
@@ -47,7 +47,7 @@ public class StreamCapture implements ResponseStreamListener {
     return dir;
   }
 
-  public List<ResponseStreamEvent> getEvents() {
+  public List<StreamEvent> getEvents() {
     return events;
   }
 
@@ -82,7 +82,7 @@ public class StreamCapture implements ResponseStreamListener {
     }
     Map<String, Integer> counts = new LinkedHashMap<>();
     List<String> unknown = new ArrayList<>();
-    for (ResponseStreamEvent event : events) {
+    for (StreamEvent event : events) {
       String key = event.getType() == null ? "null" : event.getType();
       Integer n = counts.get(key);
       counts.put(key, n == null ? 1 : n + 1);
@@ -109,7 +109,7 @@ public class StreamCapture implements ResponseStreamListener {
   }
 
   public boolean saw(ResponseEventType event) {
-    for (ResponseStreamEvent item : events) {
+    for (StreamEvent item : events) {
       if (item.getEvent() == event) {
         return true;
       }
@@ -118,7 +118,7 @@ public class StreamCapture implements ResponseStreamListener {
   }
 
   @Override
-  public void onEvent(ResponseStreamEvent event) {
+  public void onEvent(StreamEvent event) {
     events.add(event);
   }
 

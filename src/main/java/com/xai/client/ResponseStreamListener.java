@@ -1,6 +1,6 @@
 package com.xai.client;
 
-import com.xai.api.responses.stream.ResponseStreamEvent;
+import com.xai.api.responses.stream.dto.StreamEvent;
 
 /**
  * Push callbacks for a Responses SSE stream.
@@ -10,7 +10,7 @@ import com.xai.api.responses.stream.ResponseStreamEvent;
  */
 public interface ResponseStreamListener {
 
-  void onEvent(ResponseStreamEvent event);
+  void onEvent(StreamEvent event);
 
   void onComplete();
 
