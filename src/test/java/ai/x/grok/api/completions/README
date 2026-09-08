@@ -1,0 +1,5 @@
+
+Chat completions is NOT supported in this library.
+However, from time to time we come across an API that looks like it may require 
+legacy support. To prevent redevelopment of these classes they are 
+archived here.

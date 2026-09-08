@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Metadata for a single request within a batch (GET
  * /v1/batches/{batch_id}/requests).
  */
-public class BatchRequestMetadata {
+public class BatchMetadata {
 
   /**
    * Unique identifier of the request within the batch.
@@ -39,7 +39,9 @@ public class BatchRequestMetadata {
   public String finishTime;
 
   /**
-   * Current state of the request (e.g., succeeded, failed).
+   * Current state of the request.
+   * <p>
+   * ["unknown" | "pending" | "succeeded" | "cancelled" | "failed"]
    */
   @JsonProperty("state")
   public String state;

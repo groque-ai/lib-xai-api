@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Represents the result of a single request within a batch. Returned by GET
  * /v1/batches/{batch_id}/results.
  */
-public class BatchResult {
+public class BatchAddResponse {
 
   /**
    * Identifier of the request within the batch.

@@ -23,23 +23,21 @@ public class Batch {
   public String name;
 
   /**
-   * Time when the batch was created (ISO-8601).
-   */
-  @JsonProperty("create_time")
-  public String createTime;
-
-  /**
-   * Time when the batch expires (ISO-8601).
-   */
-  @JsonProperty("expire_time")
-  public String expireTime;
-
-  /**
    * ID of the API key used to create the batch.
    */
   @JsonProperty("create_api_key_id")
   public String createApiKeyId;
 
+  /**
+   * Time when the batch was created (ISO-8601).
+   */
+  @JsonProperty("create_time")
+  public String createTime;
+  /**
+   * Time when the batch expires (ISO-8601).
+   */
+  @JsonProperty("expire_time")
+  public String expireTime;
   /**
    * Time when the batch was cancelled (ISO-8601).
    */

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Response wrapper for listing batches (GET /v1/batches).
  */
-public class ListBatchesResponse {
+public class BatchListResponse {
 
   /**
    * Array of batch objects.
@@ -15,7 +15,8 @@ public class ListBatchesResponse {
   public List<Batch> batches;
 
   /**
-   * Pagination token for retrieving the next page.
+   * The page token to retrieve batches from the next page. Will be empty if
+   * this is the last page.
    */
   @JsonProperty("pagination_token")
   public String paginationToken;

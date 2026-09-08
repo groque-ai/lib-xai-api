@@ -1,4 +1,4 @@
-package com.xai.api.batch.response;
+package ai.x.grok.api.completions;
 
 
 

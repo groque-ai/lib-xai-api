@@ -12,8 +12,7 @@ public class GenerateVideoRequest {
    * Video duration in seconds. Range: [1, 15]. Default: 8.
    */
   @JsonProperty("duration")
-  private int //	"Video duration in seconds. Range: [1, 15]. Default: 8."
-    duration = 8;
+  private int duration = 8;
 
   /**
    * Optional input image for image-to-video generation. If provided, generates

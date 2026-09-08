@@ -1,4 +1,4 @@
-package com.xai.api.batch.response;
+package ai.x.grok.api.completions;
 
 /*
  * Copyright (C) 2026 Key Bridge. All rights reserved. Use is subject to license
