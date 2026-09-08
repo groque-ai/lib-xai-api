@@ -9,7 +9,7 @@
 
   <groupId>ai.groque.lib</groupId>
   <artifactId>xai-api</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <packaging>jar</packaging>
 
   <name>lib-xai-api</name>
@@ -21,6 +21,10 @@
     - Documentation: https://docs.x.ai/overview
     - Schema: https://api.x.ai/api-docs/openapi.json
     - Swagger: https://api.x.ai/docs/#
+
+    History:
+    v1.0.0 - working version
+    v1.1.0 - add streaming
 
   </description>
 

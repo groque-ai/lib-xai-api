@@ -40,6 +40,10 @@ public class XaiResponsesClient extends XaiAbstractClient {
     super(RESPONSES_PATH);
   }
 
+  public XaiResponsesClient(XaiClientConfig config) {
+    super(RESPONSES_PATH, config);
+  }
+
   /**
    * Generates a new model response based on the provided request.
    * <p>
@@ -56,8 +60,33 @@ public class XaiResponsesClient extends XaiAbstractClient {
    *                                  occur
    */
   public ModelResponse generate(ModelRequest request) {
+    if (request == null) {
+      throw new IllegalArgumentException("request");
+    }
+    if (Boolean.TRUE.equals(request.getStream())) {
+      throw new IllegalArgumentException("stream=true requires generateStreaming");
+    }
     HttpRequest httpRequest = doPostJson("", request);
     return sendRequest(httpRequest, ModelResponse.class);
+  }
+
+  /**
+   * Streams a model response as SSE events. Returns immediately.
+   *
+   * @param request  generation request; {@code stream} is set to true
+   * @param listener push callbacks; must not be null
+   * @return cancelable stream lease
+   */
+  public ResponseStreamHandle generateStreaming(ModelRequest request, ResponseStreamListener listener) {
+    if (request == null) {
+      throw new IllegalArgumentException("request");
+    }
+    if (listener == null) {
+      throw new IllegalArgumentException("listener");
+    }
+    request.setStream(Boolean.TRUE);
+    HttpRequest httpRequest = doPostJsonStream("", request);
+    return sendStreaming(httpRequest, listener);
   }
 
   /**

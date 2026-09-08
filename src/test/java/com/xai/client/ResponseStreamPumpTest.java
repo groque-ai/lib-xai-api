@@ -146,13 +146,13 @@ public class ResponseStreamPumpTest {
   }
 
   public static final class RecordingListener implements ResponseStreamListener {
-    final List<ResponseStreamEvent> events = new ArrayList<>();
-    final List<Throwable> errors = new ArrayList<>();
-    final CountDownLatch completed = new CountDownLatch(1);
-    final CountDownLatch cancelled = new CountDownLatch(1);
-    final CountDownLatch errored = new CountDownLatch(1);
-    volatile int completes;
-    volatile int cancels;
+    public final List<ResponseStreamEvent> events = new ArrayList<>();
+    public final List<Throwable> errors = new ArrayList<>();
+    public final CountDownLatch completed = new CountDownLatch(1);
+    public final CountDownLatch cancelled = new CountDownLatch(1);
+    public final CountDownLatch errored = new CountDownLatch(1);
+    public volatile int completes;
+    public volatile int cancels;
 
     @Override
     public void onEvent(ResponseStreamEvent event) {
