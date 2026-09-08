@@ -18,51 +18,36 @@
  */
 package com.xai.api.responses.stream.dto;
 
-import com.xai.api.responses.stream.dto.Function;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
+ * Stream error frame ({@code type=error}). {@code error} stays a node so we
+ * do not invent a one-off error POJO.
  *
  * @author Key Bridge
+ * @since v1.1.0 created 2026-09-08
  */
-public class ToolCall {
+public class ErrorEvent extends StreamEvent {
 
-  private String id;               // required
-  private Function function;       // required
+  private Integer status;
 
-  private Integer index;           // nullable
-  private String type;             // nullable
-  // "function", "web_search_call", "x_search_call", "code_interpreter_call", "mcp_call"
+  private JsonNode error;
 
-  public Function getFunction() {
-    return function;
+  //<editor-fold defaultstate="collapsed" desc="Accessors">
+  public JsonNode getError() {
+    return error;
   }
 
-  public void setFunction(Function function) {
-    this.function = function;
+  public void setError(JsonNode error) {
+    this.error = error;
   }
 
-  public String getId() {
-    return id;
+  public Integer getStatus() {
+    return status;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setStatus(Integer status) {
+    this.status = status;
   }
-
-  public Integer getIndex() {
-    return index;
-  }
-
-  public void setIndex(Integer index) {
-    this.index = index;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
+  //</editor-fold>
 }

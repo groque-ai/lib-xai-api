@@ -19,54 +19,36 @@
 package com.xai.api.responses.stream.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xai.api.responses.output.ModelOutput;
 
 /**
+ * Item family: {@code response.output_item.added} / {@code done}.
  *
  * @author Key Bridge
+ * @since v1.1.0 created 2026-09-08
  */
-public class ChoiceChunk {
+public class OutputItemEvent extends StreamEvent {
 
-  private int index;               // required
-  private Delta delta;             // required
+  @JsonProperty("output_index")
+  private Integer outputIndex;
 
-  @JsonProperty("finish_reason")
-  private String finishReason;     // nullable
-  /**
-   * The log probabilities of each output token returned in the content of
-   * message.
-   */
-  private LogProbs logprobs;       // nullable
+  private ModelOutput item;
 
-  public Delta getDelta() {
-    return delta;
+  //<editor-fold defaultstate="collapsed" desc="Accessors">
+  public ModelOutput getItem() {
+    return item;
   }
 
-  public void setDelta(Delta delta) {
-    this.delta = delta;
+  public void setItem(ModelOutput item) {
+    this.item = item;
   }
 
-  public String getFinishReason() {
-    return finishReason;
+  public Integer getOutputIndex() {
+    return outputIndex;
   }
 
-  public void setFinishReason(String finishReason) {
-    this.finishReason = finishReason;
+  public void setOutputIndex(Integer outputIndex) {
+    this.outputIndex = outputIndex;
   }
-
-  public int getIndex() {
-    return index;
-  }
-
-  public void setIndex(int index) {
-    this.index = index;
-  }
-
-  public LogProbs getLogprobs() {
-    return logprobs;
-  }
-
-  public void setLogprobs(LogProbs logprobs) {
-    this.logprobs = logprobs;
-  }
-
+  //</editor-fold>
 }

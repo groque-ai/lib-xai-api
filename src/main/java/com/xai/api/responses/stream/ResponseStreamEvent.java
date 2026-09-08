@@ -36,13 +36,16 @@ import com.xai.api.responses.output.tokens.Annotation;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseStreamEvent {
 
-  @JsonIgnore
-  private ResponseEventType event;
-  private String type;
   @JsonProperty("sequence_number")
   private Integer sequenceNumber;
+  private String type;
+  @JsonIgnore
+  private ResponseEventType event;
+  // type specific fields
+
   private ModelResponse response;
   private ModelOutput item;
+
   @JsonProperty("output_index")
   private Integer outputIndex;
   @JsonProperty("item_id")

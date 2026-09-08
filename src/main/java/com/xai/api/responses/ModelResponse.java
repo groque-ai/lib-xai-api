@@ -3,6 +3,8 @@ package com.xai.api.responses;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xai.api.responses.config.ModelResponseConfiguration;
+import com.xai.api.responses.config.ReasoningConfiguration;
 import com.xai.api.responses.output.ModelOutput;
 import com.xai.api.responses.tool.ModelTool;
 import com.xai.api.responses.tool.ModelToolChoice;
@@ -107,7 +109,7 @@ public class ModelResponse {
   /**
    * Reasoning configuration. Only for reasoning models.
    */
-  private Object reasoning;
+  private ReasoningConfiguration reasoning;
   /**
    * "#/components/schemas/ModelToolChoice"
    * <p>
@@ -191,8 +193,11 @@ public class ModelResponse {
    * Specifies the processing tier used for serving the request.
    */
   @JsonProperty("service_tier")
-  private String serviceTier;  // Text response configuration
-  //  private ModelResponseConfiguration text;
+  private String serviceTier;
+  /**
+   * Text response configuration echoed on snapshots ({@code text.format}).
+   */
+  private ModelResponseConfiguration text;
   // Number of top logprobs returned
   /**
    * An integer between 0 and 8 specifying the number of most likely tokens to
@@ -348,7 +353,7 @@ public class ModelResponse {
    *
    * @return the reasoning
    */
-  public Object getReasoning() {
+  public ReasoningConfiguration getReasoning() {
     return reasoning;
   }
 
@@ -357,7 +362,7 @@ public class ModelResponse {
    *
    * @param reasoning the reasoning
    */
-  public void setReasoning(Object reasoning) {
+  public void setReasoning(ReasoningConfiguration reasoning) {
     this.reasoning = reasoning;
   }
 
@@ -429,6 +434,14 @@ public class ModelResponse {
    */
   public void setTemperature(Float temperature) {
     this.temperature = temperature;
+  }
+
+  public ModelResponseConfiguration getText() {
+    return text;
+  }
+
+  public void setText(ModelResponseConfiguration text) {
+    this.text = text;
   }
 
   public ModelToolChoice getToolChoice() {

@@ -18,47 +18,48 @@
  */
 package com.xai.api.responses.stream.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
+ * String-delta family with only {@code item_id} / {@code output_index}:
+ * function-call arguments and code-interpreter source.
  *
  * @author Key Bridge
+ * @since v1.1.0 created 2026-09-08
  */
-public class PromptUsageDetail {
+public class IndexedDeltaEvent extends StreamEvent {
 
-  // required
-  private int textTokens;
-  private int audioTokens;
-  private int imageTokens;
-  private int cachedTokens;
+  @JsonProperty("item_id")
+  private String itemId;
 
-  public int getTextTokens() {
-    return textTokens;
+  @JsonProperty("output_index")
+  private Integer outputIndex;
+
+  private String delta;
+
+  //<editor-fold defaultstate="collapsed" desc="Accessors">
+  public String getDelta() {
+    return delta;
   }
 
-  public void setTextTokens(int textTokens) {
-    this.textTokens = textTokens;
+  public void setDelta(String delta) {
+    this.delta = delta;
   }
 
-  public int getAudioTokens() {
-    return audioTokens;
+  public String getItemId() {
+    return itemId;
   }
 
-  public void setAudioTokens(int audioTokens) {
-    this.audioTokens = audioTokens;
+  public void setItemId(String itemId) {
+    this.itemId = itemId;
   }
 
-  public int getImageTokens() {
-    return imageTokens;
+  public Integer getOutputIndex() {
+    return outputIndex;
   }
 
-  public void setImageTokens(int imageTokens) {
-    this.imageTokens = imageTokens;
+  public void setOutputIndex(Integer outputIndex) {
+    this.outputIndex = outputIndex;
   }
-
-  public int getCachedTokens() {
-    return cachedTokens;
-  }
-
-  public void setCachedTokens(int cachedTokens) {
-    this.cachedTokens = cachedTokens;
-  }
+  //</editor-fold>
 }

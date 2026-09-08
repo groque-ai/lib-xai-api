@@ -19,28 +19,11 @@
 package com.xai.api.responses.stream.dto;
 
 /**
+ * Jackson {@code defaultImpl} for unrecognized {@code type} values. Extra
+ * properties are ignored on the base class.
  *
  * @author Key Bridge
+ * @since v1.1.0 created 2026-09-08
  */
-public class Function {
-
-  private String name;             // required
-  private Object arguments;        // required (JSON object, so use Object or Map<String,Object>)
-
-  public Object getArguments() {
-    return arguments;
-  }
-
-  public void setArguments(Object arguments) {
-    this.arguments = arguments;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
+public class UnknownStreamEvent extends StreamEvent {
 }

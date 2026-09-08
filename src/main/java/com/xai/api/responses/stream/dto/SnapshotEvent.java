@@ -18,23 +18,26 @@
  */
 package com.xai.api.responses.stream.dto;
 
-import com.xai.api.responses.output.tokens.TokenLogProb;
-import java.util.List;
+import com.xai.api.responses.ModelResponse;
 
 /**
+ * Snapshot family: {@code response.created}, {@code in_progress},
+ * {@code completed}, {@code queued}, {@code failed}, {@code incomplete}.
  *
  * @author Key Bridge
+ * @since v1.1.0 created 2026-09-08
  */
-public class LogProbs {
+public class SnapshotEvent extends StreamEvent {
 
-  // nullable: may be null or an array of TokenLogProb
-  private List<TokenLogProb> content;
+  private ModelResponse response;
 
-  public List<TokenLogProb> getContent() {
-    return content;
+  //<editor-fold defaultstate="collapsed" desc="Accessors">
+  public ModelResponse getResponse() {
+    return response;
   }
 
-  public void setContent(List<TokenLogProb> content) {
-    this.content = content;
+  public void setResponse(ModelResponse response) {
+    this.response = response;
   }
+  //</editor-fold>
 }
