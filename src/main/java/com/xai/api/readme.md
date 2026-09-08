@@ -1,29 +1,23 @@
 
-Pacakage Organization Mirrors the Responses API conceptual domains
+## Pacakage Organization Mirrors the Responses API conceptual domains
 
 Top-level domains:
 
-    input/ → everything sent to the model
-
-    output/ → everything produced by the model
-
-    tool/ → tool definitions (not tool calls)
-
-    config/ → response formatting / request configuration
-
-    usage/ → token accounting
-
-    type/ → enums / schema types
-
-    util/ → Jackson support
+  -  input/ → everything sent to the model
+  -  output/ → everything produced by the model
+  -  tool/ → tool definitions (not tool calls)
+  -  config/ → response formatting / request configuration
+  -  usage/ → token accounting
+  -  type/ → enums / schema types
+  -  util/ → Jackson support
 
 Keeps polymorphic hierarchies localized
 
 Example:
 
-    ModelInputContent*
-    OutputMessageContent*
-    ModelOutput subclasses
+  -  ModelInputContent*
+  -  OutputMessageContent*
+  -  ModelOutput subclasses
 
 Each lives together.
 
@@ -32,12 +26,9 @@ Separates tool definitions from tool calls
 
 Important distinction:
 
-    tool/ → tools you declare
-
-    output/tool/ → tool calls produced by model
-
-    input/part/item/FunctionToolCallOutput → tool results fed back
-
+  -  tool/ → tools you declare
+  -  output/tool/ → tool calls produced by model
+  -  input/part/item/FunctionToolCallOutput → tool results fed back
 
 
 
