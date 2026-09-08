@@ -16,51 +16,31 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream;
+package com.xai.api.responses.stream.dto;
 
 /**
  *
  * @author Key Bridge
  */
-public class ToolCall {
+public class Function {
 
-  private String id;               // required
-  private Function function;       // required
+  private String name;             // required
+  private Object arguments;        // required (JSON object, so use Object or Map<String,Object>)
 
-  private Integer index;           // nullable
-  private String type;             // nullable
-  // "function", "web_search_call", "x_search_call", "code_interpreter_call", "mcp_call"
-
-  public Function getFunction() {
-    return function;
+  public Object getArguments() {
+    return arguments;
   }
 
-  public void setFunction(Function function) {
-    this.function = function;
+  public void setArguments(Object arguments) {
+    this.arguments = arguments;
   }
 
-  public String getId() {
-    return id;
+  public String getName() {
+    return name;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public Integer getIndex() {
-    return index;
-  }
-
-  public void setIndex(Integer index) {
-    this.index = index;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
+  public void setName(String name) {
+    this.name = name;
   }
 
 }

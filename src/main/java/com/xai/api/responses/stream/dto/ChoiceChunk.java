@@ -16,7 +16,9 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream;
+package com.xai.api.responses.stream.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
@@ -27,8 +29,44 @@ public class ChoiceChunk {
   private int index;               // required
   private Delta delta;             // required
 
+  @JsonProperty("finish_reason")
   private String finishReason;     // nullable
+  /**
+   * The log probabilities of each output token returned in the content of
+   * message.
+   */
   private LogProbs logprobs;       // nullable
 
-  // getters/setters
+  public Delta getDelta() {
+    return delta;
+  }
+
+  public void setDelta(Delta delta) {
+    this.delta = delta;
+  }
+
+  public String getFinishReason() {
+    return finishReason;
+  }
+
+  public void setFinishReason(String finishReason) {
+    this.finishReason = finishReason;
+  }
+
+  public int getIndex() {
+    return index;
+  }
+
+  public void setIndex(int index) {
+    this.index = index;
+  }
+
+  public LogProbs getLogprobs() {
+    return logprobs;
+  }
+
+  public void setLogprobs(LogProbs logprobs) {
+    this.logprobs = logprobs;
+  }
+
 }

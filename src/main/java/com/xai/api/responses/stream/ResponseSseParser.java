@@ -141,7 +141,7 @@ public class ResponseSseParser {
       if (type == null || type.isBlank()) {
         type = sseEvent;
       }
-      ResponseEvent event = ResponseEvent.fromName(type);
+      ResponseEventType event = ResponseEventType.fromName(type);
       ResponseStreamEvent envelope;
       try {
         envelope = mapper.convertValue(node, ResponseStreamEvent.class);

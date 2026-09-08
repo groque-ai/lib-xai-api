@@ -4,8 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+
 import com.sun.net.httpserver.HttpServer;
-import com.xai.api.responses.stream.ResponseEvent;
+import com.xai.api.responses.stream.ResponseEventType;
 import com.xai.api.responses.stream.ResponseStreamEvent;
 import com.xai.client.exception.ApiHttpException;
 import java.io.OutputStream;
@@ -75,7 +76,7 @@ public class ResponseStreamPumpTest {
     ResponseStreamHandle handle = client.open("/stream", listener);
     assertTrue(listener.completed.await(5, TimeUnit.SECONDS));
     assertEquals(1, listener.events.size());
-    assertSame(ResponseEvent.RESPONSE_OUTPUT_TEXT_DELTA, listener.events.get(0).getEvent());
+    assertSame(ResponseEventType.RESPONSE_OUTPUT_TEXT_DELTA, listener.events.get(0).getEvent());
     assertEquals(0, listener.errors.size());
     assertEquals(0, listener.cancels);
     assertFalse(handle.isOpen());

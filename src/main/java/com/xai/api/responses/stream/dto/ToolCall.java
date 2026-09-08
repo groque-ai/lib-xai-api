@@ -16,49 +16,53 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream;
+package com.xai.api.responses.stream.dto;
+
+import com.xai.api.responses.stream.dto.Function;
 
 /**
  *
  * @author Key Bridge
  */
-public class PromptUsageDetail {
+public class ToolCall {
 
-  // required
-  private int textTokens;
-  private int audioTokens;
-  private int imageTokens;
-  private int cachedTokens;
+  private String id;               // required
+  private Function function;       // required
 
-  public int getTextTokens() {
-    return textTokens;
+  private Integer index;           // nullable
+  private String type;             // nullable
+  // "function", "web_search_call", "x_search_call", "code_interpreter_call", "mcp_call"
+
+  public Function getFunction() {
+    return function;
   }
 
-  public void setTextTokens(int textTokens) {
-    this.textTokens = textTokens;
+  public void setFunction(Function function) {
+    this.function = function;
   }
 
-  public int getAudioTokens() {
-    return audioTokens;
+  public String getId() {
+    return id;
   }
 
-  public void setAudioTokens(int audioTokens) {
-    this.audioTokens = audioTokens;
+  public void setId(String id) {
+    this.id = id;
   }
 
-  public int getImageTokens() {
-    return imageTokens;
+  public Integer getIndex() {
+    return index;
   }
 
-  public void setImageTokens(int imageTokens) {
-    this.imageTokens = imageTokens;
+  public void setIndex(Integer index) {
+    this.index = index;
   }
 
-  public int getCachedTokens() {
-    return cachedTokens;
+  public String getType() {
+    return type;
   }
 
-  public void setCachedTokens(int cachedTokens) {
-    this.cachedTokens = cachedTokens;
+  public void setType(String type) {
+    this.type = type;
   }
+
 }

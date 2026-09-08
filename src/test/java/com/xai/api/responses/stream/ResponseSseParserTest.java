@@ -60,11 +60,11 @@ public class ResponseSseParserTest {
       + "\n";
     List<ResponseStreamEvent> events = feed(sse);
     assertEquals(2, events.size());
-    assertSame(ResponseEvent.RESPONSE_CREATED, events.get(0).getEvent());
+    assertSame(ResponseEventType.RESPONSE_CREATED, events.get(0).getEvent());
     assertEquals("response.created", events.get(0).getType());
     assertEquals("resp_1", events.get(0).getData().get("response").get("id").asText());
     assertEquals("resp_1", events.get(0).getResponse().getId());
-    assertSame(ResponseEvent.RESPONSE_OUTPUT_TEXT_DELTA, events.get(1).getEvent());
+    assertSame(ResponseEventType.RESPONSE_OUTPUT_TEXT_DELTA, events.get(1).getEvent());
     assertEquals("Hi", events.get(1).getData().get("delta").asText());
     assertEquals("Hi", events.get(1).getDelta());
   }
@@ -77,7 +77,7 @@ public class ResponseSseParserTest {
       + "\n";
     List<ResponseStreamEvent> events = feed(sse);
     assertEquals(1, events.size());
-    assertSame(ResponseEvent.RESPONSE_COMPLETED, events.get(0).getEvent());
+    assertSame(ResponseEventType.RESPONSE_COMPLETED, events.get(0).getEvent());
     assertEquals("response.completed", events.get(0).getType());
   }
 
@@ -89,7 +89,7 @@ public class ResponseSseParserTest {
       + "\n";
     List<ResponseStreamEvent> events = feed(sse);
     assertEquals(1, events.size());
-    assertSame(ResponseEvent.RESPONSE_FAILED, events.get(0).getEvent());
+    assertSame(ResponseEventType.RESPONSE_FAILED, events.get(0).getEvent());
     assertEquals("response.failed", events.get(0).getType());
   }
 
@@ -100,7 +100,7 @@ public class ResponseSseParserTest {
       + "\n";
     List<ResponseStreamEvent> events = feed(sse);
     assertEquals(1, events.size());
-    assertSame(ResponseEvent.UNKNOWN, events.get(0).getEvent());
+    assertSame(ResponseEventType.UNKNOWN, events.get(0).getEvent());
     assertEquals("response.custom.future", events.get(0).getType());
     assertEquals(1, events.get(0).getData().get("x").asInt());
   }

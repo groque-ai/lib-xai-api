@@ -39,7 +39,7 @@ public class ResponseStreamEventUnmarshalTest {
       "event: response.output_text.delta\n"
       + "data: {\"type\":\"response.output_text.delta\",\"delta\":\"pong\",\"item_id\":\"msg_1\",\"output_index\":1,\"content_index\":0,\"sequence_number\":23}\n"
       + "\n");
-    assertEquals(ResponseEvent.RESPONSE_OUTPUT_TEXT_DELTA, event.getEvent());
+    assertEquals(ResponseEventType.RESPONSE_OUTPUT_TEXT_DELTA, event.getEvent());
     assertEquals("pong", event.getDelta());
     assertEquals("msg_1", event.getItemId());
     assertEquals(Integer.valueOf(1), event.getOutputIndex());
@@ -90,7 +90,7 @@ public class ResponseStreamEventUnmarshalTest {
 
     ResponseStreamEvent ann = parseOne(
       "data: {\"type\":\"response.output_text.annotation.added\",\"annotation\":{\"type\":\"url_citation\",\"url\":\"https://example.com\",\"start_index\":0,\"end_index\":0,\"title\":\"Example\"},\"annotation_index\":0,\"item_id\":\"msg_1\",\"output_index\":7,\"content_index\":0}\n\n");
-    assertEquals(ResponseEvent.RESPONSE_OUTPUT_TEXT_ANNOTATION_DOT_ADDED, ann.getEvent());
+    assertEquals(ResponseEventType.RESPONSE_OUTPUT_TEXT_ANNOTATION_DOT_ADDED, ann.getEvent());
     assertNotNull(ann.getAnnotation());
     assertEquals("https://example.com", ann.getAnnotation().getUrl());
   }
@@ -133,13 +133,13 @@ public class ResponseStreamEventUnmarshalTest {
       return 0;
     }
     ResponseStreamEvent event = result.getEvent();
-    if (event.getEvent() == ResponseEvent.UNKNOWN) {
+    if (event.getEvent() == ResponseEventType.UNKNOWN) {
       failures.add(dir.getFileName() + " unknown type=" + event.getType());
     }
-    if (ResponseEvent.RESPONSE_OUTPUT_TEXT_DELTA.equals(event.getEvent()) && event.getDelta() == null) {
+    if (ResponseEventType.RESPONSE_OUTPUT_TEXT_DELTA.equals(event.getEvent()) && event.getDelta() == null) {
       failures.add(dir.getFileName() + " missing delta");
     }
-    if (ResponseEvent.RESPONSE_CREATED.equals(event.getEvent())
+    if (ResponseEventType.RESPONSE_CREATED.equals(event.getEvent())
         && (event.getResponse() == null || event.getResponse().getId() == null)) {
       failures.add(dir.getFileName() + " missing created response.id");
     }

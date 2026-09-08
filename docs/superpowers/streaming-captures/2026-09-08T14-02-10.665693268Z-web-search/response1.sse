@@ -1,0 +1,279 @@
+event: response.created
+data: {"sequence_number":0,"type":"response.created","response":{"created_at":0,"completed_at":null,"id":"fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","max_output_tokens":400,"model":"grok-4.6","object":"response","output":[],"parallel_tool_calls":true,"previous_response_id":null,"reasoning":{"effort":null,"summary":null},"temperature":0.699999988079071,"text":{"format":{"type":"text"}},"tool_choice":"auto","tools":[{"type":"web_search"}],"top_p":0.949999988079071,"usage":null,"user":null,"incomplete_details":null,"status":"in_progress","store":false,"metadata":{"system_fingerprint":"fp_e41c6060b2628547"},"background":false,"service_tier":"default","truncation":"disabled","top_logprobs":0,"presence_penalty":0.0,"frequency_penalty":0.0,"prompt_cache_key":null,"max_tool_calls":null,"safety_identifier":null,"error":null,"instructions":null}}
+
+event: response.in_progress
+data: {"sequence_number":1,"type":"response.in_progress","response":{"created_at":0,"completed_at":null,"id":"fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","max_output_tokens":400,"model":"grok-4.6","object":"response","output":[],"parallel_tool_calls":true,"previous_response_id":null,"reasoning":{"effort":null,"summary":null},"temperature":0.699999988079071,"text":{"format":{"type":"text"}},"tool_choice":"auto","tools":[{"type":"web_search"}],"top_p":0.949999988079071,"usage":null,"user":null,"incomplete_details":null,"status":"in_progress","store":false,"metadata":{"system_fingerprint":"fp_e41c6060b2628547"},"background":false,"service_tier":"default","truncation":"disabled","top_logprobs":0,"presence_penalty":0.0,"frequency_penalty":0.0,"prompt_cache_key":null,"max_tool_calls":null,"safety_identifier":null,"error":null,"instructions":null}}
+
+event: response.output_item.added
+data: {"sequence_number":2,"type":"response.output_item.added","item":{"id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","summary":[],"type":"reasoning","status":"in_progress"},"output_index":0}
+
+event: response.reasoning_summary_part.added
+data: {"sequence_number":3,"type":"response.reasoning_summary_part.added","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"part":{"text":"","type":"summary_text"},"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":4,"type":"response.reasoning_summary_text.delta","delta":"The","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":5,"type":"response.reasoning_summary_text.delta","delta":" question","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":6,"type":"response.reasoning_summary_text.delta","delta":" is","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":7,"type":"response.reasoning_summary_text.delta","delta":":","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":8,"type":"response.reasoning_summary_text.delta","delta":" \"","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":9,"type":"response.reasoning_summary_text.delta","delta":"What","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":10,"type":"response.reasoning_summary_text.delta","delta":" is","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":11,"type":"response.reasoning_summary_text.delta","delta":" x","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":12,"type":"response.reasoning_summary_text.delta","delta":"AI","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":13,"type":"response.reasoning_summary_text.delta","delta":"'s","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":14,"type":"response.reasoning_summary_text.delta","delta":" current","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":15,"type":"response.reasoning_summary_text.delta","delta":" flag","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":16,"type":"response.reasoning_summary_text.delta","delta":"ship","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":17,"type":"response.reasoning_summary_text.delta","delta":" G","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":18,"type":"response.reasoning_summary_text.delta","delta":"rok","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":19,"type":"response.reasoning_summary_text.delta","delta":" model","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":20,"type":"response.reasoning_summary_text.delta","delta":" name","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":21,"type":"response.reasoning_summary_text.delta","delta":"?","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":22,"type":"response.reasoning_summary_text.delta","delta":" One","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":23,"type":"response.reasoning_summary_text.delta","delta":" sentence","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":24,"type":"response.reasoning_summary_text.delta","delta":",","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":25,"type":"response.reasoning_summary_text.delta","delta":" with","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":26,"type":"response.reasoning_summary_text.delta","delta":" a","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":27,"type":"response.reasoning_summary_text.delta","delta":" source","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":28,"type":"response.reasoning_summary_text.delta","delta":".\"","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":29,"type":"response.reasoning_summary_text.delta","delta":"\n","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.done
+data: {"sequence_number":30,"type":"response.reasoning_summary_text.done","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"summary_index":0,"text":"The question is: \"What is xAI's current flagship Grok model name? One sentence, with a source.\"\n"}
+
+event: response.reasoning_summary_part.done
+data: {"sequence_number":31,"type":"response.reasoning_summary_part.done","item_id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":0,"part":{"text":"The question is: \"What is xAI's current flagship Grok model name? One sentence, with a source.\"\n","type":"summary_text"},"summary_index":0}
+
+event: response.output_item.done
+data: {"sequence_number":32,"type":"response.output_item.done","item":{"id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","summary":[{"text":"The question is: \"What is xAI's current flagship Grok model name? One sentence, with a source.\"\n","type":"summary_text"}],"type":"reasoning","status":"completed"},"output_index":0}
+
+event: response.output_item.added
+data: {"sequence_number":33,"type":"response.output_item.added","item":{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-0","type":"web_search_call","status":"in_progress","action":{"type":"search","query":"","sources":[]}},"output_index":1}
+
+event: response.web_search_call.in_progress
+data: {"sequence_number":34,"type":"response.web_search_call.in_progress","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-0","output_index":1}
+
+event: response.web_search_call.searching
+data: {"sequence_number":35,"type":"response.web_search_call.searching","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-0","output_index":1}
+
+event: response.web_search_call.completed
+data: {"sequence_number":36,"type":"response.web_search_call.completed","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-0","output_index":1}
+
+event: response.output_item.done
+data: {"sequence_number":37,"type":"response.output_item.done","item":{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-0","type":"web_search_call","status":"completed","action":{"type":"search","query":"xAI current flagship Grok model","sources":[{"type":"url","url":"https://x.ai/news/grok-4-6"},{"type":"url","url":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705"},{"type":"url","url":"https://www.axios.com/2026/07/08/spacexai-grok-new-model"},{"type":"url","url":"https://benchlm.ai/best/xai-models"},{"type":"url","url":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm"},{"type":"url","url":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/"},{"type":"url","url":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena"},{"type":"url","url":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/"},{"type":"url","url":"https://r.jina.ai/https:/x.ai/blog"},{"type":"url","url":"https://www.bighatgroup.com/series/xai-weekly/"}]}},"output_index":1}
+
+event: response.output_item.added
+data: {"sequence_number":38,"type":"response.output_item.added","item":{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-1","type":"web_search_call","status":"in_progress","action":{"type":"search","query":"","sources":[]}},"output_index":2}
+
+event: response.web_search_call.in_progress
+data: {"sequence_number":39,"type":"response.web_search_call.in_progress","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-1","output_index":2}
+
+event: response.web_search_call.searching
+data: {"sequence_number":40,"type":"response.web_search_call.searching","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-1","output_index":2}
+
+event: response.web_search_call.completed
+data: {"sequence_number":41,"type":"response.web_search_call.completed","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-1","output_index":2}
+
+event: response.output_item.done
+data: {"sequence_number":42,"type":"response.output_item.done","item":{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-1","type":"web_search_call","status":"completed","action":{"type":"search","query":"latest Grok model xAI 2024","sources":[{"type":"url","url":"https://benchlm.ai/best/xai-models"},{"type":"url","url":"https://www.axios.com/2026/07/08/spacexai-grok-new-model"},{"type":"url","url":"https://x.ai/news/grok-4-6"},{"type":"url","url":"https://benchlm.ai/providers/xai"},{"type":"url","url":"https://www.bighatgroup.com/series/xai-weekly/"}]}},"output_index":2}
+
+event: response.output_item.added
+data: {"sequence_number":43,"type":"response.output_item.added","item":{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-2","type":"web_search_call","status":"in_progress","action":{"type":"search","query":"","sources":[]}},"output_index":3}
+
+event: response.web_search_call.in_progress
+data: {"sequence_number":44,"type":"response.web_search_call.in_progress","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-2","output_index":3}
+
+event: response.web_search_call.searching
+data: {"sequence_number":45,"type":"response.web_search_call.searching","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-2","output_index":3}
+
+event: response.output_item.added
+data: {"sequence_number":46,"type":"response.output_item.added","item":{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-3","type":"web_search_call","status":"in_progress","action":{"type":"search","query":"","sources":[]}},"output_index":4}
+
+event: response.web_search_call.in_progress
+data: {"sequence_number":47,"type":"response.web_search_call.in_progress","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-3","output_index":4}
+
+event: response.web_search_call.searching
+data: {"sequence_number":48,"type":"response.web_search_call.searching","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-3","output_index":4}
+
+event: response.web_search_call.completed
+data: {"sequence_number":49,"type":"response.web_search_call.completed","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-2","output_index":3}
+
+event: response.output_item.done
+data: {"sequence_number":50,"type":"response.output_item.done","item":{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-2","type":"web_search_call","status":"completed","action":{"type":"search","query":"xAI Grok 4.7","sources":[{"type":"url","url":"https://beincrypto.com/grok-4-7-release-spacex-data/"},{"type":"url","url":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026"},{"type":"url","url":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know"},{"type":"url","url":"https://x.com/elonmusk/status/2087606260539777263"},{"type":"url","url":"https://slashdot.org/software/p/Grok-4.7/"}]}},"output_index":3}
+
+event: response.web_search_call.completed
+data: {"sequence_number":51,"type":"response.web_search_call.completed","item_id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-3","output_index":4}
+
+event: response.output_item.done
+data: {"sequence_number":52,"type":"response.output_item.done","item":{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-3","type":"web_search_call","status":"completed","action":{"type":"open_page","url":"https://x.ai/news"}},"output_index":4}
+
+event: response.output_item.added
+data: {"sequence_number":53,"type":"response.output_item.added","item":{"content":[],"id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","role":"assistant","type":"message","status":"in_progress"},"output_index":5}
+
+event: response.content_part.added
+data: {"sequence_number":54,"type":"response.content_part.added","content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"part":{"type":"output_text","text":"","logprobs":[],"annotations":[]}}
+
+event: response.output_text.delta
+data: {"sequence_number":55,"type":"response.output_text.delta","content_index":0,"delta":"x","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":56,"type":"response.output_text.delta","content_index":0,"delta":"AI","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":57,"type":"response.output_text.delta","content_index":0,"delta":"'s","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":58,"type":"response.output_text.delta","content_index":0,"delta":" current","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":59,"type":"response.output_text.delta","content_index":0,"delta":" flag","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":60,"type":"response.output_text.delta","content_index":0,"delta":"ship","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":61,"type":"response.output_text.delta","content_index":0,"delta":" G","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":62,"type":"response.output_text.delta","content_index":0,"delta":"rok","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":63,"type":"response.output_text.delta","content_index":0,"delta":" model","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":64,"type":"response.output_text.delta","content_index":0,"delta":" is","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":65,"type":"response.output_text.delta","content_index":0,"delta":" G","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":66,"type":"response.output_text.delta","content_index":0,"delta":"rok","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":67,"type":"response.output_text.delta","content_index":0,"delta":" ","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":68,"type":"response.output_text.delta","content_index":0,"delta":"4","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":69,"type":"response.output_text.delta","content_index":0,"delta":".","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":70,"type":"response.output_text.delta","content_index":0,"delta":"6","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":71,"type":"response.output_text.delta","content_index":0,"delta":".","item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"logprobs":[]}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":72,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://beincrypto.com/grok-4-7-release-spacex-data/","start_index":0,"end_index":0,"title":"https://beincrypto.com/grok-4-7-release-spacex-data/"},"annotation_index":0,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":73,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena","start_index":0,"end_index":0,"title":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena"},"annotation_index":1,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":74,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026","start_index":0,"end_index":0,"title":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026"},"annotation_index":2,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":75,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://x.com/elonmusk/status/2087606260539777263","start_index":0,"end_index":0,"title":"https://x.com/elonmusk/status/2087606260539777263"},"annotation_index":3,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":76,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://x.ai/news/grok-4-6","start_index":0,"end_index":0,"title":"https://x.ai/news/grok-4-6"},"annotation_index":4,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":77,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/","start_index":0,"end_index":0,"title":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/"},"annotation_index":5,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":78,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://benchlm.ai/best/xai-models","start_index":0,"end_index":0,"title":"https://benchlm.ai/best/xai-models"},"annotation_index":6,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":79,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705","start_index":0,"end_index":0,"title":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705"},"annotation_index":7,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":80,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://r.jina.ai/https:/x.ai/blog","start_index":0,"end_index":0,"title":"https://r.jina.ai/https:/x.ai/blog"},"annotation_index":8,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":81,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://www.bighatgroup.com/series/xai-weekly/","start_index":0,"end_index":0,"title":"https://www.bighatgroup.com/series/xai-weekly/"},"annotation_index":9,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":82,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know","start_index":0,"end_index":0,"title":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know"},"annotation_index":10,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":83,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://www.axios.com/2026/07/08/spacexai-grok-new-model","start_index":0,"end_index":0,"title":"https://www.axios.com/2026/07/08/spacexai-grok-new-model"},"annotation_index":11,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":84,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://x.ai/news","start_index":0,"end_index":0,"title":"https://x.ai/news"},"annotation_index":12,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":85,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm","start_index":0,"end_index":0,"title":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm"},"annotation_index":13,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":86,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://slashdot.org/software/p/Grok-4.7/","start_index":0,"end_index":0,"title":"https://slashdot.org/software/p/Grok-4.7/"},"annotation_index":14,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":87,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://benchlm.ai/providers/xai","start_index":0,"end_index":0,"title":"https://benchlm.ai/providers/xai"},"annotation_index":15,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.annotation.added
+data: {"sequence_number":88,"type":"response.output_text.annotation.added","annotation":{"type":"url_citation","url":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/","start_index":0,"end_index":0,"title":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/"},"annotation_index":16,"content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5}
+
+event: response.output_text.done
+data: {"sequence_number":89,"type":"response.output_text.done","content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"text":"xAI's current flagship Grok model is Grok 4.6.","logprobs":[]}
+
+event: response.content_part.done
+data: {"sequence_number":90,"type":"response.content_part.done","content_index":0,"item_id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","output_index":5,"part":{"type":"output_text","text":"xAI's current flagship Grok model is Grok 4.6.","logprobs":[],"annotations":[{"type":"url_citation","url":"https://beincrypto.com/grok-4-7-release-spacex-data/","start_index":0,"end_index":0,"title":"https://beincrypto.com/grok-4-7-release-spacex-data/"},{"type":"url_citation","url":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena","start_index":0,"end_index":0,"title":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena"},{"type":"url_citation","url":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026","start_index":0,"end_index":0,"title":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026"},{"type":"url_citation","url":"https://x.com/elonmusk/status/2087606260539777263","start_index":0,"end_index":0,"title":"https://x.com/elonmusk/status/2087606260539777263"},{"type":"url_citation","url":"https://x.ai/news/grok-4-6","start_index":0,"end_index":0,"title":"https://x.ai/news/grok-4-6"},{"type":"url_citation","url":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/","start_index":0,"end_index":0,"title":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/"},{"type":"url_citation","url":"https://benchlm.ai/best/xai-models","start_index":0,"end_index":0,"title":"https://benchlm.ai/best/xai-models"},{"type":"url_citation","url":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705","start_index":0,"end_index":0,"title":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705"},{"type":"url_citation","url":"https://r.jina.ai/https:/x.ai/blog","start_index":0,"end_index":0,"title":"https://r.jina.ai/https:/x.ai/blog"},{"type":"url_citation","url":"https://www.bighatgroup.com/series/xai-weekly/","start_index":0,"end_index":0,"title":"https://www.bighatgroup.com/series/xai-weekly/"},{"type":"url_citation","url":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know","start_index":0,"end_index":0,"title":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know"},{"type":"url_citation","url":"https://www.axios.com/2026/07/08/spacexai-grok-new-model","start_index":0,"end_index":0,"title":"https://www.axios.com/2026/07/08/spacexai-grok-new-model"},{"type":"url_citation","url":"https://x.ai/news","start_index":0,"end_index":0,"title":"https://x.ai/news"},{"type":"url_citation","url":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm","start_index":0,"end_index":0,"title":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm"},{"type":"url_citation","url":"https://slashdot.org/software/p/Grok-4.7/","start_index":0,"end_index":0,"title":"https://slashdot.org/software/p/Grok-4.7/"},{"type":"url_citation","url":"https://benchlm.ai/providers/xai","start_index":0,"end_index":0,"title":"https://benchlm.ai/providers/xai"},{"type":"url_citation","url":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/","start_index":0,"end_index":0,"title":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/"}]}}
+
+event: response.output_item.done
+data: {"sequence_number":91,"type":"response.output_item.done","item":{"content":[{"type":"output_text","text":"xAI's current flagship Grok model is Grok 4.6.","logprobs":[],"annotations":[{"type":"url_citation","url":"https://beincrypto.com/grok-4-7-release-spacex-data/","start_index":0,"end_index":0,"title":"https://beincrypto.com/grok-4-7-release-spacex-data/"},{"type":"url_citation","url":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena","start_index":0,"end_index":0,"title":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena"},{"type":"url_citation","url":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026","start_index":0,"end_index":0,"title":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026"},{"type":"url_citation","url":"https://x.com/elonmusk/status/2087606260539777263","start_index":0,"end_index":0,"title":"https://x.com/elonmusk/status/2087606260539777263"},{"type":"url_citation","url":"https://x.ai/news/grok-4-6","start_index":0,"end_index":0,"title":"https://x.ai/news/grok-4-6"},{"type":"url_citation","url":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/","start_index":0,"end_index":0,"title":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/"},{"type":"url_citation","url":"https://benchlm.ai/best/xai-models","start_index":0,"end_index":0,"title":"https://benchlm.ai/best/xai-models"},{"type":"url_citation","url":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705","start_index":0,"end_index":0,"title":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705"},{"type":"url_citation","url":"https://r.jina.ai/https:/x.ai/blog","start_index":0,"end_index":0,"title":"https://r.jina.ai/https:/x.ai/blog"},{"type":"url_citation","url":"https://www.bighatgroup.com/series/xai-weekly/","start_index":0,"end_index":0,"title":"https://www.bighatgroup.com/series/xai-weekly/"},{"type":"url_citation","url":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know","start_index":0,"end_index":0,"title":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know"},{"type":"url_citation","url":"https://www.axios.com/2026/07/08/spacexai-grok-new-model","start_index":0,"end_index":0,"title":"https://www.axios.com/2026/07/08/spacexai-grok-new-model"},{"type":"url_citation","url":"https://x.ai/news","start_index":0,"end_index":0,"title":"https://x.ai/news"},{"type":"url_citation","url":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm","start_index":0,"end_index":0,"title":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm"},{"type":"url_citation","url":"https://slashdot.org/software/p/Grok-4.7/","start_index":0,"end_index":0,"title":"https://slashdot.org/software/p/Grok-4.7/"},{"type":"url_citation","url":"https://benchlm.ai/providers/xai","start_index":0,"end_index":0,"title":"https://benchlm.ai/providers/xai"},{"type":"url_citation","url":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/","start_index":0,"end_index":0,"title":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/"}]}],"id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","role":"assistant","type":"message","status":"completed"},"output_index":5}
+
+event: response.completed
+data: {"sequence_number":92,"type":"response.completed","response":{"created_at":0,"completed_at":1788876155,"id":"fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","max_output_tokens":400,"model":"grok-4.6","object":"response","output":[{"id":"rs_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","summary":[{"text":"The question is: \"What is xAI's current flagship Grok model name? One sentence, with a source.\"\n","type":"summary_text"}],"type":"reasoning","status":"completed"},{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-0","type":"web_search_call","status":"completed","action":{"type":"search","query":"xAI current flagship Grok model","sources":[{"type":"url","url":"https://beincrypto.com/grok-4-7-release-spacex-data/"},{"type":"url","url":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena"},{"type":"url","url":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026"},{"type":"url","url":"https://x.com/elonmusk/status/2087606260539777263"},{"type":"url","url":"https://x.ai/news/grok-4-6"},{"type":"url","url":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/"},{"type":"url","url":"https://benchlm.ai/best/xai-models"},{"type":"url","url":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705"},{"type":"url","url":"https://r.jina.ai/https:/x.ai/blog"},{"type":"url","url":"https://www.bighatgroup.com/series/xai-weekly/"},{"type":"url","url":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know"},{"type":"url","url":"https://www.axios.com/2026/07/08/spacexai-grok-new-model"},{"type":"url","url":"https://x.ai/news"},{"type":"url","url":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm"},{"type":"url","url":"https://slashdot.org/software/p/Grok-4.7/"},{"type":"url","url":"https://benchlm.ai/providers/xai"},{"type":"url","url":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/"}]}},{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-1","type":"web_search_call","status":"completed","action":{"type":"search","query":"latest Grok model xAI 2024","sources":[{"type":"url","url":"https://beincrypto.com/grok-4-7-release-spacex-data/"},{"type":"url","url":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena"},{"type":"url","url":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026"},{"type":"url","url":"https://x.com/elonmusk/status/2087606260539777263"},{"type":"url","url":"https://x.ai/news/grok-4-6"},{"type":"url","url":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/"},{"type":"url","url":"https://benchlm.ai/best/xai-models"},{"type":"url","url":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705"},{"type":"url","url":"https://r.jina.ai/https:/x.ai/blog"},{"type":"url","url":"https://www.bighatgroup.com/series/xai-weekly/"},{"type":"url","url":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know"},{"type":"url","url":"https://www.axios.com/2026/07/08/spacexai-grok-new-model"},{"type":"url","url":"https://x.ai/news"},{"type":"url","url":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm"},{"type":"url","url":"https://slashdot.org/software/p/Grok-4.7/"},{"type":"url","url":"https://benchlm.ai/providers/xai"},{"type":"url","url":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/"}]}},{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-2","type":"web_search_call","status":"completed","action":{"type":"search","query":"xAI Grok 4.7","sources":[{"type":"url","url":"https://beincrypto.com/grok-4-7-release-spacex-data/"},{"type":"url","url":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena"},{"type":"url","url":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026"},{"type":"url","url":"https://x.com/elonmusk/status/2087606260539777263"},{"type":"url","url":"https://x.ai/news/grok-4-6"},{"type":"url","url":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/"},{"type":"url","url":"https://benchlm.ai/best/xai-models"},{"type":"url","url":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705"},{"type":"url","url":"https://r.jina.ai/https:/x.ai/blog"},{"type":"url","url":"https://www.bighatgroup.com/series/xai-weekly/"},{"type":"url","url":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know"},{"type":"url","url":"https://www.axios.com/2026/07/08/spacexai-grok-new-model"},{"type":"url","url":"https://x.ai/news"},{"type":"url","url":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm"},{"type":"url","url":"https://slashdot.org/software/p/Grok-4.7/"},{"type":"url","url":"https://benchlm.ai/providers/xai"},{"type":"url","url":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/"}]}},{"id":"ws_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8_call-90584f58-e377-4c71-917c-e255d636bbee-3","type":"web_search_call","status":"completed","action":{"type":"open_page","url":"https://x.ai/news"}},{"content":[{"type":"output_text","text":"xAI's current flagship Grok model is Grok 4.6.","logprobs":[],"annotations":[{"type":"url_citation","url":"https://beincrypto.com/grok-4-7-release-spacex-data/","start_index":0,"end_index":0,"title":"https://beincrypto.com/grok-4-7-release-spacex-data/"},{"type":"url_citation","url":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena","start_index":0,"end_index":0,"title":"https://varindia.com/news/grok-4-5-musk-most-powerful-ai-yet-enters-the-arena"},{"type":"url_citation","url":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026","start_index":0,"end_index":0,"title":"https://polprog.pl/en/learning/grok-4-7-uscita-prezzo-benchmark-fatti-2026"},{"type":"url_citation","url":"https://x.com/elonmusk/status/2087606260539777263","start_index":0,"end_index":0,"title":"https://x.com/elonmusk/status/2087606260539777263"},{"type":"url_citation","url":"https://x.ai/news/grok-4-6","start_index":0,"end_index":0,"title":"https://x.ai/news/grok-4-6"},{"type":"url_citation","url":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/","start_index":0,"end_index":0,"title":"https://www.unite.ai/spacexai-launches-grok-4-6-for-long-running-agents/"},{"type":"url_citation","url":"https://benchlm.ai/best/xai-models","start_index":0,"end_index":0,"title":"https://benchlm.ai/best/xai-models"},{"type":"url_citation","url":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705","start_index":0,"end_index":0,"title":"https://www.timesnownews.com/technology-science/elon-musks-birthday-surprise-for-openai-and-anthropic-xai-to-launch-a-new-ai-model-every-month-article-154794705"},{"type":"url_citation","url":"https://r.jina.ai/https:/x.ai/blog","start_index":0,"end_index":0,"title":"https://r.jina.ai/https:/x.ai/blog"},{"type":"url_citation","url":"https://www.bighatgroup.com/series/xai-weekly/","start_index":0,"end_index":0,"title":"https://www.bighatgroup.com/series/xai-weekly/"},{"type":"url_citation","url":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know","start_index":0,"end_index":0,"title":"https://venturebeat.com/technology/elon-musk-introduced-grok-4-last-night-calling-it-the-smartest-ai-in-the-world-what-businesses-need-to-know"},{"type":"url_citation","url":"https://www.axios.com/2026/07/08/spacexai-grok-new-model","start_index":0,"end_index":0,"title":"https://www.axios.com/2026/07/08/spacexai-grok-new-model"},{"type":"url_citation","url":"https://x.ai/news","start_index":0,"end_index":0,"title":"https://x.ai/news"},{"type":"url_citation","url":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm","start_index":0,"end_index":0,"title":"https://www.techtimes.com/articles/317328/20260528/grok-ai-new-model-triples-parameter-count-targets-coding-lead-release-expected-mid-june.htm"},{"type":"url_citation","url":"https://slashdot.org/software/p/Grok-4.7/","start_index":0,"end_index":0,"title":"https://slashdot.org/software/p/Grok-4.7/"},{"type":"url_citation","url":"https://benchlm.ai/providers/xai","start_index":0,"end_index":0,"title":"https://benchlm.ai/providers/xai"},{"type":"url_citation","url":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/","start_index":0,"end_index":0,"title":"https://www.neowin.net/news/spacexais-grok-46-model-beats-openais-gpt-56-sol-in-several-ai-benchmarks/"}]}],"id":"msg_fa820bce-5cfb-9ae1-a3ce-940c0ad3e3c8","role":"assistant","type":"message","status":"completed"}],"parallel_tool_calls":true,"previous_response_id":null,"reasoning":{"effort":null,"summary":null},"temperature":0.699999988079071,"text":{"format":{"type":"text"}},"tool_choice":"auto","tools":[{"type":"web_search"}],"top_p":0.949999988079071,"usage":{"input_tokens":32408,"input_tokens_details":{"cached_tokens":3072},"output_tokens":1358,"output_tokens_details":{"reasoning_tokens":1337},"total_tokens":33766,"num_sources_used":0,"num_server_side_tools_used":4,"cost_in_usd_ticks":883560000,"server_side_tool_usage_details":{"web_search_calls":4,"x_search_calls":0,"code_interpreter_calls":0,"file_search_calls":0,"mcp_calls":0,"document_search_calls":0,"image_generation_calls":0},"context_details":{"input_tokens":19921,"output_tokens":594}},"user":null,"incomplete_details":null,"status":"completed","store":false,"metadata":{"system_fingerprint":"fp_e41c6060b2628547"},"background":false,"service_tier":"default","truncation":"disabled","top_logprobs":0,"presence_penalty":0.0,"frequency_penalty":0.0,"prompt_cache_key":null,"max_tool_calls":null,"safety_identifier":null,"error":null,"instructions":null}}
+

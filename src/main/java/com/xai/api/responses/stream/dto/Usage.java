@@ -16,7 +16,9 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream;
+package com.xai.api.responses.stream.dto;
+
+import com.xai.api.responses.stream.dto.CompletionUsageDetail;
 
 /**
  *

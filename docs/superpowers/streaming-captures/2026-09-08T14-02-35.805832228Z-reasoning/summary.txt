@@ -1,0 +1,17 @@
+terminal=complete
+timeMs=3094
+eventCount=72
+counts=
+  response.created=1
+  response.in_progress=1
+  response.output_item.added=2
+  response.reasoning_summary_part.added=1
+  response.reasoning_summary_text.delta=31
+  response.reasoning_summary_text.done=1
+  response.reasoning_summary_part.done=1
+  response.output_item.done=2
+  response.content_part.added=1
+  response.output_text.delta=28
+  response.output_text.done=1
+  response.content_part.done=1
+  response.completed=1

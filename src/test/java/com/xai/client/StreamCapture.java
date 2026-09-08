@@ -1,6 +1,6 @@
 package com.xai.client;
 
-import com.xai.api.responses.stream.ResponseEvent;
+import com.xai.api.responses.stream.ResponseEventType;
 import com.xai.api.responses.stream.ResponseStreamEvent;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -86,7 +86,7 @@ public class StreamCapture implements ResponseStreamListener {
       String key = event.getType() == null ? "null" : event.getType();
       Integer n = counts.get(key);
       counts.put(key, n == null ? 1 : n + 1);
-      if (event.getEvent() == ResponseEvent.UNKNOWN) {
+      if (event.getEvent() == ResponseEventType.UNKNOWN) {
         unknown.add(key);
       }
     }
@@ -108,7 +108,7 @@ public class StreamCapture implements ResponseStreamListener {
     Files.write(dir.resolve("summary.txt"), summary.toString().getBytes(StandardCharsets.UTF_8));
   }
 
-  public boolean saw(ResponseEvent event) {
+  public boolean saw(ResponseEventType event) {
     for (ResponseStreamEvent item : events) {
       if (item.getEvent() == event) {
         return true;

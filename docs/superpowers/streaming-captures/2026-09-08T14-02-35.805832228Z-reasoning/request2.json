@@ -1,0 +1,1 @@
+{"model":"grok-4.6","input":[{"type":"message","role":"user","content":"A ball is thrown up at 20 m/s. How long to the top? g=10. One sentence."}],"reasoning":{"effort":"low"},"store":false,"stream":true,"max_output_tokens":256}

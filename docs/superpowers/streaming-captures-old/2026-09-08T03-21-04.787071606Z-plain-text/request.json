@@ -1,0 +1,10 @@
+{
+  "model" : "grok-4.6",
+  "input" : [ {
+    "type" : "message",
+    "role" : "user",
+    "content" : "Reply with exactly one word: pong"
+  } ],
+  "store" : false,
+  "max_output_tokens" : 32
+}

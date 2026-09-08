@@ -37,7 +37,7 @@ import com.xai.api.responses.output.tokens.Annotation;
 public class ResponseStreamEvent {
 
   @JsonIgnore
-  private ResponseEvent event;
+  private ResponseEventType event;
   private String type;
   @JsonProperty("sequence_number")
   private Integer sequenceNumber;
@@ -69,7 +69,7 @@ public class ResponseStreamEvent {
   public ResponseStreamEvent() {
   }
 
-  public ResponseStreamEvent(ResponseEvent event, String type, JsonNode data) {
+  public ResponseStreamEvent(ResponseEventType event, String type, JsonNode data) {
     this.event = event;
     this.type = type;
     this.data = data;
@@ -132,11 +132,11 @@ public class ResponseStreamEvent {
     this.delta = delta;
   }
 
-  public ResponseEvent getEvent() {
+  public ResponseEventType getEvent() {
     return event;
   }
 
-  public void setEvent(ResponseEvent event) {
+  public void setEvent(ResponseEventType event) {
     this.event = event;
   }
 
@@ -220,4 +220,10 @@ public class ResponseStreamEvent {
     this.type = type;
   }
   //</editor-fold>
+
+  @Override
+  public String toString() {
+    return "ResponseStreamEvent{" + "event=" + event + ", type=" + type + ", sequenceNumber=" + sequenceNumber + '}';
+  }
+
 }

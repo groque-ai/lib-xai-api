@@ -16,31 +16,49 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream;
+package com.xai.api.responses.stream.dto;
 
 /**
  *
  * @author Key Bridge
  */
-public class Function {
+public class PromptUsageDetail {
 
-  private String name;             // required
-  private Object arguments;        // required (JSON object, so use Object or Map<String,Object>)
+  // required
+  private int textTokens;
+  private int audioTokens;
+  private int imageTokens;
+  private int cachedTokens;
 
-  public Object getArguments() {
-    return arguments;
+  public int getTextTokens() {
+    return textTokens;
   }
 
-  public void setArguments(Object arguments) {
-    this.arguments = arguments;
+  public void setTextTokens(int textTokens) {
+    this.textTokens = textTokens;
   }
 
-  public String getName() {
-    return name;
+  public int getAudioTokens() {
+    return audioTokens;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setAudioTokens(int audioTokens) {
+    this.audioTokens = audioTokens;
   }
 
+  public int getImageTokens() {
+    return imageTokens;
+  }
+
+  public void setImageTokens(int imageTokens) {
+    this.imageTokens = imageTokens;
+  }
+
+  public int getCachedTokens() {
+    return cachedTokens;
+  }
+
+  public void setCachedTokens(int cachedTokens) {
+    this.cachedTokens = cachedTokens;
+  }
 }

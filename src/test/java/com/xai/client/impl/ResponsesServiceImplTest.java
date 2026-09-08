@@ -1,7 +1,6 @@
 package com.xai.client.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.xai.api.responses.ModelRequest;
@@ -32,8 +31,6 @@ public class ResponsesServiceImplTest extends AbstractServiceImpTest {
 
   private static XaiResponsesClient service;
   private static final ModelRequestBuilder builder = new ModelRequestBuilder();
-
-  private static final ObjectMapper mapper = new ObjectMapper();
 
   public ResponsesServiceImplTest() {
   }
@@ -70,14 +67,14 @@ public class ResponsesServiceImplTest extends AbstractServiceImpTest {
   public ObjectNode testBuildSchema() throws IOException {
 
 // schema root
-    ObjectNode schema = mapper.createObjectNode();
+    ObjectNode schema = MAPPER.createObjectNode();
     schema.put("type", "object");
 
 // properties object
-    ObjectNode properties = mapper.createObjectNode();
+    ObjectNode properties = MAPPER.createObjectNode();
 
 // code property
-    ObjectNode codeProp = mapper.createObjectNode();
+    ObjectNode codeProp = MAPPER.createObjectNode();
     codeProp.put("type", "string");
     codeProp.put("description", "The Java source code.");
 
@@ -85,7 +82,7 @@ public class ResponsesServiceImplTest extends AbstractServiceImpTest {
     schema.set("properties", properties);
 
 // required array
-    ArrayNode required = mapper.createArrayNode();
+    ArrayNode required = MAPPER.createArrayNode();
     required.add("code");
     schema.set("required", required);
 
@@ -189,7 +186,7 @@ public class ResponsesServiceImplTest extends AbstractServiceImpTest {
           /**
            * Parse the response as a new, nested JSON object.
            */
-          JsonNode jsonNode = mapper.readTree(text.trim());
+          JsonNode jsonNode = MAPPER.readTree(text.trim());
           JsonNode codeNode = jsonNode.get("code");
           if (codeNode.isTextual()) {
             String codeText = codeNode.asText(); // produces clean code

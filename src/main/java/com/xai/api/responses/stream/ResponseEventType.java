@@ -24,7 +24,7 @@ package com.xai.api.responses.stream;
  * @author Key Bridge
  * @since v1.1.0 created 2026-09-07
  */
-public enum ResponseEvent {
+public enum ResponseEventType {
 
   UNKNOWN("unknown"),
 
@@ -99,7 +99,7 @@ public enum ResponseEvent {
 
   private final String name;
 
-  ResponseEvent(String name) {
+  ResponseEventType(String name) {
     this.name = name;
   }
 
@@ -114,7 +114,7 @@ public enum ResponseEvent {
    * Reverse lookup by event string. Never null: unmatched, null, or blank
    * values map to {@link #UNKNOWN}.
    */
-  public static ResponseEvent fromName(String value) {
+  public static ResponseEventType fromName(String value) {
     if (value == null) {
       return UNKNOWN;
     }
@@ -122,7 +122,7 @@ public enum ResponseEvent {
     if (trimmed.isEmpty()) {
       return UNKNOWN;
     }
-    for (ResponseEvent event : values()) {
+    for (ResponseEventType event : values()) {
       if (event == UNKNOWN) {
         continue;
       }

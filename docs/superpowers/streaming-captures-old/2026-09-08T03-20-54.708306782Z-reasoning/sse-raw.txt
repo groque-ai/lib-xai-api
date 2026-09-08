@@ -1,0 +1,161 @@
+event: response.created
+data: {"sequence_number":0,"type":"response.created","response":{"created_at":1788837655,"completed_at":null,"id":"529e7340-7876-98c6-aa98-2c6788ec49c4","max_output_tokens":256,"model":"grok-4.6","object":"response","output":[],"parallel_tool_calls":true,"previous_response_id":null,"reasoning":{"effort":"low","summary":"detailed"},"temperature":0.699999988079071,"text":{"format":{"type":"text"}},"tool_choice":"auto","tools":[],"top_p":0.949999988079071,"usage":null,"user":null,"incomplete_details":null,"status":"in_progress","store":false,"metadata":{"system_fingerprint":"fp_e41c6060b2628547"},"background":false,"service_tier":"default","truncation":"disabled","top_logprobs":0,"presence_penalty":0.0,"frequency_penalty":0.0,"prompt_cache_key":null,"max_tool_calls":null,"safety_identifier":null,"error":null,"instructions":null}}
+
+event: response.in_progress
+data: {"sequence_number":1,"type":"response.in_progress","response":{"created_at":1788837655,"completed_at":null,"id":"529e7340-7876-98c6-aa98-2c6788ec49c4","max_output_tokens":256,"model":"grok-4.6","object":"response","output":[],"parallel_tool_calls":true,"previous_response_id":null,"reasoning":{"effort":"low","summary":"detailed"},"temperature":0.699999988079071,"text":{"format":{"type":"text"}},"tool_choice":"auto","tools":[],"top_p":0.949999988079071,"usage":null,"user":null,"incomplete_details":null,"status":"in_progress","store":false,"metadata":{"system_fingerprint":"fp_e41c6060b2628547"},"background":false,"service_tier":"default","truncation":"disabled","top_logprobs":0,"presence_penalty":0.0,"frequency_penalty":0.0,"prompt_cache_key":null,"max_tool_calls":null,"safety_identifier":null,"error":null,"instructions":null}}
+
+event: response.output_item.added
+data: {"sequence_number":2,"type":"response.output_item.added","item":{"id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","summary":[],"type":"reasoning","status":"in_progress"},"output_index":0}
+
+event: response.reasoning_summary_part.added
+data: {"sequence_number":3,"type":"response.reasoning_summary_part.added","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"part":{"text":"","type":"summary_text"},"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":4,"type":"response.reasoning_summary_text.delta","delta":"The","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":5,"type":"response.reasoning_summary_text.delta","delta":" problem","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":6,"type":"response.reasoning_summary_text.delta","delta":" is","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":7,"type":"response.reasoning_summary_text.delta","delta":":","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":8,"type":"response.reasoning_summary_text.delta","delta":" \"","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":9,"type":"response.reasoning_summary_text.delta","delta":"A","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":10,"type":"response.reasoning_summary_text.delta","delta":" ball","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":11,"type":"response.reasoning_summary_text.delta","delta":" is","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":12,"type":"response.reasoning_summary_text.delta","delta":" thrown","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":13,"type":"response.reasoning_summary_text.delta","delta":" up","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":14,"type":"response.reasoning_summary_text.delta","delta":" at","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":15,"type":"response.reasoning_summary_text.delta","delta":" ","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":16,"type":"response.reasoning_summary_text.delta","delta":"20","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":17,"type":"response.reasoning_summary_text.delta","delta":" m","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":18,"type":"response.reasoning_summary_text.delta","delta":"/","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":19,"type":"response.reasoning_summary_text.delta","delta":"s","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":20,"type":"response.reasoning_summary_text.delta","delta":".","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":21,"type":"response.reasoning_summary_text.delta","delta":" How","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":22,"type":"response.reasoning_summary_text.delta","delta":" long","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":23,"type":"response.reasoning_summary_text.delta","delta":" to","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":24,"type":"response.reasoning_summary_text.delta","delta":" the","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":25,"type":"response.reasoning_summary_text.delta","delta":" top","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":26,"type":"response.reasoning_summary_text.delta","delta":"?","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":27,"type":"response.reasoning_summary_text.delta","delta":" g","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":28,"type":"response.reasoning_summary_text.delta","delta":"=","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":29,"type":"response.reasoning_summary_text.delta","delta":"10","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":30,"type":"response.reasoning_summary_text.delta","delta":".","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":31,"type":"response.reasoning_summary_text.delta","delta":" One","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":32,"type":"response.reasoning_summary_text.delta","delta":" sentence","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":33,"type":"response.reasoning_summary_text.delta","delta":".\"","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":34,"type":"response.reasoning_summary_text.delta","delta":"\n","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.done
+data: {"sequence_number":35,"type":"response.reasoning_summary_text.done","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"summary_index":0,"text":"The problem is: \"A ball is thrown up at 20 m/s. How long to the top? g=10. One sentence.\"\n"}
+
+event: response.reasoning_summary_part.done
+data: {"sequence_number":36,"type":"response.reasoning_summary_part.done","item_id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":0,"part":{"text":"The problem is: \"A ball is thrown up at 20 m/s. How long to the top? g=10. One sentence.\"\n","type":"summary_text"},"summary_index":0}
+
+event: response.output_item.done
+data: {"sequence_number":37,"type":"response.output_item.done","item":{"id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","summary":[{"text":"The problem is: \"A ball is thrown up at 20 m/s. How long to the top? g=10. One sentence.\"\n","type":"summary_text"}],"type":"reasoning","status":"completed"},"output_index":0}
+
+event: response.output_item.added
+data: {"sequence_number":38,"type":"response.output_item.added","item":{"content":[],"id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","role":"assistant","type":"message","status":"in_progress"},"output_index":1}
+
+event: response.content_part.added
+data: {"sequence_number":39,"type":"response.content_part.added","content_index":0,"item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"part":{"type":"output_text","text":"","logprobs":[],"annotations":[]}}
+
+event: response.output_text.delta
+data: {"sequence_number":40,"type":"response.output_text.delta","content_index":0,"delta":"The","item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":41,"type":"response.output_text.delta","content_index":0,"delta":" time","item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":42,"type":"response.output_text.delta","content_index":0,"delta":" to","item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":43,"type":"response.output_text.delta","content_index":0,"delta":" the","item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":44,"type":"response.output_text.delta","content_index":0,"delta":" top","item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":45,"type":"response.output_text.delta","content_index":0,"delta":" is","item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":46,"type":"response.output_text.delta","content_index":0,"delta":" ","item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":47,"type":"response.output_text.delta","content_index":0,"delta":"2","item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":48,"type":"response.output_text.delta","content_index":0,"delta":" s","item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"logprobs":[]}
+
+event: response.output_text.delta
+data: {"sequence_number":49,"type":"response.output_text.delta","content_index":0,"delta":".","item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"logprobs":[]}
+
+event: response.output_text.done
+data: {"sequence_number":50,"type":"response.output_text.done","content_index":0,"item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"text":"The time to the top is 2 s.","logprobs":[]}
+
+event: response.content_part.done
+data: {"sequence_number":51,"type":"response.content_part.done","content_index":0,"item_id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","output_index":1,"part":{"type":"output_text","text":"The time to the top is 2 s.","logprobs":[],"annotations":[]}}
+
+event: response.output_item.done
+data: {"sequence_number":52,"type":"response.output_item.done","item":{"content":[{"type":"output_text","text":"The time to the top is 2 s.","logprobs":[],"annotations":[]}],"id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","role":"assistant","type":"message","status":"completed"},"output_index":1}
+
+event: response.completed
+data: {"sequence_number":53,"type":"response.completed","response":{"created_at":1788837655,"completed_at":1788837657,"id":"529e7340-7876-98c6-aa98-2c6788ec49c4","max_output_tokens":256,"model":"grok-4.6","object":"response","output":[{"id":"rs_529e7340-7876-98c6-aa98-2c6788ec49c4","summary":[{"text":"The problem is: \"A ball is thrown up at 20 m/s. How long to the top? g=10. One sentence.\"\n","type":"summary_text"}],"type":"reasoning","status":"completed"},{"content":[{"type":"output_text","text":"The time to the top is 2 s.","logprobs":[],"annotations":[]}],"id":"msg_529e7340-7876-98c6-aa98-2c6788ec49c4","role":"assistant","type":"message","status":"completed"}],"parallel_tool_calls":true,"previous_response_id":null,"reasoning":{"effort":"low","summary":"detailed"},"temperature":0.699999988079071,"text":{"format":{"type":"text"}},"tool_choice":"auto","tools":[],"top_p":0.949999988079071,"usage":{"input_tokens":661,"input_tokens_details":{"cached_tokens":640},"output_tokens":138,"output_tokens_details":{"reasoning_tokens":128},"total_tokens":799,"num_sources_used":0,"num_server_side_tools_used":0,"cost_in_usd_ticks":11900000,"context_details":{"input_tokens":661,"output_tokens":138}},"user":null,"incomplete_details":null,"status":"completed","store":false,"metadata":{"system_fingerprint":"fp_e41c6060b2628547"},"background":false,"service_tier":"default","truncation":"disabled","top_logprobs":0,"presence_penalty":0.0,"frequency_penalty":0.0,"prompt_cache_key":null,"max_tool_calls":null,"safety_identifier":null,"error":null,"instructions":null}}

@@ -16,8 +16,9 @@
  * The intellectual and technical concepts contained herein
  * are proprietary.
  */
-package com.xai.api.responses.stream;
+package com.xai.api.responses.stream.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
@@ -28,9 +29,10 @@ public class Delta {
 
   private String content;                  // nullable
   private List<String> images;             // nullable
+  @JsonProperty("reasoning_content")
   private String reasoningContent;         // nullable
   private String role;                     // nullable
-
+  @JsonProperty("tool_calls")
   private List<ToolCall> toolCalls;        // nullable
 
   public String getContent() {

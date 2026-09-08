@@ -1,0 +1,6 @@
+terminal=error
+timeMs=113
+eventCount=0
+rawLineCount=0
+error=com.xai.client.exception.ApiHttpException: API error {status=400, body={"code":"400","error":"Argument not supported: only `auto` container is supported"}}
+counts=

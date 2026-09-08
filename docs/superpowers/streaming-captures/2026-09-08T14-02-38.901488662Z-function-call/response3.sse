@@ -1,0 +1,96 @@
+event: response.created
+data: {"sequence_number":0,"type":"response.created","response":{"created_at":1788876159,"completed_at":null,"id":"e64756ac-05c4-9675-9716-ad3b2db70eb4","max_output_tokens":200,"model":"grok-4.6","object":"response","output":[],"parallel_tool_calls":true,"previous_response_id":null,"reasoning":{"effort":null,"summary":null},"temperature":0.699999988079071,"text":{"format":{"type":"text"}},"tool_choice":"required","tools":[{"type":"function","description":"Look up the current weather for a city","name":"get_weather","parameters":{"type":"object","properties":{"city":{"type":"string","description":"City name"}},"required":["city"]},"strict":null}],"top_p":0.949999988079071,"usage":null,"user":null,"incomplete_details":null,"status":"in_progress","store":false,"metadata":{"system_fingerprint":"fp_e41c6060b2628547"},"background":false,"service_tier":"default","truncation":"disabled","top_logprobs":0,"presence_penalty":0.0,"frequency_penalty":0.0,"prompt_cache_key":null,"max_tool_calls":null,"safety_identifier":null,"error":null,"instructions":null}}
+
+event: response.in_progress
+data: {"sequence_number":1,"type":"response.in_progress","response":{"created_at":1788876159,"completed_at":null,"id":"e64756ac-05c4-9675-9716-ad3b2db70eb4","max_output_tokens":200,"model":"grok-4.6","object":"response","output":[],"parallel_tool_calls":true,"previous_response_id":null,"reasoning":{"effort":null,"summary":null},"temperature":0.699999988079071,"text":{"format":{"type":"text"}},"tool_choice":"required","tools":[{"type":"function","description":"Look up the current weather for a city","name":"get_weather","parameters":{"type":"object","properties":{"city":{"type":"string","description":"City name"}},"required":["city"]},"strict":null}],"top_p":0.949999988079071,"usage":null,"user":null,"incomplete_details":null,"status":"in_progress","store":false,"metadata":{"system_fingerprint":"fp_e41c6060b2628547"},"background":false,"service_tier":"default","truncation":"disabled","top_logprobs":0,"presence_penalty":0.0,"frequency_penalty":0.0,"prompt_cache_key":null,"max_tool_calls":null,"safety_identifier":null,"error":null,"instructions":null}}
+
+event: response.output_item.added
+data: {"sequence_number":2,"type":"response.output_item.added","item":{"id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","summary":[],"type":"reasoning","status":"in_progress"},"output_index":0}
+
+event: response.reasoning_summary_part.added
+data: {"sequence_number":3,"type":"response.reasoning_summary_part.added","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"part":{"text":"","type":"summary_text"},"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":4,"type":"response.reasoning_summary_text.delta","delta":"The","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":5,"type":"response.reasoning_summary_text.delta","delta":" user","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":6,"type":"response.reasoning_summary_text.delta","delta":" asked","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":7,"type":"response.reasoning_summary_text.delta","delta":":","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":8,"type":"response.reasoning_summary_text.delta","delta":" \"","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":9,"type":"response.reasoning_summary_text.delta","delta":"What","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":10,"type":"response.reasoning_summary_text.delta","delta":" is","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":11,"type":"response.reasoning_summary_text.delta","delta":" the","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":12,"type":"response.reasoning_summary_text.delta","delta":" weather","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":13,"type":"response.reasoning_summary_text.delta","delta":" in","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":14,"type":"response.reasoning_summary_text.delta","delta":" Paris","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":15,"type":"response.reasoning_summary_text.delta","delta":"?","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":16,"type":"response.reasoning_summary_text.delta","delta":" Use","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":17,"type":"response.reasoning_summary_text.delta","delta":" the","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":18,"type":"response.reasoning_summary_text.delta","delta":" get","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":19,"type":"response.reasoning_summary_text.delta","delta":"_","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":20,"type":"response.reasoning_summary_text.delta","delta":"weather","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":21,"type":"response.reasoning_summary_text.delta","delta":" tool","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":22,"type":"response.reasoning_summary_text.delta","delta":".\"","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.delta
+data: {"sequence_number":23,"type":"response.reasoning_summary_text.delta","delta":"\n","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0}
+
+event: response.reasoning_summary_text.done
+data: {"sequence_number":24,"type":"response.reasoning_summary_text.done","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"summary_index":0,"text":"The user asked: \"What is the weather in Paris? Use the get_weather tool.\"\n"}
+
+event: response.reasoning_summary_part.done
+data: {"sequence_number":25,"type":"response.reasoning_summary_part.done","item_id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","output_index":0,"part":{"text":"The user asked: \"What is the weather in Paris? Use the get_weather tool.\"\n","type":"summary_text"},"summary_index":0}
+
+event: response.output_item.done
+data: {"sequence_number":26,"type":"response.output_item.done","item":{"id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","summary":[{"text":"The user asked: \"What is the weather in Paris? Use the get_weather tool.\"\n","type":"summary_text"}],"type":"reasoning","status":"completed"},"output_index":0}
+
+event: response.output_item.added
+data: {"sequence_number":27,"type":"response.output_item.added","item":{"arguments":"","call_id":"call-75db9218-783d-458c-bfbf-f97711237a98-0","name":"get_weather","type":"function_call","id":"fc_e64756ac-05c4-9675-9716-ad3b2db70eb4_0","status":"in_progress"},"output_index":1}
+
+event: response.function_call_arguments.delta
+data: {"sequence_number":28,"type":"response.function_call_arguments.delta","delta":"{\"city\":\"Paris\"}","item_id":"fc_e64756ac-05c4-9675-9716-ad3b2db70eb4_0","output_index":1}
+
+event: response.function_call_arguments.done
+data: {"sequence_number":29,"type":"response.function_call_arguments.done","arguments":"{\"city\":\"Paris\"}","item_id":"fc_e64756ac-05c4-9675-9716-ad3b2db70eb4_0","name":"get_weather","output_index":1}
+
+event: response.output_item.done
+data: {"sequence_number":30,"type":"response.output_item.done","item":{"arguments":"{\"city\":\"Paris\"}","call_id":"call-75db9218-783d-458c-bfbf-f97711237a98-0","name":"get_weather","type":"function_call","id":"fc_e64756ac-05c4-9675-9716-ad3b2db70eb4_0","status":"completed"},"output_index":1}
+
+event: response.completed
+data: {"sequence_number":31,"type":"response.completed","response":{"created_at":1788876159,"completed_at":1788876162,"id":"e64756ac-05c4-9675-9716-ad3b2db70eb4","max_output_tokens":200,"model":"grok-4.6","object":"response","output":[{"id":"rs_e64756ac-05c4-9675-9716-ad3b2db70eb4","summary":[{"text":"The user asked: \"What is the weather in Paris? Use the get_weather tool.\"\n","type":"summary_text"}],"type":"reasoning","status":"completed"},{"arguments":"{\"city\":\"Paris\"}","call_id":"call-75db9218-783d-458c-bfbf-f97711237a98-0","name":"get_weather","type":"function_call","id":"fc_e64756ac-05c4-9675-9716-ad3b2db70eb4_0","status":"completed"}],"parallel_tool_calls":true,"previous_response_id":null,"reasoning":{"effort":null,"summary":null},"temperature":0.699999988079071,"text":{"format":{"type":"text"}},"tool_choice":"required","tools":[{"type":"function","description":"Look up the current weather for a city","name":"get_weather","parameters":{"type":"object","properties":{"city":{"type":"string","description":"City name"}},"required":["city"]},"strict":null}],"top_p":0.949999988079071,"usage":{"input_tokens":748,"input_tokens_details":{"cached_tokens":640},"output_tokens":208,"output_tokens_details":{"reasoning_tokens":196},"total_tokens":956,"num_sources_used":0,"num_server_side_tools_used":0,"cost_in_usd_ticks":17840000,"context_details":{"input_tokens":748,"output_tokens":208}},"user":null,"incomplete_details":null,"status":"completed","store":false,"metadata":{"system_fingerprint":"fp_e41c6060b2628547"},"background":false,"service_tier":"default","truncation":"disabled","top_logprobs":0,"presence_penalty":0.0,"frequency_penalty":0.0,"prompt_cache_key":null,"max_tool_calls":null,"safety_identifier":null,"error":null,"instructions":null}}
+

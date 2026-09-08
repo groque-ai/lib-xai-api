@@ -5,12 +5,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.xai.api.responses.ModelRequest;
 import com.xai.api.responses.config.ReasoningConfiguration;
-import com.xai.api.responses.stream.ResponseEvent;
+import com.xai.api.responses.stream.ResponseEventType;
 import com.xai.api.responses.tool.CodeInterpreterTool;
 import com.xai.api.responses.tool.FunctionTool;
 import com.xai.api.responses.tool.WebSearchTool;
@@ -69,12 +70,12 @@ public class ResponsesStreamingLiveTest {
     StreamCapture capture = run("plain-text", request);
     assertCompleted(capture);
     assertTrue("expected text delta events",
-               capture.saw(ResponseEvent.RESPONSE_OUTPUT_TEXT_DELTA)
-               || capture.saw(ResponseEvent.RESPONSE_TEXT_DELTA)
-               || capture.saw(ResponseEvent.RESPONSE_OUTPUT_TEXT_DONE));
-    assertTrue(capture.saw(ResponseEvent.RESPONSE_COMPLETED)
-               || capture.saw(ResponseEvent.RESPONSE_IN_PROGRESS)
-               || capture.saw(ResponseEvent.RESPONSE_CREATED));
+               capture.saw(ResponseEventType.RESPONSE_OUTPUT_TEXT_DELTA)
+               || capture.saw(ResponseEventType.RESPONSE_TEXT_DELTA)
+               || capture.saw(ResponseEventType.RESPONSE_OUTPUT_TEXT_DONE));
+    assertTrue(capture.saw(ResponseEventType.RESPONSE_COMPLETED)
+               || capture.saw(ResponseEventType.RESPONSE_IN_PROGRESS)
+               || capture.saw(ResponseEventType.RESPONSE_CREATED));
   }
 
   @Test
