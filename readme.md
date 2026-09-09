@@ -112,6 +112,6 @@ Index: [docs/tutorials/README.md](docs/tutorials/README.md)
 4. [Streaming on the wire](docs/guides/04-streaming-on-the-wire.md)
 5. [This library](docs/guides/05-this-library.md) — opinionated Java model
 
-Client how-tos: [blocking](docs/guides/responses-api.md) · [streaming](docs/guides/responses-streaming.md)
+Client how-tos: [blocking](docs/guides/responses-api.md) · [streaming](docs/guides/responses-streaming.md) · [llama.cpp](docs/guides/llama-cpp.md)
 
 Index: [docs/guides/README.md](docs/guides/README.md)

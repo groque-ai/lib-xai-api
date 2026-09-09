@@ -96,6 +96,7 @@ Auth: `API_KEY` in the environment or `~/.xai`. Default host
 Hands-on: [tutorials](../tutorials/README.md).
 
 Deep client pages: [responses-api.md](responses-api.md),
-[responses-streaming.md](responses-streaming.md).
+[responses-streaming.md](responses-streaming.md),
+[llama.cpp](llama-cpp.md).
 
 Event families: `src/main/java/com/xai/api/responses/stream/readme.md`.

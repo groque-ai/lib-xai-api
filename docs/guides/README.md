@@ -16,6 +16,7 @@ Then the client how-tos:
 
 - [Blocking client](responses-api.md) — `generate` / `get` / `delete`
 - [Streaming client](responses-streaming.md) — `generateStreaming`
+- [llama.cpp](llama-cpp.md) — `LlamaResponsesClient` against a local server
 
 Hands-on from zero: [tutorials](../tutorials/README.md).
 
