@@ -9,7 +9,7 @@
 
   <groupId>ai.groque.lib</groupId>
   <artifactId>xai-api</artifactId>
-  <version>1.2.0</version>
+  <version>1.1.0</version>
   <packaging>jar</packaging>
 
   <name>lib-xai-api</name>
@@ -24,8 +24,8 @@
 
     History:
     v1.0.0 - working version
-    v1.1.0 - add streaming
-    v1.2.0 - add batching
+    v1.1.0 - add streaming and batching
+    - add support for llama.cpp
 
   </description>
 
