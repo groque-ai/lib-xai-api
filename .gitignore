@@ -1,6 +1,10 @@
 # Agent stuff
 docs/superpowers/
 
+# Local llama.cpp client config (host/key — never commit)
+.llamacpp
+
+
 # NetBeans specific #
 nbproject/private/
 build/

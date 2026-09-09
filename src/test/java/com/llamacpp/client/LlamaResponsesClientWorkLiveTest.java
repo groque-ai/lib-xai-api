@@ -26,7 +26,6 @@ import com.xai.client.ResponseStreamPumpTest.RecordingListener;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -41,9 +40,7 @@ import org.junit.Test;
  */
 public class LlamaResponsesClientWorkLiveTest {
 
-  private static final String BASE_URL = "http://gpu-a.mcl.keybridge.ch:8080";
   private static final String MODEL = "phi-4-mini";
-  private static final long WAIT_SECONDS = 300;
   private static final ObjectMapper MAPPER = new ObjectMapper()
     .enable(SerializationFeature.INDENT_OUTPUT)
     .setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -51,6 +48,7 @@ public class LlamaResponsesClientWorkLiveTest {
   private static Path artifacts;
 
   private LlamaResponsesClient client;
+  private long waitSeconds;
 
   @BeforeClass
   public static void prepareArtifacts() throws Exception {
@@ -60,11 +58,8 @@ public class LlamaResponsesClientWorkLiveTest {
 
   @Before
   public void setUp() {
-    LlamaClientConfig config = new LlamaClientConfig.Builder()
-      .withBaseUrl(BASE_URL)
-      .withConnectTimeout(Duration.ofSeconds(30))
-      .withRequestTimeout(Duration.ofSeconds(WAIT_SECONDS))
-      .build();
+    LlamaClientConfig config = LlamaClientConfig.readConfig();
+    waitSeconds = Math.max(60L, config.getRequestTimeout().getSeconds());
     client = new LlamaResponsesClient(config);
   }
 
@@ -199,9 +194,9 @@ public class LlamaResponsesClientWorkLiveTest {
   private StreamResult stream(String label, ModelRequest request) throws Exception {
     RecordingListener listener = new RecordingListener();
     client.generateStreaming(request, listener);
-    boolean done = listener.completed.await(WAIT_SECONDS, TimeUnit.SECONDS)
+    boolean done = listener.completed.await(waitSeconds, TimeUnit.SECONDS)
       || listener.errored.await(2, TimeUnit.SECONDS);
-    assertTrue(label + " stream did not finish within " + WAIT_SECONDS + "s", done);
+    assertTrue(label + " stream did not finish within " + waitSeconds + "s", done);
     if (!listener.errors.isEmpty()) {
       fail(label + " stream error: " + listener.errors.get(0));
     }

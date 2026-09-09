@@ -17,7 +17,6 @@ import com.xai.api.type.StreamEventType;
 import com.xai.api.util.ModelRequestBuilder;
 import com.xai.api.util.ModelResponseReader;
 import com.xai.client.ResponseStreamPumpTest.RecordingListener;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -25,27 +24,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Live llama.cpp server tests against gpu-a. Generous timeout; model is
- * phi-4-mini.
+ * Live llama.cpp tests. Host and timeouts come from {@code ~/.llamacpp}
+ * or {@code LLAMACPP_*} env (see {@link LlamaClientConfig#readConfig()}).
  *
  * @author Key Bridge
  * @since v1.2.0 created 2026-09-09
  */
 public class LlamaResponsesClientLiveTest {
 
-  private static final String BASE_URL = "http://gpu-a.mcl.keybridge.ch:8080";
   private static final String MODEL = "phi-4-mini";
-  private static final long WAIT_SECONDS = 300;
 
   private LlamaResponsesClient client;
+  private long waitSeconds;
 
   @Before
   public void setUp() {
-    LlamaClientConfig config = new LlamaClientConfig.Builder()
-      .withBaseUrl(BASE_URL)
-      .withConnectTimeout(Duration.ofSeconds(30))
-      .withRequestTimeout(Duration.ofSeconds(WAIT_SECONDS))
-      .build();
+    LlamaClientConfig config = LlamaClientConfig.readConfig();
+    waitSeconds = Math.max(60L, config.getRequestTimeout().getSeconds());
     client = new LlamaResponsesClient(config);
   }
 
@@ -100,9 +95,9 @@ public class LlamaResponsesClientLiveTest {
     RecordingListener listener = new RecordingListener();
     client.generateStreaming(request, listener);
 
-    boolean done = listener.completed.await(WAIT_SECONDS, TimeUnit.SECONDS)
+    boolean done = listener.completed.await(waitSeconds, TimeUnit.SECONDS)
       || listener.errored.await(2, TimeUnit.SECONDS);
-    assertTrue("stream did not complete within " + WAIT_SECONDS + "s", done);
+    assertTrue("stream did not complete within " + waitSeconds + "s", done);
 
     if (!listener.errors.isEmpty()) {
       fail("stream error: " + listener.errors.get(0));
