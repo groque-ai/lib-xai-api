@@ -32,9 +32,7 @@ public class LlamaResponsesClient extends LlamaAbstractClient {
     if (request == null) {
       throw new IllegalArgumentException("request");
     }
-    if (Boolean.TRUE.equals(request.getStream())) {
-      throw new IllegalArgumentException("stream=true requires generateStreaming");
-    }
+    request.setStream(Boolean.FALSE);
     LlamaRequestTransformer.apply(request);
     return sendRequest(doPostJson("/v1/responses", request), ModelResponse.class);
   }

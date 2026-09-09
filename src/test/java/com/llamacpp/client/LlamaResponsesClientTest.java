@@ -48,13 +48,27 @@ public class LlamaResponsesClientTest {
     return b.build();
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void generateRejectsStreamTrue() {
+  @Test
+  public void generateForcesStreamFalse() throws Exception {
+    AtomicReference<String> posted = new AtomicReference<>();
+    String body = "{\"id\":\"resp_0\",\"object\":\"response\",\"status\":\"completed\"}";
+    server.createContext("/v1/responses", exchange -> {
+      posted.set(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8));
+      byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+      exchange.sendResponseHeaders(200, bytes.length);
+      try (OutputStream os = exchange.getResponseBody()) {
+        os.write(bytes);
+      }
+    });
+    server.start();
     client = new LlamaResponsesClient(config(false));
     ModelRequest request = new ModelRequest();
     request.setModel("local");
     request.setStream(Boolean.TRUE);
-    client.generate(request);
+    ModelResponse response = client.generate(request);
+    assertEquals(Boolean.FALSE, request.getStream());
+    assertNotNull(response);
+    assertFalse(posted.get().contains("\"stream\":true"));
   }
 
   @Test

@@ -74,7 +74,7 @@ ResponseStreamHandle handle = client.generateStreaming(request, new ResponseStre
 `generateStreaming` sets `stream=true` on the request and returns immediately.
 Callbacks run on the reader thread; a UI layer must marshal itself.
 
-`generate(request)` throws if `stream` is already true.
+`generate` forces `stream=false` and returns `ModelResponse`.
 
 Raise `requestTimeout` into minutes for reasoning and server-side tools. A
 quiet socket is not a completed stream. Default is 60 seconds.

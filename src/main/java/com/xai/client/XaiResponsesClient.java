@@ -63,9 +63,7 @@ public class XaiResponsesClient extends XaiAbstractClient {
     if (request == null) {
       throw new IllegalArgumentException("request");
     }
-    if (Boolean.TRUE.equals(request.getStream())) {
-      throw new IllegalArgumentException("stream=true requires generateStreaming");
-    }
+    request.setStream(Boolean.FALSE);
     HttpRequest httpRequest = doPostJson("", request);
     return sendRequest(httpRequest, ModelResponse.class);
   }

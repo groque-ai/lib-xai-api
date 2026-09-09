@@ -1,12 +1,16 @@
 package com.xai.client;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import com.sun.net.httpserver.HttpServer;
 import com.xai.api.responses.ModelRequest;
+import com.xai.api.responses.ModelResponse;
 import com.xai.api.type.StreamEventType;
+import java.util.concurrent.atomic.AtomicReference;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
@@ -43,13 +47,28 @@ public class XaiResponsesClientStreamTest {
     return new XaiResponsesClient(config);
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void generateRejectsStreamTrue() {
+  @Test
+  public void generateForcesStreamFalse() throws Exception {
+    AtomicReference<String> posted = new AtomicReference<>();
+    String body = "{\"id\":\"resp_0\",\"object\":\"response\",\"status\":\"completed\"}";
+    server.createContext("/v1/responses", exchange -> {
+      posted.set(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8));
+      byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+      exchange.getResponseHeaders().set("Content-Type", "application/json");
+      exchange.sendResponseHeaders(200, bytes.length);
+      try (OutputStream os = exchange.getResponseBody()) {
+        os.write(bytes);
+      }
+    });
+    server.start();
     client = newClient();
     ModelRequest request = new ModelRequest();
     request.setModel("grok-4.6");
     request.setStream(Boolean.TRUE);
-    client.generate(request);
+    ModelResponse response = client.generate(request);
+    assertEquals(Boolean.FALSE, request.getStream());
+    assertNotNull(response);
+    assertFalse(posted.get().contains("\"stream\":true"));
   }
 
   @Test

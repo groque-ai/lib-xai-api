@@ -49,8 +49,9 @@ same class. Payload field *name* changes → different class. Nested
 snapshots reuse `ModelResponse` / `ModelOutput`. We deleted the Chat
 Completions leftovers that were pretending to be Responses stream DTOs.
 
-**One blocking path, one streaming path.** `generate()` throws if
-`stream=true`. `generateStreaming()` sets it and pushes `StreamEvent`.
+**One blocking path, one streaming path.** `generate()` forces
+`stream=false` and returns `ModelResponse`. `generateStreaming()` forces
+`stream=true` and pushes `StreamEvent`.
 No “maybe it’s an iterator, maybe it’s a callback” identity crisis.
 
 **The wire wins over the brochure.** Event names, missing `[DONE]`,

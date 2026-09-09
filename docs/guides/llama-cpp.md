@@ -58,7 +58,7 @@ Raise `requestTimeout` for local generation. 60s is often too short.
 
 There is **no** `get(id)` / `delete(id)`. llama.cpp does not store responses.
 
-`generate` throws if `stream=true`. Use `generateStreaming`.
+`generate` forces `stream=false`. `generateStreaming` forces `stream=true`.
 
 ---
 

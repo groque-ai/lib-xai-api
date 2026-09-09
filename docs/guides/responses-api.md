@@ -47,7 +47,8 @@ Three verbs:
 | `get(responseId)` | `GET /v1/responses/{id}` | stored `ModelResponse`, or `null` on 404 |
 | `delete(responseId)` | `DELETE /v1/responses/{id}` | `DeleteStoredCompletionResponse` |
 
-`generate` **throws** if `request.stream == true`. Use `generateStreaming`.
+`generate` forces `stream=false`. `generateStreaming` forces `stream=true`.
+The method is the contract, not the field.
 
 ---
 
@@ -274,7 +275,7 @@ reasoning.
 HTTP failures surface as `ApiHttpException`. JSON parse failures as
 `ApiParseException`. `get` returns `null` on 404.
 
-Do not set `stream` on a blocking `generate` call.
+`generate` will clear `stream` if you set it. Use `generateStreaming` for SSE.
 
 ---
 
