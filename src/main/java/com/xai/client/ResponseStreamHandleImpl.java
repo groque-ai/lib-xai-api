@@ -80,19 +80,19 @@ public class ResponseStreamHandleImpl implements ResponseStreamHandle {
     this.cleanable = CLEANER.register(this, state);
   }
 
-  void attachFuture(CompletableFuture<?> future) {
+  public void attachFuture(CompletableFuture<?> future) {
     this.state.future = future;
   }
 
-  void attachBody(InputStream body) {
+  public void attachBody(InputStream body) {
     this.state.body = body;
   }
 
-  boolean isStopped() {
+  public boolean isStopped() {
     return state.stopped || terminal.get() != Terminal.NONE;
   }
 
-  boolean completedSuccessfully() {
+  public boolean completedSuccessfully() {
     return terminal.get() == Terminal.COMPLETE;
   }
 
@@ -114,7 +114,7 @@ public class ResponseStreamHandleImpl implements ResponseStreamHandle {
     return open.get();
   }
 
-  void fail(Throwable error) {
+  public void fail(Throwable error) {
     state.stopIo();
     if (finish(Terminal.ERROR)) {
       long start = System.currentTimeMillis();
@@ -132,7 +132,7 @@ public class ResponseStreamHandleImpl implements ResponseStreamHandle {
     }
   }
 
-  void readLoop(ObjectMapper mapper) {
+  public void readLoop(ObjectMapper mapper) {
     InputStream in = state.body;
     if (in == null) {
       complete();
