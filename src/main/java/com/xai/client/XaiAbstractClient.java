@@ -11,7 +11,6 @@ import com.xai.client.exception.ApiHttpException;
 import com.xai.client.exception.ApiParseException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -25,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,26 +55,6 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   // DEVELOPER NOTE: Logger is package-private visibility via static for use across the hierarchy and for test injection.
   // Using java.util.logging to avoid external logging framework dependencies.
   private static final Logger LOG = Logger.getLogger(XaiAbstractClient.class.getName());
-
-  /**
-   * Optional global sink for capturing raw JSON request bodies before they are
-   * sent.
-   * <p>
-   * Intended exclusively for debugging, testing, and diagnostics. Not for
-   * production use. Thread-safe via volatile reference. Set only during test
-   * setup.
-   */
-  static volatile Consumer<String> RAW_REQUEST_SINK;
-
-  /**
-   * Optional global sink for capturing raw response body bytes from streaming
-   * responses.
-   * <p>
-   * Intended exclusively for debugging, testing, and diagnostics. Not for
-   * production use. Thread-safe via volatile reference. Set only during test
-   * setup.
-   */
-  static volatile OutputStream RAW_BODY_SINK;
 
   /**
    * Client configuration containing API key, timeouts, and base URL overrides.
@@ -340,10 +318,6 @@ public abstract class XaiAbstractClient implements AutoCloseable {
   protected HttpRequest doPostJsonStream(String path, Object body) {
     try {
       String json = mapper.writeValueAsString(body);
-      Consumer<String> requestSink = RAW_REQUEST_SINK;
-      if (requestSink != null) {
-        requestSink.accept(json);
-      }
       return buildRequest(path)
         .setHeader("Accept", "text/event-stream")
         .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
@@ -370,8 +344,7 @@ public abstract class XaiAbstractClient implements AutoCloseable {
     Objects.requireNonNull(listener, "listener");
     ResponseStreamHandleImpl handle = new ResponseStreamHandleImpl(listener);
     long start = System.currentTimeMillis();
-    CompletableFuture<HttpResponse<InputStream>> future
-                                                 = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream());
+    CompletableFuture<HttpResponse<InputStream>> future = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream());
     handle.attachFuture(future);
     future.whenComplete((response, error) -> {
       if (handle.isStopped()) {
