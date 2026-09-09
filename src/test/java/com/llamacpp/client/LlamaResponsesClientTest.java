@@ -84,6 +84,33 @@ public class LlamaResponsesClientTest {
   }
 
   @Test
+  public void generateOmitsPreviousResponseIdOnTheWire() throws Exception {
+    AtomicReference<String> posted = new AtomicReference<>();
+    String body = "{\"id\":\"resp_3\",\"object\":\"response\",\"status\":\"completed\"}";
+    server.createContext("/v1/responses", exchange -> {
+      posted.set(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8));
+      byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+      exchange.sendResponseHeaders(200, bytes.length);
+      try (OutputStream os = exchange.getResponseBody()) {
+        os.write(bytes);
+      }
+    });
+    server.start();
+    client = new LlamaResponsesClient(config(false));
+    ModelRequest request = new ModelRequest();
+    request.setModel("local");
+    request.setPreviousResponseId("resp_from_xai");
+    request.setStore(Boolean.TRUE);
+    client.generate(request);
+    assertNull(request.getPreviousResponseId());
+    assertNull(request.getStore());
+    String json = posted.get();
+    assertNotNull(json);
+    assertFalse(json.contains("previous_response_id"));
+    assertFalse(json.contains("\"store\""));
+  }
+
+  @Test
   public void generateSendsBearerWhenConfigured() throws Exception {
     AtomicReference<String> auth = new AtomicReference<>();
     String body = "{\"id\":\"resp_2\",\"object\":\"response\"}";

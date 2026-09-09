@@ -2,6 +2,7 @@ package com.llamacpp.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.llamacpp.client.model.ModelListResponse;
+import com.llamacpp.client.util.LlamaRequestTransformer;
 import com.xai.api.responses.ModelRequest;
 import com.xai.api.responses.ModelResponse;
 import com.xai.client.ResponseStreamHandle;
@@ -34,6 +35,7 @@ public class LlamaResponsesClient extends LlamaAbstractClient {
     if (Boolean.TRUE.equals(request.getStream())) {
       throw new IllegalArgumentException("stream=true requires generateStreaming");
     }
+    LlamaRequestTransformer.apply(request);
     return sendRequest(doPostJson("/v1/responses", request), ModelResponse.class);
   }
 
@@ -45,6 +47,7 @@ public class LlamaResponsesClient extends LlamaAbstractClient {
       throw new IllegalArgumentException("listener");
     }
     request.setStream(Boolean.TRUE);
+    LlamaRequestTransformer.apply(request);
     return sendStreaming(doPostJsonStream("/v1/responses", request), listener);
   }
 
