@@ -24,22 +24,107 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * HTTP/JSON/SSE transport for llama.cpp. Authorization is omitted unless the
- * config has an API key.
+ * Abstract base implementation for Llama CPP model server HTTP clients.
+ * <p>
+ * Provides shared infrastructure for building and executing HTTP requests, JSON
+ * serialization/deserialization via Jackson, synchronous request handling, and
+ * asynchronous streaming response support. Subclasses extend this class to
+ * implement specific API endpoints (e.g. completions, chat, embeddings).
+ * <p>
+ * The design centralizes HTTP client lifecycle management, timeout
+ * configuration, header handling (including optional Bearer token
+ * authorization), and consistent error mapping to {@link ApiHttpException} and
+ * {@link ApiParseException}.
+ * <p>
+ * Usage notes: Clients are intended to be created once and reused. Call
+ * {@link #close()} when the client is no longer needed (currently a no-op but
+ * required by the {@link AutoCloseable} contract). The underlying
+ * {@link HttpClient} and {@link ObjectMapper} are thread-safe, allowing
+ * concurrent use from multiple threads. Streaming operations are fully
+ * asynchronous and report progress via the supplied
+ * {@link ResponseStreamListener}.
+ * <p>
+ * Developer note: This abstract class follows a template method style where
+ * protected helper methods (buildRequest, doPostJson, sendRequest, etc.) are
+ * composed by concrete subclasses. The 404 special-case behavior in response
+ * handling is preserved for backward compatibility with optional resource APIs.
  *
  * @author Key Bridge
- * @since v1.2.0 created 2026-09-09
+ * @since v1.1.0 created 2026-09-09
  */
 public abstract class LlamaAbstractClient implements AutoCloseable {
 
+  /**
+   * Default base URL applied when {@link LlamaClientConfig#getBaseUrl()}
+   * returns null or blank.
+   * <p>
+   * The value is normalized (trailing slash removed) during construction.
+   */
   private static final String DEFAULT_BASE_URL = "http://127.0.0.1:8080";
+
+  /**
+   * Class-level logger used for informational messages and non-fatal error
+   * reporting (e.g. 404 responses and successful stream completion timing).
+   */
   private static final Logger LOG = Logger.getLogger(LlamaAbstractClient.class.getName());
 
+  /**
+   * Immutable client configuration containing timeouts, API key, base URL, and
+   * redirect policy.
+   * <p>
+   * Stored as a final field to guarantee consistent behavior for the lifetime
+   * of the client instance.
+   */
   protected final LlamaClientConfig config;
+
+  /**
+   * Pre-configured {@link HttpClient} instance used for all synchronous and
+   * asynchronous HTTP operations.
+   * <p>
+   * Created with HTTP/1.1, the connect timeout from config, and the redirect
+   * policy derived from {@link LlamaClientConfig#isFollowRedirects()}.
+   * <p>
+   * Developer note: HttpClient is thread-safe and connection pooling is managed
+   * internally by the JDK implementation.
+   */
   protected final HttpClient httpClient;
+
+  /**
+   * Shared Jackson {@link ObjectMapper} configured for this client's
+   * serialization and deserialization requirements.
+   * <p>
+   * Settings include: NON_NULL inclusion, failure on unknown properties
+   * disabled, unknown enum values read as null, map entry ordering enabled, and
+   * transient marker propagation enabled.
+   * <p>
+   * Developer note: A single mapper instance is reused for performance and to
+   * guarantee consistent serialization behavior across all requests.
+   */
   protected final ObjectMapper mapper;
+
+  /**
+   * Normalized base URL (no trailing slash) used as the prefix for all request
+   * URIs.
+   * <p>
+   * Derived from {@link LlamaClientConfig#getBaseUrl()} or
+   * {@link #DEFAULT_BASE_URL} during construction.
+   */
   protected final String baseUrl;
 
+  /**
+   * Constructs a new abstract client using the supplied configuration.
+   * <p>
+   * The base URL is normalized by stripping any trailing slash. If no base URL
+   * is supplied, {@link #DEFAULT_BASE_URL} is used. The internal
+   * {@link HttpClient} and {@link ObjectMapper} are initialized exactly once.
+   * <p>
+   * Developer note: Constructor performs eager initialization of expensive
+   * objects (HttpClient and ObjectMapper) to avoid repeated setup cost on every
+   * request. Null checks are performed via Objects.requireNonNull.
+   *
+   * @param config the client configuration; must not be null
+   * @throws NullPointerException if config is null
+   */
   protected LlamaAbstractClient(LlamaClientConfig config) {
     this.config = Objects.requireNonNull(config, "config");
     String root = config.getBaseUrl();
@@ -51,7 +136,9 @@ public abstract class LlamaAbstractClient implements AutoCloseable {
     }
     this.baseUrl = root;
 
-    // llama.cpp httplib is HTTP/1.1
+    // Developer note: Base URL normalization ensures consistent path
+    // concatenation in buildRequest without producing malformed URIs
+    // containing double slashes.
     this.httpClient = HttpClient.newBuilder()
       .version(HttpClient.Version.HTTP_1_1)
       .connectTimeout(config.getConnectTimeout())
@@ -68,11 +155,42 @@ public abstract class LlamaAbstractClient implements AutoCloseable {
       .enable(MapperFeature.PROPAGATE_TRANSIENT_MARKER);
   }
 
+  /**
+   * Closes this client and releases any associated resources.
+   * <p>
+   * Current implementation is a no-op because the JDK {@link HttpClient}
+   * manages its own connection pool and does not require explicit shutdown for
+   * typical usage. The method exists solely to fulfill the
+   * {@link AutoCloseable} contract.
+   * <p>
+   * Developer note: Subclasses that allocate additional resources (custom
+   * executors, file handles, etc.) should override this method and invoke
+   * super.close() after performing their own cleanup. No resources are leaked
+   * by the base implementation.
+   *
+   * @throws Exception if an error occurs while closing
+   */
   @Override
   public void close() throws Exception {
-    // HttpClient is shared and not closed
+    // Developer note: Explicitly empty to satisfy AutoCloseable without
+    // forcing unnecessary shutdown semantics on the shared HttpClient.
   }
 
+  /**
+   * Creates a new {@link HttpRequest.Builder} pre-populated with the target
+   * URI, request timeout, and standard headers.
+   * <p>
+   * The URI is formed by appending the supplied path to {@link #baseUrl}.
+   * Content-Type and Accept headers are set to application/json. When an API
+   * key is present, the Authorization header is added using Bearer token
+   * format.
+   * <p>
+   * Developer note: This method centralizes header and timeout logic so that
+   * all request variants (GET, POST, streaming) remain consistent.
+   *
+   * @param path the API path segment (should start with '/')
+   * @return a builder instance ready for method specification and build
+   */
   protected HttpRequest.Builder buildRequest(String path) {
     HttpRequest.Builder builder = HttpRequest.newBuilder()
       .uri(URI.create(baseUrl + path))
@@ -85,6 +203,17 @@ public abstract class LlamaAbstractClient implements AutoCloseable {
     return builder;
   }
 
+  /**
+   * Builds a POST {@link HttpRequest} with a JSON-serialized body.
+   * <p>
+   * The body object is converted to JSON using the configured {@link #mapper}.
+   * The resulting request uses application/json content type.
+   *
+   * @param path the target API path
+   * @param body the object to be serialized as the request body; may be null
+   * @return a fully constructed POST request
+   * @throws ApiParseException if JSON serialization of the body fails
+   */
   protected HttpRequest doPostJson(String path, Object body) {
     try {
       String json = mapper.writeValueAsString(body);
@@ -97,6 +226,18 @@ public abstract class LlamaAbstractClient implements AutoCloseable {
     }
   }
 
+  /**
+   * Builds a POST {@link HttpRequest} intended for server-sent event streaming.
+   * <p>
+   * Identical to {@link #doPostJson(String, Object)} except that the Accept
+   * header is overridden to "text/event-stream" to signal streaming intent to
+   * the server.
+   *
+   * @param path the target API path
+   * @param body the object to be serialized as the request body
+   * @return a fully constructed streaming POST request
+   * @throws ApiParseException if JSON serialization of the body fails
+   */
   protected HttpRequest doPostJsonStream(String path, Object body) {
     try {
       String json = mapper.writeValueAsString(body);
@@ -110,10 +251,33 @@ public abstract class LlamaAbstractClient implements AutoCloseable {
     }
   }
 
+  /**
+   * Builds a simple GET {@link HttpRequest} for the given path.
+   * <p>
+   * Uses the standard headers and timeout supplied by
+   * {@link #buildRequest(String)}.
+   *
+   * @param path the target API path
+   * @return a fully constructed GET request
+   */
   protected HttpRequest doGet(String path) {
     return buildRequest(path).GET().build();
   }
 
+  /**
+   * Executes a synchronous HTTP request and returns the deserialized response.
+   * <p>
+   * Uses blocking
+   * {@link HttpClient#send(HttpRequest, HttpResponse.BodyHandler)}. The
+   * response is processed by {@link #handleResponse(HttpResponse, Class)}.
+   *
+   * @param request      the request to execute
+   * @param responseType the expected response class; use Void.class for no body
+   * @param <T>          the response type
+   * @return the deserialized response object, or null for Void or 404 responses
+   * @throws ApiHttpException if an I/O error, interruption, or non-success HTTP
+   *                          status occurs
+   */
   protected <T> T sendRequest(HttpRequest request, Class<T> responseType) {
     try {
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -124,6 +288,25 @@ public abstract class LlamaAbstractClient implements AutoCloseable {
     }
   }
 
+  /**
+   * Processes an HTTP response, handling success, 404, and error cases.
+   * <p>
+   * For 2xx status codes the body is deserialized using the supplied type
+   * (unless the type is Void.class). Status 404 is treated specially by logging
+   * and returning null. All other non-success statuses result in an
+   * {@link ApiHttpException}.
+   * <p>
+   * Developer note: The 404-to-null behavior is intentional to support optional
+   * resource lookup patterns common in some Llama APIs, but callers must be
+   * aware that null can mean "not found" rather than an empty result.
+   *
+   * @param response the raw HTTP response
+   * @param type     the target deserialization class
+   * @param <T>      the response type
+   * @return deserialized object or null for Void/404 cases
+   * @throws ApiParseException if the response body cannot be deserialized
+   * @throws ApiHttpException  for non-success HTTP status codes
+   */
   private <T> T handleResponse(HttpResponse<String> response, Class<T> type) {
     try {
       int status = response.statusCode();
@@ -134,7 +317,7 @@ public abstract class LlamaAbstractClient implements AutoCloseable {
         }
         return mapper.readValue(body, type);
       } else if (status == 404) {
-        LOG.info(this.getClass().getSimpleName() + " error (not found) {status=" + status + ", body=" + body + "}");
+        LOG.log(Level.INFO, "{0} error (not found) '{'status={1}, body={2}'}'", new Object[]{this.getClass().getSimpleName(), status, body});
         return null;
       } else {
         throw new ApiHttpException("API error {status=" + status + ", body=" + body + "}");
@@ -145,6 +328,26 @@ public abstract class LlamaAbstractClient implements AutoCloseable {
     }
   }
 
+  /**
+   * Initiates an asynchronous streaming request and returns a handle for
+   * controlling and observing the stream.
+   * <p>
+   * The request is executed using {@link HttpClient#sendAsync}. The provided
+   * {@link ResponseStreamListener} receives callbacks on a background thread.
+   * The returned {@link ResponseStreamHandle} can be used to stop the stream
+   * and query completion status.
+   * <p>
+   * Developer note: The CompletableFuture is attached to the handle before
+   * registration of whenComplete to allow early cancellation. Timing
+   * information is logged only on successful completion.
+   *
+   * @param request  the streaming request (typically created via
+   *                 {@link #doPostJsonStream(String, Object)})
+   * @param listener the listener that will receive stream events; must not be
+   *                 null
+   * @return a handle that can be used to stop or inspect the stream
+   * @throws NullPointerException if request or listener is null
+   */
   protected ResponseStreamHandle sendStreaming(HttpRequest request, ResponseStreamListener listener) {
     Objects.requireNonNull(request, "request");
     Objects.requireNonNull(listener, "listener");
@@ -177,6 +380,19 @@ public abstract class LlamaAbstractClient implements AutoCloseable {
     return handle;
   }
 
+  /**
+   * Safely reads the entire content of an InputStream as UTF-8 text.
+   * <p>
+   * Used exclusively for capturing error response bodies so that error
+   * reporting does not itself throw additional exceptions. The stream is always
+   * closed.
+   * <p>
+   * Developer note: This helper exists to prevent nested I/O exceptions during
+   * failure paths. Empty string is returned on any error or null input.
+   *
+   * @param body the input stream to read; may be null
+   * @return the body content as a string, or empty string on failure
+   */
   private static String readQuietly(InputStream body) {
     if (body == null) {
       return "";
